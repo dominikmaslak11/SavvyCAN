@@ -55,6 +55,13 @@ MainWindow::MainWindow(QWidget *parent) :
     mSidebar = new SidebarWidget(this);
     connect(mSidebar, &SidebarWidget::toolSelected, this, &MainWindow::onSidebarTool);
 
+    // ── REST API: auto-start on port 8080 ─────────────────────────────
+    mRestApi = new RestApiServer(frameStore, this);
+    mRestApi->start(8080);
+
+    // ── Hide old menu bar — replaced by sidebar + command palette ─────
+    menuBar()->setVisible(false);
+
     // Insert sidebar into the main horizontal layout (position 0 = far left)
     QLayout *centralLayout = ui->centralWidget->layout();
     if (centralLayout && centralLayout->count() > 0) {
@@ -1873,6 +1880,14 @@ void MainWindow::onSidebarTool(const QString &toolId)
     else if (toolId == "re_tools")      showGraphingWindow();
     else if (toolId == "send")          showFrameSenderWindow();
     else if (toolId == "dbc")           showDBCFileWindow();
+}
+
+void MainWindow::toggleRestApi()
+{
+    if (mRestApi->isRunning())
+        mRestApi->stop();
+    else
+        mRestApi->start(8080);
 }
 
 void MainWindow::toggleCommandPalette()

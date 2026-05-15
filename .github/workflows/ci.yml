@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.*'
+          arch: win64_mingw
+          modules: 'qtcharts qtserialbus qtserialport'
+      - name: CMake configure
+        run: cmake -B build -GNinja -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build
+      - name: Tests
+        run: cd build && ctest --output-on-failure
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.*'
+          arch: linux_gcc_64
+          modules: 'qtcharts qtserialbus qtserialport'
+      - name: Install deps
+        run: sudo apt-get install -y libgl1-mesa-dev
+      - name: CMake configure
+        run: cmake -B build -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF
+      - name: Build
+        run: cmake --build build

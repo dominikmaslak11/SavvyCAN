@@ -37,6 +37,7 @@
 #include "framestore.h"
 #include "windowregistry.h"
 #include "sidebarwidget.h"
+#include "restapiserver.h"
 
 class CANConnection;
 class ConnectionWindow;
@@ -109,6 +110,7 @@ private slots:
     void showCANBridgeWindow();
     void onSidebarTool(const QString &toolId);
     void toggleCommandPalette();
+    void toggleRestApi();
     void exitApp();
     void handleSaveDecoded();
     void handleSaveDecodedCsv();
@@ -162,6 +164,7 @@ private:
     FrameStore *frameStore;     // centralized frame store (modernized)
     WindowRegistry *mRegistry;  // lazy-created window manager
     SidebarWidget *mSidebar;    // futuristic sidebar navigation
+    RestApiServer *mRestApi;    // REST API server
     DBCHandler *dbcHandler;
     QByteArray inputBuffer;
     QTimer updateTimer;
