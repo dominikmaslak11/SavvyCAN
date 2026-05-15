@@ -11,6 +11,7 @@
 #include "filterutility.h"
 
 #include <QClipboard>
+#include <QShortcut>
 /*
 Some notes on things I'd like to put into the program but haven't put on github (yet)
 
@@ -44,13 +45,38 @@ MainWindow::MainWindow(QWidget *parent) :
 
     model = new CANFrameModel(this); // set parent to mainwindow to prevent canframemodel to change thread (might be done by setModel but just in case)
 
+    // ── FrameStore: centralized, signal-driven frame data ──────────────
+    frameStore = new FrameStore(this);
+
+    // ── WindowRegistry: lazy-created window manager ────────────────────
+    mRegistry = new WindowRegistry(this);
+
+    // ── Sidebar: futuristic navigation + command palette ──────────────
+    mSidebar = new SidebarWidget(this);
+    connect(mSidebar, &SidebarWidget::toolSelected, this, &MainWindow::onSidebarTool);
+
+    // Insert sidebar into the main horizontal layout (position 0 = far left)
+    QLayout *centralLayout = ui->centralWidget->layout();
+    if (centralLayout && centralLayout->count() > 0) {
+        QLayoutItem *firstItem = centralLayout->itemAt(0);
+        if (auto *hLayout = dynamic_cast<QHBoxLayout*>(firstItem->layout())) {
+            hLayout->insertWidget(0, mSidebar);
+        } else if (auto *hLayout = dynamic_cast<QHBoxLayout*>(firstItem)) {
+            hLayout->insertWidget(0, mSidebar);
+        }
+    }
+
     QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel;
     proxyModel->setSourceModel(model);
 
     ui->canFramesView->setModel(proxyModel);
 
-    settingsDialog = new MainSettingsDialog(); //instantiate the settings dialog so it can initialize settings if this is the first run or the config file was deleted.
-    settingsDialog->updateSettings(); //write out all the settings. If this is the first run it'll write defaults out.
+    // Instantiate settings dialog early so defaults are written on first run
+    mRegistry->show<MainSettingsDialog>("settings", [this] {
+        auto *dlg = new MainSettingsDialog();
+        connect(dlg, SIGNAL(updatedSettings()), this, SLOT(readUpdateableSettings()));
+        return dlg;
+    })->updateSettings();
 
     readSettings();
 
@@ -73,30 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
     HorzHdr->setStretchLastSection(true); //causes the data column to automatically fill the tableview
     connect(HorzHdr, SIGNAL(sectionClicked(int)), this, SLOT(headerClicked(int)));
 
-    lastGraphingWindow = nullptr;
-    frameInfoWindow = nullptr;
-    playbackWindow = nullptr;
-    flowViewWindow = nullptr;
-    frameSenderWindow = nullptr;
-    dbcMainEditor = nullptr;
-    comparatorWindow = nullptr;
-    settingsDialog = nullptr;
-    udsFirmwareUploaderWindow = nullptr;
-    discreteStateWindow = nullptr;
-    connectionWindow = nullptr;
-    scriptingWindow = nullptr;
-    rangeWindow = nullptr;
-    dbcFileWindow = nullptr;
-    fuzzingWindow = nullptr;
-    udsScanWindow = nullptr;
-    motorctrlConfigWindow = nullptr;
-    isoWindow = nullptr;
-    snifferWindow = nullptr;
-    bisectWindow = nullptr;
-    signalViewerWindow = nullptr;
-    temporalGraphWindow = nullptr;
-    dbcComparatorWindow = nullptr;
-    canBridgeWindow = nullptr;
+    // → window pointers initialized by WindowRegistry on first show()
     dbcHandler = DBCHandler::getReference();
     bDirty = false;
     inhibitFilterUpdate = false;
@@ -153,6 +156,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(model, &CANFrameModel::updatedFiltersList, this, &MainWindow::updateFilterList);
     connect(CANConManager::getInstance(), &CANConManager::framesReceived, model, &CANFrameModel::addFrames);
+    //modernized: also feed FrameStore
+    connect(CANConManager::getInstance(), &CANConManager::framesReceived, frameStore, &FrameStore::addFrames);
     //new implementation for continuous logging
     connect(CANConManager::getInstance(), &CANConManager::framesReceived, this, &MainWindow::logReceivedFrame);
 
@@ -226,7 +231,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(CANConManager::getInstance(), SIGNAL(connectionStatusUpdated(int)), this, SLOT(connectionStatusUpdated(int)));
 
     //Automatically create the connection window so it can be updated even if we never opened it.
-    connectionWindow = new ConnectionWindow();
+    auto *connectionWindow = mRegistry->show<ConnectionWindow>("connection", [this] {
+        return new ConnectionWindow();
+    });
     connect(this, SIGNAL(suspendCapturing(bool)), connectionWindow, SLOT(setSuspendAll(bool)));
 
     //these either are unfinished/not working or are not for general use. But,they exist
@@ -253,6 +260,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     frameSender = new FrameSenderObject(model->getListReference());
 
+    // ── Ctrl+K: toggle command palette ────────────────────────────────
+    auto *cmdPaletteShortcut = new QShortcut(QKeySequence("Ctrl+K"), this);
+    connect(cmdPaletteShortcut, &QShortcut::activated, this, &MainWindow::toggleCommandPalette);
+
     frameSender->initialize(); //creates the thread and sets things up
     frameSender->startSending(); //start the timer in the object so enabled things can send
 
@@ -263,62 +274,14 @@ MainWindow::~MainWindow()
 {
     updateTimer.stop();
     frameSender->stopSending();
-    killEmAll(); //Ride the lightning
+    mRegistry->closeAll();
     delete ui;
     delete model;
     delete elapsedTime;
     delete dbcHandler;
 }
 
-//kill every sub window that could be open. At the moment a hard coded list
-//but eventually each window should be registered and be able to be iterated.
-void MainWindow::killEmAll()
-{
-    foreach (GraphingWindow *win, graphWindows)
-    {
-        killWindow(win);
-    }
-    killWindow(frameInfoWindow);
-    killWindow(playbackWindow);
-    killWindow(flowViewWindow);
-    killWindow(frameSenderWindow);
-    killWindow(comparatorWindow);
-    killWindow(dbcMainEditor);
-    killWindow(settingsDialog);
-    killWindow(discreteStateWindow);
-    killWindow(scriptingWindow);
-    killWindow(rangeWindow);
-    killWindow(dbcFileWindow);
-    killWindow(fuzzingWindow);
-    killWindow(udsScanWindow);
-    killWindow(isoWindow);
-    killWindow(snifferWindow);
-    killWindow(bisectWindow);
-    killWindow(udsFirmwareUploaderWindow);
-    killWindow(motorctrlConfigWindow);
-    killWindow(signalViewerWindow);
-    killWindow(temporalGraphWindow);
-    killWindow(canBridgeWindow);
-
-    //trying to kill this window can cause a fault to happen. It's closed last just in case.
-    killWindow(connectionWindow);
-}
-
-//forcefully close the window, kill it, and salt the earth
-//note, for some stupid reason this function causes a seg fault
-//it seems that when it runs just before the program closes it'll
-//fault out when trying to close the connection window. I assume
-//this could be because that window has long running threads open and doesn't
-//close quickly or maybe cleanly. Investigate.
-void MainWindow::killWindow(QDialog *win)
-{
-    if (win)
-    {
-        win->close();
-        delete win;
-        win = nullptr;
-    }
-}
+// killEmAll() and killWindow() replaced by WindowRegistry::closeAll()
 
 void MainWindow::exitApp()
 {
@@ -852,7 +815,18 @@ void MainWindow::setupAddToNewGraph()
 
 void MainWindow::setupSendToLatestGraphWindow()
 {
-    if (!lastGraphingWindow) showGraphingWindow();
+    auto graphWindows = mRegistry->graphWindows();
+    GraphingWindow *lastGraphingWindow = nullptr;
+    if (!graphWindows.isEmpty())
+        lastGraphingWindow = qobject_cast<GraphingWindow*>(graphWindows.last());
+    if (!lastGraphingWindow) {
+        showGraphingWindow();
+        graphWindows = mRegistry->graphWindows();
+        if (!graphWindows.isEmpty())
+            lastGraphingWindow = qobject_cast<GraphingWindow*>(graphWindows.last());
+    }
+    if (!lastGraphingWindow) return;
+
     GraphParams param;
     QString signalName = getSignalNameFromPosition(contextMenuPosition);
     param.ID = getMessageIDFromPosition(contextMenuPosition);
@@ -1643,40 +1617,29 @@ CANFrameModel* MainWindow::getCANFrameModel()
 
 void MainWindow::showSettingsDialog()
 {
-    if (!settingsDialog)
-    {
-        settingsDialog = new MainSettingsDialog();
-        connect (settingsDialog, SIGNAL(updatedSettings()), this, SLOT(readUpdateableSettings()));
-    }
-    settingsDialog->show();
+    mRegistry->show<MainSettingsDialog>("settings", [this] {
+        auto *dlg = new MainSettingsDialog();
+        connect(dlg, SIGNAL(updatedSettings()), this, SLOT(readUpdateableSettings()));
+        return dlg;
+    });
 }
 
 //always gets unfiltered list. You ask for the graphs so there is no need to send filtered frames
 //now always creates a new window. This allows for multiple independent graphing windows
 void MainWindow::showGraphingWindow()
 {
-/* could only allow the latest window to have these centering signals.
-   if (lastGraphingWindow)
-    {
-        disconnect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), this, SLOT(gotCenterTimeID(int32_t,double)));
-        disconnect(this, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(int32_t,double)));
-        if (flowViewWindow)
-        {
-            disconnect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), flowViewWindow, SLOT(gotCenterTimeID(int32_t,double)));
-            disconnect(flowViewWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(int32_t,double)));
-        }
-    }
-*/
-    lastGraphingWindow = new GraphingWindow(model->getListReference());
-    graphWindows.append(lastGraphingWindow);
+    GraphingWindow *win = mRegistry->createGraphWindow<GraphingWindow>([this] {
+        return new GraphingWindow(model->getListReference());
+    });
+
+    auto *lastGraphingWindow = win; // for signal wiring below
 
     connect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), this, SLOT(gotCenterTimeID(uint32_t,double)));
     connect(this, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(uint32_t,double)));
 
-    if (flowViewWindow) //connect the two external windows together
-    {
-        connect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), flowViewWindow, SLOT(gotCenterTimeID(uint32_t,double)));
-        connect(flowViewWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(uint32_t,double)));
+    if (auto *fw = mRegistry->window<FlowViewWindow>("flowview")) {
+        connect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(uint32_t,double)));
+        connect(fw, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(uint32_t,double)));
     }
 
     lastGraphingWindow->show();
@@ -1684,187 +1647,138 @@ void MainWindow::showGraphingWindow()
 
 void MainWindow::showTemporalGraphWindow()
 {
-    //only create an instance of the object if we dont have one. Otherwise just display the existing one.
-    if (!temporalGraphWindow)
-    {
-        const QVector<CANFrame> *frames;
-        if (!useFiltered)
-            frames = model->getListReference();
-        else
-            frames = model->getFilteredListReference();
-
-        if(frames->count() > 2000)
-        {
-            QMessageBox::StandardButton confirmDialog;
-            confirmDialog = QMessageBox::question(this, "Danger Will Robinson", "There are a lot of frames (>2000) to plot, this may take a while or crash the app. Crash likely with more than 10k frames. Continue?",
-                                          QMessageBox::Yes|QMessageBox::No);
-            if (confirmDialog == QMessageBox::No)
-            {
-                return;
-            }
+    mRegistry->show<TemporalGraphWindow>("temporal", [this] {
+        const QVector<CANFrame> *frames = useFiltered
+            ? model->getFilteredListReference()
+            : model->getListReference();
+        if (frames->count() > 2000) {
+            if (QMessageBox::question(this, "Danger Will Robinson",
+                    "There are a lot of frames (>2000) to plot, this may take a while or crash the app.",
+                    QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
+                return (TemporalGraphWindow*)nullptr;
         }
-
-        temporalGraphWindow = new TemporalGraphWindow(frames);
-    }
-
-    temporalGraphWindow->show();
+        return new TemporalGraphWindow(frames);
+    });
 }
 
 void MainWindow::showFrameDataAnalysis()
 {
-    //only create an instance of the object if we dont have one. Otherwise just display the existing one.
-    if (!frameInfoWindow)
-    {
-        if (!useFiltered)
-            frameInfoWindow = new FrameInfoWindow(model->getListReference());
-        else
-            frameInfoWindow = new FrameInfoWindow(model->getFilteredListReference());
-    }
-    frameInfoWindow->show();
+    mRegistry->show<FrameInfoWindow>("frameinfo", [this] {
+        return new FrameInfoWindow(useFiltered
+            ? model->getFilteredListReference()
+            : model->getListReference());
+    });
 }
 
 void MainWindow::showISOInterpreterWindow()
 {
-    if (!isoWindow)
-    {
-        if (!useFiltered)
-            isoWindow = new ISOTP_InterpreterWindow(model->getListReference());
-        else
-            isoWindow = new ISOTP_InterpreterWindow(model->getFilteredListReference());
-    }
-    isoWindow->show();
+    mRegistry->show<ISOTP_InterpreterWindow>("isotp", [this] {
+        return new ISOTP_InterpreterWindow(useFiltered
+            ? model->getFilteredListReference()
+            : model->getListReference());
+    });
 }
 
 void MainWindow::showSnifferWindow()
 {
-    if (!snifferWindow)
-        snifferWindow = new SnifferWindow(this);
-    snifferWindow->show();
+    mRegistry->show<SnifferWindow>("sniffer", [this] {
+        return new SnifferWindow(this);
+    });
 }
 
 void MainWindow::showBisectWindow()
 {
-    if (!bisectWindow)
-    {
-        bisectWindow = new BisectWindow(model->getListReference());
-    }
-    bisectWindow->show();
+    mRegistry->show<BisectWindow>("bisect", [this] {
+        return new BisectWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showCANBridgeWindow()
 {
-    if (!canBridgeWindow)
-    {
-        canBridgeWindow = new CANBridgeWindow(model->getListReference());
-    }
-    canBridgeWindow->show();
+    mRegistry->show<CANBridgeWindow>("canbridge", [this] {
+        return new CANBridgeWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showFrameSenderWindow()
 {
-    if (!frameSenderWindow)
-    {
-        if (!useFiltered)
-            frameSenderWindow = new FrameSenderWindow(model->getListReference());
-        else
-            frameSenderWindow = new FrameSenderWindow(model->getFilteredListReference());
-    }
-    frameSenderWindow->show();
+    mRegistry->show<FrameSenderWindow>("framesender", [this] {
+        return new FrameSenderWindow(useFiltered
+            ? model->getFilteredListReference()
+            : model->getListReference());
+    });
 }
 
 void MainWindow::showPlaybackWindow()
 {
-    if (!playbackWindow)
-    {
-        if (!useFiltered)
-            playbackWindow = new FramePlaybackWindow(model->getListReference());
-        else
-            playbackWindow = new FramePlaybackWindow(model->getFilteredListReference());
-    }
-    playbackWindow->show();
+    mRegistry->show<FramePlaybackWindow>("playback", [this] {
+        return new FramePlaybackWindow(useFiltered
+            ? model->getFilteredListReference()
+            : model->getListReference());
+    });
 }
 
 void MainWindow::showUDSFirmwareUploaderWindow()
 {
-    if (!udsFirmwareUploaderWindow)
-    {
-        udsFirmwareUploaderWindow = new UDSFirmwareUploaderWindow(model->getListReference());
-    }
-    udsFirmwareUploaderWindow->show();
+    mRegistry->show<UDSFirmwareUploaderWindow>("udsfirmware", [this] {
+        return new UDSFirmwareUploaderWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showComparisonWindow()
 {
-    if (!comparatorWindow)
-    {
-        comparatorWindow = new FileComparatorWindow();
-    }
-    comparatorWindow->show();
+    mRegistry->show<FileComparatorWindow>("comparator", [this] {
+        return new FileComparatorWindow();
+    });
 }
 
 void MainWindow::showDBCComparisonWindow()
 {
-    if (!dbcComparatorWindow)
-    {
-        dbcComparatorWindow = new DBCComparatorWindow();
-    }
-    dbcComparatorWindow->show();
+    mRegistry->show<DBCComparatorWindow>("dbccompare", [this] {
+        return new DBCComparatorWindow();
+    });
 }
 
 void MainWindow::showSingleMultiWindow()
 {
-    if (!discreteStateWindow)
-    {
-        discreteStateWindow = new DiscreteStateWindow(model->getListReference());
-    }
-    discreteStateWindow->show();
+    mRegistry->show<DiscreteStateWindow>("discrete", [this] {
+        return new DiscreteStateWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showFuzzingWindow()
 {
-    if (!fuzzingWindow)
-    {
-        fuzzingWindow = new FuzzingWindow(model->getListReference());
-    }
-    fuzzingWindow->show();
+    mRegistry->show<FuzzingWindow>("fuzzing", [this] {
+        return new FuzzingWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showMCConfigWindow()
 {
-    if (!motorctrlConfigWindow)
-    {
-        motorctrlConfigWindow = new MotorControllerConfigWindow(model->getListReference());
-        //connect(motorctrlConfigWindow, SIGNAL(sendCANFrame(const CANFrame*,int)), worker, SLOT(sendFrame(const CANFrame*,int)));
-        //connect(motorctrlConfigWindow, SIGNAL(sendFrameBatch(const QList<CANFrame>*)), worker, SLOT(sendFrameBatch(const QList<CANFrame>*)));
-    }
-    motorctrlConfigWindow->show();
+    mRegistry->show<MotorControllerConfigWindow>("motorctrl", [this] {
+        return new MotorControllerConfigWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showUDSScanWindow()
 {
-    if (!udsScanWindow)
-    {
-        udsScanWindow = new UDSScanWindow(model->getListReference());
-    }
-    udsScanWindow->show();
+    mRegistry->show<UDSScanWindow>("udsscan", [this] {
+        return new UDSScanWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showScriptingWindow()
 {
-    if (!scriptingWindow)
-    {
-        scriptingWindow = new ScriptingWindow(model->getListReference());
-    }
-    scriptingWindow->show();
+    mRegistry->show<ScriptingWindow>("scripting", [this] {
+        return new ScriptingWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showRangeWindow()
 {
-    if (!rangeWindow)
-    {
-        rangeWindow = new RangeStateWindow(model->getListReference());
-    }
-    rangeWindow->show();
+    mRegistry->show<RangeStateWindow>("range", [this] {
+        return new RangeStateWindow(model->getListReference());
+    });
 }
 
 void MainWindow::showFuzzyScopeWindow()
@@ -1874,23 +1788,24 @@ void MainWindow::showFuzzyScopeWindow()
 
 void MainWindow::showFlowViewWindow()
 {
-    if (!flowViewWindow)
-    {
-        if (!useFiltered)
-            flowViewWindow = new FlowViewWindow(model->getListReference());
-        else
-            flowViewWindow = new FlowViewWindow(model->getFilteredListReference());
-        connect(flowViewWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), this, SLOT(gotCenterTimeID(int32_t,double)));
-        connect(this, SIGNAL(sendCenterTimeID(uint32_t,double)), flowViewWindow, SLOT(gotCenterTimeID(int32_t,double)));
-    }
+    mRegistry->show<FlowViewWindow>("flowview", [this] {
+        auto *fw = new FlowViewWindow(useFiltered
+            ? model->getFilteredListReference()
+            : model->getListReference());
+        connect(fw, SIGNAL(sendCenterTimeID(uint32_t,double)), this, SLOT(gotCenterTimeID(int32_t,double)));
+        connect(this, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(int32_t,double)));
+        return fw;
+    });
 
-    if (lastGraphingWindow)
-    {
-        connect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), flowViewWindow, SLOT(gotCenterTimeID(int32_t,double)));
-        connect(flowViewWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(int32_t,double)));
+    // Connect with last graphing window if one exists
+    if (auto *fw = mRegistry->window<FlowViewWindow>("flowview")) {
+        for (auto *gw : mRegistry->graphWindows()) {
+            if (auto *graph = qobject_cast<GraphingWindow*>(gw)) {
+                connect(graph, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(uint32_t,double)));
+                connect(fw, SIGNAL(sendCenterTimeID(uint32_t,double)), graph, SLOT(gotCenterTimeID(int32_t,double)));
+            }
+        }
     }
-
-    flowViewWindow->show();
 }
 
 
@@ -1902,31 +1817,65 @@ void MainWindow::DBCSettingsUpdated()
 
 void MainWindow::showDBCFileWindow()
 {
-    if (!dbcFileWindow)
-    {
-        dbcFileWindow = new DBCLoadSaveWindow(model->getListReference());
-        connect(dbcFileWindow, &DBCLoadSaveWindow::updatedDBCSettings, this, &MainWindow::DBCSettingsUpdated);
-    }
-    dbcFileWindow->show();
+    mRegistry->show<DBCLoadSaveWindow>("dbcfile", [this] {
+        auto *w = new DBCLoadSaveWindow(model->getListReference());
+        connect(w, &DBCLoadSaveWindow::updatedDBCSettings, this, &MainWindow::DBCSettingsUpdated);
+        return w;
+    });
 }
 
 void MainWindow::showSignalViewer()
 {
-    if (!signalViewerWindow)
-    {
-        if (!useFiltered)
-            signalViewerWindow = new SignalViewerWindow(model->getListReference());
-        else
-            signalViewerWindow = new SignalViewerWindow(model->getFilteredListReference());
-    }
-    signalViewerWindow->show();
+    mRegistry->show<SignalViewerWindow>("signalviewer", [this] {
+        return new SignalViewerWindow(useFiltered
+            ? model->getFilteredListReference()
+            : model->getListReference());
+    });
 }
 
 void MainWindow::showConnectionSettingsWindow()
 {
-    if (!connectionWindow)
-    {
-        connectionWindow = new ConnectionWindow();
-    }
-    connectionWindow->show();
+    mRegistry->show<ConnectionWindow>("connection", [this] {
+        return new ConnectionWindow();
+    });
+}
+
+void MainWindow::onSidebarTool(const QString &toolId)
+{
+    // Map tool IDs to the corresponding show method
+    if (toolId == "graph")         showGraphingWindow();
+    else if (toolId == "flowview")      showFlowViewWindow();
+    else if (toolId == "frameinfo")     showFrameDataAnalysis();
+    else if (toolId == "comparator")    showComparisonWindow();
+    else if (toolId == "dbccompare")    showDBCComparisonWindow();
+    else if (toolId == "range")         showRangeWindow();
+    else if (toolId == "discrete")      showSingleMultiWindow();
+    else if (toolId == "isotp")         showISOInterpreterWindow();
+    else if (toolId == "sniffer")       showSnifferWindow();
+    else if (toolId == "bisect")        showBisectWindow();
+    else if (toolId == "signalviewer")  showSignalViewer();
+    else if (toolId == "temporal")      showTemporalGraphWindow();
+    else if (toolId == "playback")      showPlaybackWindow();
+    else if (toolId == "framesender")   showFrameSenderWindow();
+    else if (toolId == "scripting")     showScriptingWindow();
+    else if (toolId == "fuzzing")       showFuzzingWindow();
+    else if (toolId == "udsscan")       showUDSScanWindow();
+    else if (toolId == "udsfirmware")   showUDSFirmwareUploaderWindow();
+    else if (toolId == "motorctrl")     showMCConfigWindow();
+    else if (toolId == "canbridge")     showCANBridgeWindow();
+    else if (toolId == "dbcfile")       showDBCFileWindow();
+    else if (toolId == "connection")    showConnectionSettingsWindow();
+    else if (toolId == "settings")      showSettingsDialog();
+    else if (toolId == "loadfile")      handleLoadFile();
+    else if (toolId == "savefile")      handleSaveFile();
+    else if (toolId == "clearframes")   clearFrames();
+    // Categories — show first tool in the category
+    else if (toolId == "re_tools")      showGraphingWindow();
+    else if (toolId == "send")          showFrameSenderWindow();
+    else if (toolId == "dbc")           showDBCFileWindow();
+}
+
+void MainWindow::toggleCommandPalette()
+{
+    mSidebar->toggleCommandPalette();
 }

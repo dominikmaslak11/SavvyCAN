@@ -34,6 +34,9 @@
 #include "re/dbccomparatorwindow.h"
 #include "re/udsfirmwareuploaderwindow.h"
 #include "canbridgewindow.h"
+#include "framestore.h"
+#include "windowregistry.h"
+#include "sidebarwidget.h"
 
 class CANConnection;
 class ConnectionWindow;
@@ -65,6 +68,7 @@ public:
     static QString loadedFileName;
     static MainWindow *getReference();
     CANFrameModel * getCANFrameModel();
+    FrameStore * getFrameStore() { return frameStore; }
     ~MainWindow();
 
     void handleDroppedFile(const QString &filename);
@@ -103,6 +107,8 @@ private slots:
     void showTemporalGraphWindow();
     void showDBCComparisonWindow();
     void showCANBridgeWindow();
+    void onSidebarTool(const QString &toolId);
+    void toggleCommandPalette();
     void exitApp();
     void handleSaveDecoded();
     void handleSaveDecodedCsv();
@@ -153,6 +159,9 @@ private:
 
     //canbus related data
     CANFrameModel *model;
+    FrameStore *frameStore;     // centralized frame store (modernized)
+    WindowRegistry *mRegistry;  // lazy-created window manager
+    SidebarWidget *mSidebar;    // futuristic sidebar navigation
     DBCHandler *dbcHandler;
     QByteArray inputBuffer;
     QTimer updateTimer;
@@ -173,35 +182,7 @@ private:
     bool continuousLogging;
     int continuousLogFlushCounter;
 
-    //References to other windows we can display
-
-    //Graph window is allowed to instantiate more than once. All the rest are not (yet).
-    GraphingWindow *lastGraphingWindow;
-    QList<GraphingWindow *> graphWindows;
-
-    FrameInfoWindow *frameInfoWindow;
-    FramePlaybackWindow *playbackWindow;
-    FlowViewWindow *flowViewWindow;
-    FrameSenderWindow *frameSenderWindow;
-    DBCMainEditor *dbcMainEditor;
-    FileComparatorWindow *comparatorWindow;
-    MainSettingsDialog *settingsDialog;
-    DiscreteStateWindow *discreteStateWindow;
-    UDSFirmwareUploaderWindow *udsFirmwareUploaderWindow;
-    ConnectionWindow *connectionWindow;
-    ScriptingWindow *scriptingWindow;
-    RangeStateWindow *rangeWindow;
-    DBCLoadSaveWindow *dbcFileWindow;
-    FuzzingWindow *fuzzingWindow;
-    UDSScanWindow *udsScanWindow;
-    ISOTP_InterpreterWindow *isoWindow;
-    SnifferWindow* snifferWindow;
-    MotorControllerConfigWindow *motorctrlConfigWindow;
-    BisectWindow* bisectWindow;
-    SignalViewerWindow *signalViewerWindow;
-    TemporalGraphWindow *temporalGraphWindow;
-    DBCComparatorWindow *dbcComparatorWindow;
-    CANBridgeWindow *canBridgeWindow;
+    // → 20+ raw window pointers replaced by WindowRegistry (see showXxxWindow())
 
     //various private storage
     QLabel lbStatusConnected;
@@ -223,8 +204,6 @@ private:
     void addFrameToDisplay(CANFrame &, bool);
     void updateFileStatus();
     void closeEvent(QCloseEvent *event);
-    void killEmAll();
-    void killWindow(QDialog *win);
     void readSettings();
     void writeSettings();
     bool eventFilter(QObject *obj, QEvent *event);

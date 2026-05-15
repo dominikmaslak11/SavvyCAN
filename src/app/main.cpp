@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "futuristic_theme.h"
 #include <QApplication>
 #include <QTranslator>
 #include <QLocale>
@@ -34,6 +35,10 @@ int main(int argc, char *argv[])
 #endif
 
     SavvyCANApplication a(argc, argv);
+
+    // ── Apply Futuristic Dark Theme ──────────────────────────────────
+    a.setStyleSheet(FuturisticTheme::styleSheet());
+    a.setPalette(FuturisticTheme::darkPalette());
 
     //Add a local path for Qt extensions, to allow for per-application extensions.
     a.addLibraryPath("plugins");

@@ -1,14 +1,17 @@
 #-------------------------------------------------
 #
 # Project created by QtCreator 2015-04-25T22:57:44
+# Modernized for Qt6 — 2026-05-15
 #
 #-------------------------------------------------
 
-!versionAtLeast(QT_VERSION, 5.14.0) {
-    error("Current version of Qt ($${QT_VERSION}) is too old, this project requires Qt 5.14 or newer")
+!versionAtLeast(QT_VERSION, 6.0.0) {
+    !versionAtLeast(QT_VERSION, 5.14.0) {
+        error("Current version of Qt ($${QT_VERSION}) is too old, this project requires Qt 5.14 or newer")
+    }
 }
 
-QT = core gui printsupport qml serialbus serialport widgets help network opengl
+QT = core gui printsupport qml serialbus serialport widgets help network opengl openglwidgets
 
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
@@ -31,6 +34,8 @@ SOURCES += main.cpp\
     connections/mqtt_bus.cpp \
     dbc/dbcnodeduplicateeditor.cpp \
     framesenderobject.cpp \
+    framestore.cpp \
+    futuristic_theme.cpp \
     mqtt/qmqtt_client.cpp \
     mqtt/qmqtt_client_p.cpp \
     mqtt/qmqtt_frame.cpp \
@@ -50,6 +55,7 @@ SOURCES += main.cpp\
     simplecrypt.cpp \
     triggerdialog.cpp \
     utility.cpp \
+    windowregistry.cpp \
     qcustomplot.cpp \
     frameplaybackwindow.cpp \
     candatagrid.cpp \
@@ -119,6 +125,8 @@ HEADERS  += mainwindow.h \
     dbc/dbcnodeduplicateeditor.h \
     dbc/dbcnoderebaseeditor.h \
     framesenderobject.h \
+    framestore.h \
+    futuristic_theme.h \
     mqtt/qmqtt.h \
     mqtt/qmqtt_client.h \
     mqtt/qmqtt_client_p.h \

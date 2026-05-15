@@ -9,6 +9,7 @@
 #include "can_structs.h"
 #include "dbc/dbchandler.h"
 #include "connections/canconnection.h"
+#include "framestore.h"
 #include "utility.h"
 
 enum class Column {
@@ -29,8 +30,12 @@ class CANFrameModel: public QAbstractTableModel
     Q_OBJECT
 
 public:
-    CANFrameModel(QObject *parent = 0);
+    CANFrameModel(QObject *parent = nullptr);
+    CANFrameModel(FrameStore *store, QObject *parent = nullptr);
     virtual ~CANFrameModel();
+
+    /// Returns the associated FrameStore (never null after construction).
+    FrameStore *frameStore() const;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -83,8 +88,11 @@ private:
     bool any_filters_are_configured(void);
     bool any_busfilters_are_configured(void);
 
-    QVector<CANFrame> frames;
-    QVector<CANFrame> filteredFrames;
+    FrameStore *mFrameStore = nullptr;  // owned externally (MainWindow)
+    bool mOwnsStore = false;            // true if we created the store
+
+    QVector<CANFrame> frames;           // cached snapshots for the model
+    QVector<CANFrame> filteredFrames;   // (when store is not in use)
     QMap<int, bool> filters;
     QMap<int, bool> busFilters;
     DBCHandler *dbcHandler;
