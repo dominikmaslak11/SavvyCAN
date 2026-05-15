@@ -9,6 +9,9 @@
 #include <QLabel>
 #include <QStackedWidget>
 
+class PythonConsole;
+class PythonBridge;
+
 /// Futuristic sidebar navigation replacing the traditional menu bar.
 ///
 /// Provides:
@@ -27,6 +30,12 @@ public:
 
     /// Show/hide the command palette overlay.
     void toggleCommandPalette();
+
+    /// Set the Python console widget (injected by MainWindow).
+    void setPythonConsole(PythonConsole *console);
+
+    /// Toggle dark/light theme.
+    void toggleTheme();
 
 signals:
     /// Emitted when the user selects a tool category.
@@ -49,6 +58,8 @@ private:
     QListWidget  *mCommandList;
     QWidget      *mCommandOverlay;
     QWidget      *mCategoryPanel;
+    PythonConsole *mPythonConsole = nullptr;
+    bool           mDarkTheme = true;
 
     struct ToolEntry {
         QString id;

@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QHttpServer>
 #include <QTcpServer>
+#include <QWebSocketServer>
+#include <QWebSocket>
 
 class FrameStore;
 class MainWindow;
@@ -17,6 +19,7 @@ class MainWindow;
 ///   GET  /api/buses            — active bus list
 ///   POST /api/send             — send a CAN frame (JSON body)
 ///   GET  /api/dbc/signals/:id  — DBC signals for a frame ID
+///   WS   /api/ws/live          — WebSocket live frame stream
 class RestApiServer : public QObject
 {
     Q_OBJECT
@@ -48,6 +51,8 @@ private:
     FrameStore  *mStore;
     QHttpServer  mServer;
     QTcpServer   mTcpServer;
+    QWebSocketServer *mWsServer = nullptr;
+    QVector<QWebSocket *> mWsClients;
     quint16      mPort = 0;
 };
 

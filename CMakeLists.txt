@@ -22,7 +22,7 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/ui")
 
 # ── Qt6 ───────────────────────────────────────────────────────────────────
 find_package(Qt6 6.2 REQUIRED COMPONENTS
-    Core Gui Widgets PrintSupport Qml SerialBus SerialPort Help Network OpenGL OpenGLWidgets HttpServer
+    Core Gui Widgets PrintSupport Qml SerialBus SerialPort Help Network OpenGL OpenGLWidgets HttpServer WebSockets
 )
 
 # ── Compile definitions ───────────────────────────────────────────────────
@@ -73,6 +73,7 @@ set(SOURCES
     src/io/pcaplite.cpp
 
     pythonbridge.cpp
+    pythonconsole.cpp
     restapiserver.cpp
     pluginmanager.cpp
 
@@ -179,6 +180,7 @@ set(HEADERS
     src/io/pcaplite.h
 
     pythonbridge.h
+    pythonconsole.h
     restapiserver.h
     iplugin.h
     pluginmanager.h
@@ -307,6 +309,7 @@ target_link_libraries(SavvyCAN PRIVATE
     Qt6::Core Qt6::Gui Qt6::Widgets Qt6::PrintSupport Qt6::Qml
     Qt6::SerialBus Qt6::SerialPort Qt6::Help Qt6::Network Qt6::OpenGL Qt6::OpenGLWidgets
     Qt6::HttpServer
+    Qt6::WebSockets
     pybind11::embed
     Python3::Python
 )

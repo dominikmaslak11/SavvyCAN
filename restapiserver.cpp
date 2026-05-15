@@ -5,6 +5,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDebug>
+#include <QWebSocketServer>
+#include <QWebSocket>
 
 RestApiServer::RestApiServer(FrameStore *store, QObject *parent)
     : QObject(parent), mStore(store)
@@ -22,13 +24,60 @@ bool RestApiServer::start(quint16 port)
     }
 
     mServer.bind(&mTcpServer);
+
+    // ── WebSocket live stream ──────────────────────────────────────
+    mWsServer = new QWebSocketServer("SavvyCAN Live", QWebSocketServer::NonSecureMode, this);
+    if (mWsServer->listen(QHostAddress::Any, port + 1)) {
+        connect(mWsServer, &QWebSocketServer::newConnection, this, [this] {
+            while (mWsServer->hasPendingConnections()) {
+                auto *ws = mWsServer->nextPendingConnection();
+                mWsClients.append(ws);
+                connect(ws, &QWebSocket::disconnected, this, [this, ws] {
+                    mWsClients.removeAll(ws);
+                    ws->deleteLater();
+                });
+                emit requestLog("WebSocket client connected");
+            }
+        });
+        emit requestLog(QString("REST API http://localhost:%1 | WebSocket ws://localhost:%2/api/ws/live").arg(mPort).arg(mPort + 1));
+    }
+
+    // Connect FrameStore signal to broadcast to WebSocket clients
+    connect(mStore, &FrameStore::framesAppended, this, [this](int count) {
+        if (mWsClients.isEmpty() || count > 100) return; // throttle for bulk
+        auto frames = mStore->allFrames();
+        // Send only the newest frames
+        int start = qMax(0, frames.size() - qMin(count, 10));
+        for (int i = start; i < frames.size(); ++i) {
+            QJsonObject fo;
+            fo["id"] = QString("0x%1").arg(frames[i].frameId(), 0, 16).toUpper();
+            fo["bus"] = frames[i].bus;
+            fo["timestamp_us"] = static_cast<qint64>(frames[i].timeStamp().microSeconds());
+            QJsonArray data;
+            for (int j = 0; j < frames[i].payload().size(); ++j)
+                data.append(static_cast<uint8_t>(frames[i].payload()[j]));
+            fo["data"] = data;
+            fo["dlc"] = frames[i].payload().size();
+
+            QJsonDocument doc(fo);
+            for (auto *ws : mWsClients) {
+                if (ws->state() == QAbstractSocket::ConnectedState)
+                    ws->sendTextMessage(doc.toJson(QJsonDocument::Compact));
+            }
+        }
+    });
+
     emit started(mPort);
-    emit requestLog(QString("REST API listening on http://localhost:%1").arg(mPort));
     return true;
 }
 
 void RestApiServer::stop()
 {
+    if (mWsServer) {
+        mWsServer->close();
+        for (auto *ws : mWsClients) ws->deleteLater();
+        mWsClients.clear();
+    }
     mTcpServer.close();
     emit stopped();
 }

@@ -59,6 +59,11 @@ MainWindow::MainWindow(QWidget *parent) :
     mRestApi = new RestApiServer(frameStore, this);
     mRestApi->start(8080);
 
+    // ── Python bridge + console ─────────────────────────────────────
+    mPythonBridge = new PythonBridge(frameStore, this);
+    mPythonConsole = new PythonConsole(mPythonBridge, this);
+    mSidebar->setPythonConsole(mPythonConsole);
+
     // ── Hide old menu bar — replaced by sidebar + command palette ─────
     menuBar()->setVisible(false);
 

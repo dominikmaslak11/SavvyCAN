@@ -1,4 +1,5 @@
 #include "sidebarwidget.h"
+#include "pythonconsole.h"
 #include <QApplication>
 #include <QKeyEvent>
 #include <QFrame>
@@ -186,6 +187,47 @@ void SidebarWidget::onCommandSelected(QListWidgetItem *item)
     mCommandOverlay->setVisible(false);
     mCategoryPanel->setVisible(true);
     emit toolSelected(toolId);
+}
+
+void SidebarWidget::setPythonConsole(PythonConsole *console)
+{
+    if (mPythonConsole) {
+        mMainLayout->removeWidget(mPythonConsole);
+    }
+    mPythonConsole = console;
+    if (console) {
+        mMainLayout->addWidget(console);
+    }
+}
+
+void SidebarWidget::toggleTheme()
+{
+    mDarkTheme = !mDarkTheme;
+    if (mDarkTheme) {
+        applyStyles();
+    } else {
+        // Light theme — simplified, just swap background colors
+        setStyleSheet(QStringLiteral(R"(
+            SidebarWidget {
+                background-color: #f0f0f5;
+                border-right: 1px solid #ccc;
+            }
+            QLabel#sidebarTitle { color: #222; font-size: 18px; font-weight: bold; }
+            QLabel#sidebarVersion { color: #888; }
+            QLabel#sidebarHint { color: #aaa; }
+            QPushButton#sidebarCategoryBtn {
+                background: transparent; color: #444; border: 1px solid transparent;
+                border-radius: 6px; padding: 10px 14px; font-size: 13px; text-align: left;
+            }
+            QPushButton#sidebarCategoryBtn:hover { background: #e0e0e8; color: #222; }
+            QWidget#commandOverlay { background-color: #f0f0f5; }
+            QLineEdit#commandSearch { background: #fff; color: #222; border: 1px solid #ccc;
+                border-radius: 8px; padding: 12px 16px; font-size: 15px; }
+            QLineEdit#commandSearch:focus { border-color: #555; }
+            QListWidget#commandList { background: transparent; border: none; color: #444; }
+            QListWidget#commandList::item:selected { background: #d0d0e0; color: #222; }
+        )"));
+    }
 }
 
 void SidebarWidget::applyStyles()
