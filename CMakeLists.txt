@@ -74,6 +74,7 @@ set(SOURCES
 
     pythonbridge.cpp
     restapiserver.cpp
+    pluginmanager.cpp
 
     qcpaxistickerhex.cpp
     qcustomplot.cpp
@@ -179,6 +180,8 @@ set(HEADERS
 
     pythonbridge.h
     restapiserver.h
+    iplugin.h
+    pluginmanager.h
 
     qcpaxistickerhex.h
     qcustomplot.h
