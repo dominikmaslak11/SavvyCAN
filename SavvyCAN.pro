@@ -1,8 +1,8 @@
 #-------------------------------------------------
-#
+# DEPRECATED: Use CMakeLists.txt instead (cmake -B build -GNinja && ninja -C build)
+# This .pro file is no longer maintained and may not compile.
 # Project created by QtCreator 2015-04-25T22:57:44
-# Modernized for Qt6 — 2026-05-15
-#
+# Modernized for Qt6 — 2026-05-15, deprecated 2026-05-16
 #-------------------------------------------------
 
 !versionAtLeast(QT_VERSION, 6.0.0) {
