@@ -25,3 +25,22 @@ target_link_libraries(test_framestore PRIVATE
 )
 
 add_test(NAME FramestoreTest COMMAND test_framestore)
+
+# Lock-free queue unit test (no hardware needed)
+add_executable(test_lfqueue
+    tst_lfqueue.cpp
+    ${CMAKE_SOURCE_DIR}/utils/lfqueue.h
+)
+set_target_properties(test_lfqueue PROPERTIES WIN32_EXECUTABLE FALSE)
+
+target_include_directories(test_lfqueue PRIVATE
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/utils
+)
+
+target_link_libraries(test_lfqueue PRIVATE
+    Qt6::Core
+    Qt6::Test
+)
+
+add_test(NAME LFQueueTest COMMAND test_lfqueue)

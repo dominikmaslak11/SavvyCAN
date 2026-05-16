@@ -83,3 +83,5 @@ void TestLFQueue::exchange()
 
     thread.waitForFinished();
 }
+
+QTEST_MAIN(TestLFQueue)
