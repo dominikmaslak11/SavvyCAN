@@ -61,7 +61,7 @@ private slots:
     void onSocketConnected();
     void onSocketDisconnected();
     void onSocketReadyRead();
-    void onSocketError(QBluetoothSocket::SocketError error);
+    void onSocketError(QBluetoothSocket::SocketError err);
 
 private:
     void parseElm327Line(const QByteArray &line);

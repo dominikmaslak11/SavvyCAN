@@ -15,7 +15,11 @@ BluetoothManager::BluetoothManager(FrameStore *store, QObject *parent)
     connect(mSocket, &QBluetoothSocket::connected, this, &BluetoothManager::onSocketConnected);
     connect(mSocket, &QBluetoothSocket::disconnected, this, &BluetoothManager::onSocketDisconnected);
     connect(mSocket, &QBluetoothSocket::readyRead, this, &BluetoothManager::onSocketReadyRead);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
     connect(mSocket, &QBluetoothSocket::errorOccurred, this, &BluetoothManager::onSocketError);
+#else
+    connect(mSocket, QOverload<QBluetoothSocket::SocketError>::of(&QBluetoothSocket::error), this, &BluetoothManager::onSocketError);
+#endif
 }
 
 BluetoothManager::~BluetoothManager()

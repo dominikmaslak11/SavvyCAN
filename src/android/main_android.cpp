@@ -31,7 +31,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("btManager", &btManager);
     engine.rootContext()->setContextProperty("usbManager", &usbManager);
 
-    engine.load(QUrl("qrc:/android/qml/MainView.qml"));
+    const QUrl url("qrc:/android/qml/MainView.qml");
+    engine.load(url);
 
     if (engine.rootObjects().isEmpty())
         return -1;

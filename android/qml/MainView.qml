@@ -1,6 +1,7 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Controls.Material
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls.Material 2.15
 
 ApplicationWindow {
     id: root
@@ -17,7 +18,7 @@ ApplicationWindow {
         RowLayout {
             anchors.fill: parent
             ToolButton {
-                text: "⚡"
+                text: "\u26A1"
                 onClicked: connectionDrawer.open()
             }
             Label {
@@ -28,8 +29,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
             ToolButton {
-                text: mConnected ? "🟢" : "🔴"
-                onClicked: btManager.startScan()
+                text: btManager.isConnected() ? "\uD83D\uDFE2" : "\uD83D\uDD34"
             }
         }
     }
@@ -108,21 +108,41 @@ ApplicationWindow {
         anchors.margins: 8
 
         RowLayout {
-            Label { text: "Frames: " + frameCount; color: "#e0e0f0" }
-            Item { Layout.fillWidth: true }
             Label {
-                text: "⏺ REC"
-                color: "#ff4081"
-                visible: mCapturing
+                text: "Frames: " + (typeof frameCount !== 'undefined' ? frameCount : 0)
+                color: "#e0e0f0"
             }
+            Item { Layout.fillWidth: true }
         }
 
         ListView {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
-            model: frameModel
-            delegate: FrameDelegate {}
+            model: frameListModel
+            delegate: ItemDelegate {
+                height: 48
+                RowLayout {
+                    anchors.fill: parent
+                    Label {
+                        text: "0x" + (typeof frameId !== 'undefined' ? frameId.toString(16).toUpperCase() : "???")
+                        color: "#00e5ff"
+                        font.family: "monospace"
+                    }
+                    Label {
+                        text: typeof frameData !== 'undefined' ? frameData : ""
+                        color: "#e0e0f0"
+                        Layout.fillWidth: true
+                        elide: Text.ElideRight
+                        font.family: "monospace"
+                    }
+                    Label {
+                        text: (typeof dlc !== 'undefined' ? dlc : 0) + "B"
+                        color: "#8899aa"
+                        font.family: "monospace"
+                    }
+                }
+            }
         }
 
         // Quick send bar
@@ -132,43 +152,26 @@ ApplicationWindow {
                 placeholderText: "ID (hex)"
                 Layout.preferredWidth: 90
                 color: "#e0e0f0"
+                font.family: "monospace"
             }
             TextField {
                 id: sendDataField
-                placeholderText: "data"
+                placeholderText: "data hex"
                 Layout.fillWidth: true
                 color: "#e0e0f0"
+                font.family: "monospace"
             }
             Button {
                 text: "Send"
                 onClicked: {
                     var id = parseInt(sendIdField.text, 16)
-                    var bytes = sendDataField.text.split(" ").map(function(s){return parseInt(s,16)})
-                    btManager.sendFrame(id, bytes)
+                    var parts = sendDataField.text.split(" ")
+                    var bytes = []
+                    for (var i = 0; i < parts.length; i++)
+                        bytes.push(parseInt(parts[i], 16))
+                    btManager.sendFrame(id, bytes, id > 0x7FF)
                 }
             }
-        }
-    }
-}
-
-// ── Frame Delegate ──────────────────────────────────────────────────────
-component FrameDelegate : ItemDelegate {
-    height: 48
-    RowLayout {
-        anchors.fill: parent
-        Label {
-            text: "0x" + frameId.toString(16).toUpperCase()
-            color: "#00e5ff"
-        }
-        Label {
-            text: frameData
-            color: "#e0e0f0"
-            Layout.fillWidth: true
-            elide: Text.ElideRight
-        }
-        Label {
-            text: dlc + "B"
-            color: "#8899aa"
         }
     }
 }
