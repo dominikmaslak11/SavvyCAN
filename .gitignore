@@ -1,5 +1,9 @@
 #Build directory
 build/
+build_dbg/
+
+# Archives
+*.7z
 
 # Compiled Object files
 *.slo

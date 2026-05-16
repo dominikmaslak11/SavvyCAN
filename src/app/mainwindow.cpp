@@ -49,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // ── FrameStore: centralized, signal-driven frame data ──────────────
     frameStore = new FrameStore(this);
 
+    // Wire FrameStore signals to Sidebar live stats
+    mSidebar->setFrameStore(frameStore);
+
     // ── WindowRegistry: lazy-created window manager ────────────────────
     mRegistry = new WindowRegistry(this);
 

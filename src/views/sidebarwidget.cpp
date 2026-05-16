@@ -1,9 +1,11 @@
 #include "sidebarwidget.h"
 #include "pythonconsole.h"
+#include "framestore.h"
 #include <QApplication>
 #include <QKeyEvent>
 #include <QFrame>
 #include <QScrollArea>
+#include <QTimer>
 #include <algorithm>
 
 SidebarWidget::SidebarWidget(QWidget *parent)
@@ -228,6 +230,60 @@ void SidebarWidget::toggleTheme()
             QListWidget#commandList::item:selected { background: #d0d0e0; color: #222; }
         )"));
     }
+}
+
+void SidebarWidget::setFrameStore(FrameStore *store)
+{
+    mStore = store;
+    if (!mStore) return;
+
+    connect(mStore, &FrameStore::framesAppended, this, [this](int count) {
+        if (mStatsFrames)
+            mStatsFrames->setText(QString("Frames: %1 (+%2)").arg(mStore->frameCount()).arg(count));
+    });
+
+    connect(mStore, &FrameStore::framesReset, this, [this] {
+        if (mStatsFrames) mStatsFrames->setText("Frames: 0");
+    });
+
+    // Initial value
+    mStatsFrames->setText(QString("Frames: %1").arg(mStore->frameCount()));
+}
+
+void SidebarWidget::onQuickSend()
+{
+    if (!mStore) return;
+
+    bool ok;
+    QString idText = mQuickSendId->text().trimmed();
+    uint32_t id = idText.toUInt(&ok, 0);  // auto-detect hex
+    if (!ok) {
+        mQuickSendId->setStyleSheet("QLineEdit { border: 1px solid #ff4444; }");
+        return;
+    }
+    mQuickSendId->setStyleSheet(QString());
+
+    QString dataText = mQuickSendData->text().simplified();
+    QStringList hexBytes = dataText.split(' ', Qt::SkipEmptyParts);
+    QByteArray payload;
+    for (const QString &hb : hexBytes) {
+        uint32_t b = hb.toUInt(&ok, 16);
+        if (!ok || b > 255) {
+            mQuickSendData->setStyleSheet("QLineEdit { border: 1px solid #ff4444; }");
+            return;
+        }
+        payload.append(static_cast<char>(b));
+    }
+    mQuickSendData->setStyleSheet(QString());
+
+    CANFrame frame;
+    frame.setFrameId(id);
+    if (id > 0x7FF) frame.setExtendedFrameFormat(true);
+    frame.isReceived = false;
+    frame.setFrameType(QCanBusFrame::DataFrame);
+    frame.setPayload(payload);
+
+    mStore->addFrame(frame);
 }
 
 void SidebarWidget::applyStyles()

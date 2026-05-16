@@ -11,6 +11,7 @@
 
 class PythonConsole;
 class PythonBridge;
+class FrameStore;
 
 /// Futuristic sidebar navigation replacing the traditional menu bar.
 ///
@@ -33,9 +34,16 @@ public:
 
     /// Set the Python console widget (injected by MainWindow).
     void setPythonConsole(PythonConsole *console);
+    void setFrameStore(FrameStore *store);
 
     /// Toggle dark/light theme.
     void toggleTheme();
+
+    /// Connect to FrameStore for live stats updates.
+    void connectFrameStore(FrameStore *store);
+
+    /// Update the live stats labels.
+    void refreshStats();
 
 signals:
     /// Emitted when the user selects a tool category.
@@ -47,6 +55,7 @@ signals:
 private slots:
     void onCategoryClicked(const QString &category);
     void onCommandSelected(QListWidgetItem *item);
+    void onQuickSend();
 
 private:
     void setupUi();
@@ -60,6 +69,16 @@ private:
     QWidget      *mCategoryPanel;
     PythonConsole *mPythonConsole = nullptr;
     bool           mDarkTheme = true;
+
+    // Live stats
+    QLabel       *mStatsFrames;
+    QLabel       *mStatsBuses;
+    FrameStore   *mStore = nullptr;
+
+    // Quick Send
+    QLineEdit    *mQuickSendId;
+    QLineEdit    *mQuickSendData;
+    QPushButton  *mQuickSendBtn;
 
     struct ToolEntry {
         QString id;
