@@ -1,4 +1,5 @@
 #include "sidebarwidget.h"
+#include "config.h"
 #include "pythonconsole.h"
 #include "framestore.h"
 #include <QApplication>
@@ -37,7 +38,7 @@ void SidebarWidget::setupUi()
     titleLabel->setAlignment(Qt::AlignCenter);
     catLayout->addWidget(titleLabel);
 
-    auto *verLabel = new QLabel(QString::number(223), mCategoryPanel);
+    auto *verLabel = new QLabel(QString::number(VERSION), mCategoryPanel);
     verLabel->setObjectName("sidebarVersion");
     verLabel->setAlignment(Qt::AlignCenter);
     catLayout->addWidget(verLabel);
@@ -247,7 +248,8 @@ void SidebarWidget::setFrameStore(FrameStore *store)
     });
 
     // Initial value
-    mStatsFrames->setText(QString("Frames: %1").arg(mStore->frameCount()));
+    if (mStatsFrames)
+        mStatsFrames->setText(QString("Frames: %1").arg(mStore->frameCount()));
 }
 
 void SidebarWidget::onQuickSend()

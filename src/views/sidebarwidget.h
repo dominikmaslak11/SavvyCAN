@@ -39,12 +39,6 @@ public:
     /// Toggle dark/light theme.
     void toggleTheme();
 
-    /// Connect to FrameStore for live stats updates.
-    void connectFrameStore(FrameStore *store);
-
-    /// Update the live stats labels.
-    void refreshStats();
-
 signals:
     /// Emitted when the user selects a tool category.
     void toolSelected(const QString &toolId);

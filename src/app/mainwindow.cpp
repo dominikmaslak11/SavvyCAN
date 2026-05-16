@@ -49,14 +49,14 @@ MainWindow::MainWindow(QWidget *parent) :
     // ── FrameStore: centralized, signal-driven frame data ──────────────
     frameStore = new FrameStore(this);
 
-    // Wire FrameStore signals to Sidebar live stats
-    mSidebar->setFrameStore(frameStore);
-
     // ── WindowRegistry: lazy-created window manager ────────────────────
     mRegistry = new WindowRegistry(this);
 
     // ── Sidebar: futuristic navigation + command palette ──────────────
     mSidebar = new SidebarWidget(this);
+
+    // Wire FrameStore signals to Sidebar live stats
+    mSidebar->setFrameStore(frameStore);
     connect(mSidebar, &SidebarWidget::toolSelected, this, &MainWindow::onSidebarTool);
     // Theme toggle: Ctrl+T or sidebar button
     auto *themeShortcut = new QShortcut(QKeySequence("Ctrl+T"), this);
