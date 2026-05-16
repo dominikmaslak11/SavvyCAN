@@ -1,0 +1,58 @@
+// ═══════════════════════════════════════════════════════════════════════════
+// SavvyCAN Android Gradle Build (alternative to CMake)
+// Build with: ./gradlew assembleDebug
+// Requires: Android SDK, NDK, Qt for Android installed
+// ═══════════════════════════════════════════════════════════════════════════
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.0'
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+apply plugin: 'com.android.application'
+
+android {
+    namespace 'com.savvycan.android'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.savvycan.android"
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "android/CMakeLists.txt"
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'android/AndroidManifest.xml'
+            res.srcDirs = ['android/res']
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.12.0'
+}

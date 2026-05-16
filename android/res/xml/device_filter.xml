@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PEAK PCAN-USB -->
+    <usb-device vendor-id="3218" product-id="12"/>
+    <!-- PEAK PCAN-USB FD -->
+    <usb-device vendor-id="3218" product-id="28"/>
+    <!-- PEAK PCAN-USB Pro -->
+    <usb-device vendor-id="3218" product-id="13"/>
+    <!-- PEAK PCAN-USB Pro FD -->
+    <usb-device vendor-id="3218" product-id="29"/>
+</resources>
