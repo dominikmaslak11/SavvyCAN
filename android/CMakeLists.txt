@@ -30,36 +30,33 @@ add_compile_definitions(QCUSTOMPLOT_USE_OPENGL ANDROID_PLATFORM)
 
 # ── Sources (subset — mobile-optimized) ───────────────────────────────────
 set(SOURCES
-    src/android/main_android.cpp
-    src/android/MobileMainWindow.cpp
-    src/android/BluetoothManager.cpp
-    src/android/UsbHostManager.cpp
+    ../src/android/main_android.cpp
+    ../src/android/BluetoothManager.cpp
+    ../src/android/UsbHostManager.cpp
 
     # Core (reused from desktop)
-    src/core/can_structs.cpp
-    src/core/utility.cpp
-    src/core/config.h
-    src/core/futuristic_theme.cpp
+    ../src/core/can_structs.cpp
+    ../src/core/utility.cpp
+    ../src/core/futuristic_theme.cpp
 
     # Models
-    src/models/framestore.cpp
-    src/models/canframemodel.cpp
-    src/models/canfilter.cpp
-    src/models/filterutility.cpp
+    ../src/models/framestore.cpp
+    ../src/models/canframemodel.cpp
+    ../src/models/canfilter.cpp
+    ../src/models/filterutility.cpp
 
     # IO
-    src/io/framefileio.cpp
-    src/io/blfhandler.cpp
+    ../src/io/framefileio.cpp
+    ../src/io/blfhandler.cpp
 
     # DBC
-    dbc/dbc_classes.cpp
-    dbc/dbchandler.cpp
+    ../dbc/dbc_classes.cpp
+    ../dbc/dbchandler.cpp
 )
 
 set(HEADERS
-    src/android/MobileMainWindow.h
-    src/android/BluetoothManager.h
-    src/android/UsbHostManager.h
+    ../src/android/BluetoothManager.h
+    ../src/android/UsbHostManager.h
 )
 
 set(RESOURCES
@@ -71,10 +68,7 @@ qt_add_qml_module(SavvyCAN-Android
     URI "com.savvycan.android"
     VERSION 1.0
     QML_FILES
-        android/qml/MainView.qml
-        android/qml/ConnectionPanel.qml
-        android/qml/FrameListPanel.qml
-        android/qml/BluetoothScanPanel.qml
+        qml/MainView.qml
 )
 
 # ── Executable ────────────────────────────────────────────────────────────
@@ -88,13 +82,13 @@ target_link_libraries(SavvyCAN-Android PRIVATE
 )
 
 target_include_directories(SavvyCAN-Android PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/core
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/models
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/io
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/android
-    ${CMAKE_CURRENT_SOURCE_DIR}/connections
-    ${CMAKE_CURRENT_SOURCE_DIR}/dbc
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/models
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/io
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/android
+    ${CMAKE_CURRENT_SOURCE_DIR}/../connections
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dbc
 )
 
 # ── Android APK package ───────────────────────────────────────────────────

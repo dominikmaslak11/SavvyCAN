@@ -1,7 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QBluetoothPermission>
 #include "BluetoothManager.h"
 #include "UsbHostManager.h"
 #include "framestore.h"
@@ -10,11 +9,6 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     app.setApplicationName("SavvyCAN");
-
-    // ── Request Bluetooth permissions (Android 12+) ───────────────────
-    QBluetoothPermission btPerm;
-    btPerm.setCommunicationModes(QBluetoothPermission::Access);
-    app.requestPermission(btPerm);
 
     // ── Core data store ───────────────────────────────────────────────
     FrameStore store;

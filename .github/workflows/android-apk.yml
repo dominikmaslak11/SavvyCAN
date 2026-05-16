@@ -3,50 +3,55 @@ name: Build Android APK
 on:
   push:
     branches: [android-port]
-  pull_request:
-    branches: [android-port]
-  workflow_dispatch:  # manual trigger
+  workflow_dispatch:
 
 jobs:
   build-android:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v4
 
-      # ── Install Qt for Android ──────────────────────────────────────
-      - name: Install Qt for Android
-        uses: jurplel/install-qt-action@v4
+      # ── Install JDK ──────────────────────────────────────────────────
+      - uses: actions/setup-java@v4
         with:
-          version: '6.8.*'
-          arch: android_arm64_v8a
-          modules: 'qtcharts qtserialbus qtserialport qtbluetooth qtandroidextras'
+          distribution: temurin
+          java-version: '17'
 
-      # ── Install Android SDK tools ───────────────────────────────────
+      # ── Install Android SDK + NDK ────────────────────────────────────
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          packages: 'platforms;android-34 build-tools;34.0.0 ndk;26.1.10909125 cmake;3.22.1'
+          packages: 'platforms;android-34 build-tools;34.0.0 ndk;26.1.10909125'
+
+      # ── Install Qt for Android via aqtinstall ────────────────────────
+      - name: Install Qt for Android
+        run: |
+          pip install aqtinstall
+          aqt install-qt linux android 6.8.2 android_arm64_v8a -m qtcharts qtserialbus qtserialport qtbluetooth qtandroidextras
+          echo "QT_ANDROID=$HOME/Qt/6.8.2/android_arm64_v8a" >> $GITHUB_ENV
 
       # ── CMake configure ─────────────────────────────────────────────
       - name: CMake configure
         run: |
+          export ANDROID_NDK=$ANDROID_SDK_ROOT/ndk/26.1.10909125
           cmake -B build_android -S android \
             -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
             -DANDROID_ABI=arm64-v8a \
-            -DANDROID_PLATFORM=26 \
+            -DANDROID_PLATFORM=android-26 \
             -DCMAKE_BUILD_TYPE=Release \
             -GNinja \
-            -DQT_HOST_PATH=$QT_ROOT_DIR/../gcc_64
+            -DCMAKE_PREFIX_PATH=$QT_ANDROID \
+            -DQT_HOST_PATH=$(dirname $(dirname $(which qmake6)))
 
-      # ── Build ───────────────────────────────────────────────────────
-      - name: Build
+      # ── Build APK ────────────────────────────────────────────────────
+      - name: Build APK
         run: cmake --build build_android --target apk
 
-      # ── Upload APK artifact ─────────────────────────────────────────
+      # ── Upload APK ───────────────────────────────────────────────────
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: SavvyCAN-Android-APK
+          name: SavvyCAN-Android
           path: build_android/android-build/*.apk
