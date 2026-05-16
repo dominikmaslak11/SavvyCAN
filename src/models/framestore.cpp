@@ -68,8 +68,41 @@ void FrameStore::normalizeTiming()
 
 void FrameStore::recalcOverwrite()
 {
-    // Placeholder — overwrite mode logic was in CANFrameModel.
-    // Will be moved here during the migration.
+    // Deduplicate: keep only the latest frame per (ID, bus) pair,
+    // computing frameCount and timedelta like CANFrameModel does.
+    if (mAllFrames.isEmpty()) return;
+
+    QWriteLocker lock(&mLock);
+
+    // key = (id << 5) | bus — safe since bus < 32 and id < 2^27
+    QHash<uint64_t, CANFrame> seen;
+    QVector<CANFrame> deduped;
+    deduped.reserve(mAllFrames.size() / 4);
+
+    for (auto &f : mAllFrames) {
+        if (f.frameType() != QCanBusFrame::DataFrame) continue;
+        uint64_t key = (static_cast<uint64_t>(f.frameId()) << 5) | static_cast<uint64_t>(f.bus & 0x1F);
+        auto it = seen.find(key);
+        if (it == seen.end()) {
+            f.timedelta = 0;
+            f.frameCount = 1;
+            seen.insert(key, f);
+        } else {
+            f.timedelta = f.timeStamp().microSeconds() - it->timeStamp().microSeconds();
+            f.frameCount = it->frameCount + 1;
+            *it = f;
+        }
+    }
+
+    deduped = seen.values().toVector();
+
+    mAllFrames = deduped;
+    mAllFrames.squeeze();
+    rebuildFilteredList();
+
+    lock.unlock();
+
+    emit framesReset(-3); // "overwrite mode applied"
 }
 
 // ── filters ───────────────────────────────────────────────────────────
