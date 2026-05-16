@@ -11,6 +11,7 @@
 #pragma push_macro("slots")
 #undef slots
 #include <pybind11/embed.h>
+#include <memory>
 #pragma pop_macro("slots")
 
 #include "can_structs.h"
@@ -52,7 +53,7 @@ signals:
 private:
     void setupModule();
 
-    pybind11::scoped_interpreter mGuard;
+    std::unique_ptr<pybind11::scoped_interpreter> mGuard;
     FrameStore *mStore;
     bool mReady = false;
 };

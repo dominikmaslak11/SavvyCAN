@@ -14,7 +14,24 @@ namespace py = pybind11;
 PythonBridge::PythonBridge(FrameStore *store, QObject *parent)
     : QObject(parent), mStore(store)
 {
+    // PyImport_AppendInittab MUST be called BEFORE Py_Initialize().
+    // Register the savvycan module before creating the interpreter.
     try {
+        static bool s_savvycanRegistered = false;
+        if (!s_savvycanRegistered) {
+            PyImport_AppendInittab("savvycan", []() -> PyObject* {
+                auto m = py::module_::create_extension_module(
+                    "savvycan", "SavvyCAN automation API",
+                    new py::module_::module_def{});
+                return m.ptr();
+            });
+            s_savvycanRegistered = true;
+        }
+    } catch (...) {}
+
+    // Create the Python interpreter AFTER registering the module
+    try {
+        mGuard = std::make_unique<pybind11::scoped_interpreter>();
         setupModule();
         mReady = true;
     } catch (const std::exception &e) {
@@ -135,15 +152,7 @@ void PythonBridge::setupModule()
         return result;
     }, py::arg("frame_id"));
 
-    // Make the module importable
-    PyImport_AppendInittab("savvycan", []() -> PyObject* {
-        auto m = py::module_::create_extension_module(
-            "savvycan", "SavvyCAN automation API",
-            new py::module_::module_def{}
-        );
-        return m.ptr();
-    });
-
+    // Module registration moved to constructor body (before Py_Initialize)
     // Pre-load signals so Python can reference them
     py::globals()["savvycan"] = m;
 }
