@@ -96,12 +96,12 @@ void FrameSenderObject::stopSending()
 {
     /* make sure we execute in mThread context */
     if( mThread_p && (mThread_p != QThread::currentThread()) ) {
-        QMetaObject::invokeMethod(this, "stopPlayback",
+        QMetaObject::invokeMethod(this, "stopSending",
                                   Qt::BlockingQueuedConnection);
         return;
     }
 
-    sendingTimer->stop(); //pushing this button halts automatic playback
+    sendingTimer->stop();
     //emit statusUpdate(currentPosition);
 }
 

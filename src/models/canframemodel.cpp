@@ -362,7 +362,9 @@ void CANFrameModel::recalcOverwrite()
     qDebug() << "recalcOverwrite called in model";
 
     mutex.lock();
-    beginResetModel();
+
+    // NOTE: Callers are responsible for beginResetModel()/endResetModel()
+    // because recalcOverwrite may be called from within an outer reset block.
 
     //Look at the current list of frames and turn it into just a list of unique IDs
     QHash<uint64_t, CANFrame> overWriteFrames;
@@ -398,15 +400,6 @@ void CANFrameModel::recalcOverwrite()
     filteredFrames.append(overWriteFrames.values().toVector());
     filteredFrames.reserve(preallocSize);
 
-    /*for (int i = 0; i < frames.count(); i++)
-    {
-        if (filters[frames[i].frameId()] && busFilters[frames[i].bus])
-        {
-            filteredFrames.append(frames[i]);
-        }
-    }*/
-
-    endResetModel();
     mutex.unlock();
 }
 
@@ -817,7 +810,11 @@ void CANFrameModel::sendRefresh()
 
     if(overwriteDups)
     {
+        mutex.lock();
+        beginResetModel();
         recalcOverwrite();
+        endResetModel();
+        mutex.unlock();
     }
     else
     {
