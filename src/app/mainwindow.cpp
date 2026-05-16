@@ -403,10 +403,6 @@ void MainWindow::readSettings()
 }
 
 
-/*
- * TODO: The way the frame timing mode is specified is DEAD STUPID. There shouldn't be three boolean values
- * for this. Instead switch it all to an ENUM or something sane.
-*/
 void MainWindow::readUpdateableSettings()
 {
     QSettings settings;
@@ -417,14 +413,15 @@ void MainWindow::readUpdateableSettings()
     useColorsByCanId = settings.value("Main/ColorsByCanId", false).toBool();
     model->setUseColorsByCanId(useColorsByCanId);
 
-    bool tempBool;
-    TimeStyle ts = TS_MICROS;
-    tempBool = settings.value("Main/TimeSeconds", false).toBool();
-    if (tempBool) ts = TS_SECONDS;
-    tempBool = settings.value("Main/TimeClock", false).toBool();
-    if (tempBool) ts = TS_CLOCK;
-    tempBool = settings.value("Main/TimeMillis", false).toBool();
-    if (tempBool) ts = TS_MILLIS;
+    TimeStyle ts = static_cast<TimeStyle>(
+        settings.value("Main/TimeStyle", static_cast<int>(TS_MICROS)).toInt());
+    // Backward compatibility with old 3-bool format
+    if (settings.contains("Main/TimeSeconds") && settings.value("Main/TimeSeconds", false).toBool())
+        ts = TS_SECONDS;
+    else if (settings.contains("Main/TimeClock") && settings.value("Main/TimeClock", false).toBool())
+        ts = TS_CLOCK;
+    else if (settings.contains("Main/TimeMillis") && settings.value("Main/TimeMillis", false).toBool())
+        ts = TS_MILLIS;
     model->setTimeStyle(ts);
 
     useFiltered = settings.value("Main/UseFiltered", false).toBool();
