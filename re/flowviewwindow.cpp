@@ -107,14 +107,14 @@ FlowViewWindow::FlowViewWindow(const QVector<CANFrame> *frames, QWidget *parent)
     connect(ui->txtTrigger6, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
     connect(ui->txtTrigger7, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
     connect(ui->graphRangeSlider, &QSlider::valueChanged, this, &FlowViewWindow::graphRangeChanged);
-    connect(ui->check_0, &QCheckBox::stateChanged, this, &FlowViewWindow::changeGraphVisibility);
-    connect(ui->check_1, &QCheckBox::stateChanged, this, &FlowViewWindow::changeGraphVisibility);
-    connect(ui->check_2, &QCheckBox::stateChanged, this, &FlowViewWindow::changeGraphVisibility);
-    connect(ui->check_3, &QCheckBox::stateChanged, this, &FlowViewWindow::changeGraphVisibility);
-    connect(ui->check_4, &QCheckBox::stateChanged, this, &FlowViewWindow::changeGraphVisibility);
-    connect(ui->check_5, &QCheckBox::stateChanged, this, &FlowViewWindow::changeGraphVisibility);
-    connect(ui->check_6, &QCheckBox::stateChanged, this, &FlowViewWindow::changeGraphVisibility);
-    connect(ui->check_7, &QCheckBox::stateChanged, this, &FlowViewWindow::changeGraphVisibility);
+    connect(ui->check_0, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
+    connect(ui->check_1, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
+    connect(ui->check_2, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
+    connect(ui->check_3, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
+    connect(ui->check_4, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
+    connect(ui->check_5, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
+    connect(ui->check_6, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
+    connect(ui->check_7, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
 
 //    ui->timelineSlider->setTracking(true);
     connect(ui->timelineSlider, &QSlider::sliderPressed, this, &FlowViewWindow::btnPauseClick);
@@ -249,7 +249,7 @@ bool FlowViewWindow::eventFilter(QObject *obj, QEvent *event)
     }
 }
 
-void FlowViewWindow::changeGraphVisibility(int state){
+void FlowViewWindow::changeGraphVisibility(Qt::CheckState state){
     QCheckBox *sender = qobject_cast<QCheckBox *>(QObject::sender());
     if(sender){
         sender->objectName();
@@ -295,7 +295,7 @@ void FlowViewWindow::plottableDoubleClick(QCPAbstractPlottable* plottable, QMous
 {
     int id = 0;
     //apply transforms to get the X axis value where we double clicked
-    double coord = plottable->keyAxis()->pixelToCoord(event->localPos().x());
+    double coord = plottable->keyAxis()->pixelToCoord(event->position().x());
     if (frameCache.count() > 0) id = frameCache[0].frameId();
     if (secondsMode) emit sendCenterTimeID(id, coord);
     else emit sendCenterTimeID(id, coord / 1000000.0);

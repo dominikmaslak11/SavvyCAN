@@ -1406,7 +1406,7 @@ Data Bytes: 88 10 00 13 BB 00 06 00
     {
         frame = &frames->at(c);
         //data = reinterpret_cast<const unsigned char *>(frame->payload().constData());
-        dataLen = frame->payload().count();
+        dataLen = frame->payload().size();
 
         //add all column names
         if (dbcHandler != nullptr)
@@ -1463,7 +1463,7 @@ Data Bytes: 88 10 00 13 BB 00 06 00
         dataColumnsAdded = 0;
         frame = &frames->at(c);
         //data = reinterpret_cast<const unsigned char *>(frame->payload().constData());
-        dataLen = frame->payload().count();
+        dataLen = frame->payload().size();
 
         QString builderString;
         if (CSVAbsTime)
@@ -1550,7 +1550,7 @@ Data Bytes: 88 10 00 13 BB 00 06 00
     {
         frame = &frames->at(c);
         data = reinterpret_cast<const unsigned char *>(frame->payload().constData());
-        dataLen = frame->payload().count();
+        dataLen = frame->payload().size();
 
         QString builderString;
         builderString += tr("Time: ") + QString::number((frame->timeStamp().microSeconds() / 1000000.0), 'f', 6);

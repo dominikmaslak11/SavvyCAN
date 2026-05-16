@@ -41,7 +41,7 @@ private slots:
     void updateTriggerValues();
     void gotCellClick(int bitPosition);
     void graphRangeChanged(int range);
-    void changeGraphVisibility(int state);
+    void changeGraphVisibility(Qt::CheckState state);
 
 signals:
     void sendCenterTimeID(uint32_t ID, double timestamp);
