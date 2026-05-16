@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     SavvyCANApplication a(argc, argv);
 
     // ── Apply Futuristic Dark Theme ──────────────────────────────────
-    a.setStyleSheet(FuturisticTheme::styleSheet());
+    a.setStyleSheet(FuturisticTheme::darkStyleSheet());
     a.setPalette(FuturisticTheme::darkPalette());
 
     //Add a local path for Qt extensions, to allow for per-application extensions.

@@ -32,7 +32,7 @@ static const char *const kScrollHover  = "#3a3a66";
 
 // ── Stylesheet ────────────────────────────────────────────────────────────
 
-QString styleSheet()
+QString darkStyleSheet()
 {
     return QStringLiteral(R"(
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -693,6 +693,62 @@ QPalette darkPalette()
     pal.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(kTextDisabled));
     pal.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(kTextDisabled));
 
+    return pal;
+}
+
+// ── Light Stylesheet ──────────────────────────────────────────────────────
+
+QString lightStyleSheet()
+{
+    return QStringLiteral(R"(
+* { color: #222222; selection-background-color: #0066cc; selection-color: #ffffff; }
+QMainWindow { background-color: #f5f5f5; }
+QMenuBar { background-color: #e8e8e8; border-bottom: 1px solid #ccc; }
+QMenuBar::item:selected { background-color: #0066cc; color: #fff; }
+QMenu { background-color: #ffffff; border: 1px solid #ccc; border-radius: 6px; }
+QMenu::item:selected { background-color: #0066cc; color: #fff; }
+QPushButton { background-color: #e0e0e0; color: #222; border: 1px solid #bbb; border-radius: 4px; padding: 6px 14px; }
+QPushButton:hover { background-color: #d0d0d0; border-color: #0066cc; }
+QPushButton:pressed { background-color: #0066cc; color: #fff; }
+QPushButton:disabled { background-color: #eee; color: #999; }
+QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox { background: #fff; color: #222; border: 1px solid #bbb; border-radius: 4px; padding: 4px 8px; }
+QLineEdit:focus, QSpinBox:focus, QComboBox:focus { border-color: #0066cc; }
+QTableView, QTableWidget { background: #fff; alternate-background-color: #f0f0f0; border: 1px solid #ccc; gridline-color: #ddd; }
+QHeaderView::section { background: #e8e8e8; color: #222; border-bottom: 2px solid #0066cc; padding: 4px 8px; font-weight: bold; }
+QScrollBar:vertical { background: #f0f0f0; width: 10px; }
+QScrollBar::handle:vertical { background: #c0c0c0; border-radius: 5px; }
+QScrollBar::handle:vertical:hover { background: #0066cc; }
+QStatusBar { background: #e8e8e8; border-top: 1px solid #ccc; }
+QGroupBox { border: 1px solid #ccc; border-radius: 6px; margin-top: 10px; padding-top: 16px; color: #0066cc; font-weight: bold; }
+QTabWidget::pane { border: 1px solid #ccc; }
+QTabBar::tab { background: #e8e8e8; color: #666; border: 1px solid #ccc; padding: 6px 14px; }
+QTabBar::tab:selected { background: #fff; color: #0066cc; border-bottom: 2px solid #0066cc; }
+QCheckBox, QRadioButton { color: #222; spacing: 6px; }
+QTextEdit, QPlainTextEdit { background: #fff; border: 1px solid #ccc; border-radius: 4px; }
+QDialog { background: #f5f5f5; }
+)");
+}
+
+QPalette lightPalette()
+{
+    QPalette pal;
+    pal.setColor(QPalette::Window,          QColor("#f5f5f5"));
+    pal.setColor(QPalette::WindowText,      QColor("#222222"));
+    pal.setColor(QPalette::Base,            QColor("#ffffff"));
+    pal.setColor(QPalette::AlternateBase,   QColor("#f0f0f0"));
+    pal.setColor(QPalette::ToolTipBase,     QColor("#ffffff"));
+    pal.setColor(QPalette::ToolTipText,     QColor("#222222"));
+    pal.setColor(QPalette::Text,            QColor("#222222"));
+    pal.setColor(QPalette::Button,          QColor("#e0e0e0"));
+    pal.setColor(QPalette::ButtonText,      QColor("#222222"));
+    pal.setColor(QPalette::BrightText,      QColor("#0066cc"));
+    pal.setColor(QPalette::Link,            QColor("#0066cc"));
+    pal.setColor(QPalette::Highlight,       QColor("#0066cc"));
+    pal.setColor(QPalette::HighlightedText, QColor("#ffffff"));
+    pal.setColor(QPalette::PlaceholderText, QColor("#999999"));
+    pal.setColor(QPalette::Disabled, QPalette::WindowText, QColor("#999999"));
+    pal.setColor(QPalette::Disabled, QPalette::Text,       QColor("#999999"));
+    pal.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#999999"));
     return pal;
 }
 

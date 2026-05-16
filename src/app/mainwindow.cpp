@@ -9,6 +9,7 @@
 #include "helpwindow.h"
 #include "utility.h"
 #include "filterutility.h"
+#include "futuristic_theme.h"
 
 #include <QClipboard>
 #include <QShortcut>
@@ -54,6 +55,20 @@ MainWindow::MainWindow(QWidget *parent) :
     // ── Sidebar: futuristic navigation + command palette ──────────────
     mSidebar = new SidebarWidget(this);
     connect(mSidebar, &SidebarWidget::toolSelected, this, &MainWindow::onSidebarTool);
+    // Theme toggle: Ctrl+T or sidebar button
+    auto *themeShortcut = new QShortcut(QKeySequence("Ctrl+T"), this);
+    connect(themeShortcut, &QShortcut::activated, this, [this] {
+        static bool dark = true;
+        dark = !dark;
+        if (dark) {
+            qApp->setStyleSheet(FuturisticTheme::darkStyleSheet());
+            qApp->setPalette(FuturisticTheme::darkPalette());
+        } else {
+            qApp->setStyleSheet(FuturisticTheme::lightStyleSheet());
+            qApp->setPalette(FuturisticTheme::lightPalette());
+        }
+        mSidebar->toggleTheme();
+    });
 
     // ── REST API: auto-start on port 8080 ─────────────────────────────
     mRestApi = new RestApiServer(frameStore, this);
