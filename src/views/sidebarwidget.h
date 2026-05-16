@@ -56,23 +56,23 @@ private:
     void buildCommandList();
     void applyStyles();
 
-    QVBoxLayout  *mMainLayout;
-    QLineEdit    *mSearchBox;
-    QListWidget  *mCommandList;
-    QWidget      *mCommandOverlay;
-    QWidget      *mCategoryPanel;
+    QVBoxLayout  *mMainLayout = nullptr;
+    QLineEdit    *mSearchBox = nullptr;
+    QListWidget  *mCommandList = nullptr;
+    QWidget      *mCommandOverlay = nullptr;
+    QWidget      *mCategoryPanel = nullptr;
     PythonConsole *mPythonConsole = nullptr;
     bool           mDarkTheme = true;
 
-    // Live stats
-    QLabel       *mStatsFrames;
-    QLabel       *mStatsBuses;
+    // Live stats (widgets created when UI is ready)
+    QLabel       *mStatsFrames = nullptr;
+    QLabel       *mStatsBuses = nullptr;
     FrameStore   *mStore = nullptr;
 
-    // Quick Send
-    QLineEdit    *mQuickSendId;
-    QLineEdit    *mQuickSendData;
-    QPushButton  *mQuickSendBtn;
+    // Quick Send (widgets created when UI is ready)
+    QLineEdit    *mQuickSendId = nullptr;
+    QLineEdit    *mQuickSendData = nullptr;
+    QPushButton  *mQuickSendBtn = nullptr;
 
     struct ToolEntry {
         QString id;

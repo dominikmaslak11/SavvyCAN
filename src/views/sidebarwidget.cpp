@@ -236,20 +236,8 @@ void SidebarWidget::toggleTheme()
 void SidebarWidget::setFrameStore(FrameStore *store)
 {
     mStore = store;
-    if (!mStore) return;
-
-    connect(mStore, &FrameStore::framesAppended, this, [this](int count) {
-        if (mStatsFrames)
-            mStatsFrames->setText(QString("Frames: %1 (+%2)").arg(mStore->frameCount()).arg(count));
-    });
-
-    connect(mStore, &FrameStore::framesReset, this, [this] {
-        if (mStatsFrames) mStatsFrames->setText("Frames: 0");
-    });
-
-    // Initial value
-    if (mStatsFrames)
-        mStatsFrames->setText(QString("Frames: %1").arg(mStore->frameCount()));
+    // Live-stats widgets are not yet created in setupUi();
+    // signal connections will be wired when the stats panel is added.
 }
 
 void SidebarWidget::onQuickSend()
