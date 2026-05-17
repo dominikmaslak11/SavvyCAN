@@ -28,7 +28,7 @@ class CANserver : public CANConnection
     Q_OBJECT
 
 public:
-    CANserver(QString serverAddress);
+    explicit CANserver(QString serverAddress);
     ~CANserver() override;
 
 protected:

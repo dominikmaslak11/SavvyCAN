@@ -21,7 +21,7 @@ class CanLogServer : public CANConnection
     Q_OBJECT
 
 public:
-    CanLogServer(QString serverAddress);
+    explicit CanLogServer(QString serverAddress);
     ~CanLogServer() override;
 
 // Interface

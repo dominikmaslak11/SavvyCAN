@@ -36,7 +36,7 @@ class SocketCANd : public CANConnection
     Q_OBJECT
 
 public:
-    SocketCANd(QString portName);
+    explicit SocketCANd(QString portName);
     ~SocketCANd() override;
 
 protected:

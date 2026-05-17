@@ -17,7 +17,7 @@ class FrameSenderObject : public QObject
     Q_OBJECT
 
 public:
-    FrameSenderObject(const QVector<CANFrame> *frames);
+    explicit FrameSenderObject(const QVector<CANFrame> *frames);
     ~FrameSenderObject();
 
 public slots:
