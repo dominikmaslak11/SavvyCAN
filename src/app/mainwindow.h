@@ -172,7 +172,7 @@ private:
     DBCHandler *dbcHandler;
     QByteArray inputBuffer;
     QTimer updateTimer;
-    QElapsedTimer *elapsedTime;
+    QElapsedTimer elapsedTime;
     FrameSenderObject *frameSender;
     int framesPerSec;
     int rxFrames;
@@ -194,10 +194,8 @@ private:
     //various private storage
     QLabel lbStatusConnected;
     QLabel lbStatusFilename;
-    QLabel lbStatusDatabase;
     QLabel lbHelp;
     int normalRowHeight;
-    bool isConnected;
     QPoint contextMenuPosition;
     bool rowExpansionActive = false;
 

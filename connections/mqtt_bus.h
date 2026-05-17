@@ -21,16 +21,16 @@ class MQTT_BUS : public CANConnection
 
 public:
     MQTT_BUS(QString topicName);
-    virtual ~MQTT_BUS();
+    ~MQTT_BUS() override;
 
 protected:
 
-    virtual void piStarted();
-    virtual void piStop();
-    virtual void piSetBusSettings(int pBusIdx, CANBus pBus);
-    virtual bool piGetBusSettings(int pBusIdx, CANBus& pBus);
-    virtual void piSuspend(bool pSuspend);
-    virtual bool piSendFrame(const CANFrame&) ;
+    void piStarted() override;
+    void piStop() override;
+    void piSetBusSettings(int pBusIdx, CANBus pBus) override;
+    bool piGetBusSettings(int pBusIdx, CANBus& pBus) override;
+    void piSuspend(bool pSuspend) override;
+    bool piSendFrame(const CANFrame&) override;
 
     void disconnectDevice();
 

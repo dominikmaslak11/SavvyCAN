@@ -29,16 +29,16 @@ class CANserver : public CANConnection
 
 public:
     CANserver(QString serverAddress);
-    virtual ~CANserver();
+    ~CANserver() override;
 
 protected:
 
-    virtual void piStarted();
-    virtual void piStop();
-    virtual void piSetBusSettings(int pBusIdx, CANBus pBus);
-    virtual bool piGetBusSettings(int pBusIdx, CANBus& pBus);
-    virtual void piSuspend(bool pSuspend);
-    virtual bool piSendFrame(const CANFrame&);
+    void piStarted() override;
+    void piStop() override;
+    void piSetBusSettings(int pBusIdx, CANBus pBus) override;
+    bool piGetBusSettings(int pBusIdx, CANBus& pBus) override;
+    void piSuspend(bool pSuspend) override;
+    bool piSendFrame(const CANFrame&) override;
     
 private slots:
     void readNetworkData();

@@ -228,11 +228,9 @@ MainWindow::MainWindow(QWidget *parent) :
     boldFont.setBold(true);
     lbHelp.setFont(boldFont);
     updateFileStatus();
-    //lbStatusDatabase.setText(tr("No DBC database loaded"));
     ui->statusBar->insertWidget(0, &lbStatusConnected, 1);
     ui->statusBar->insertWidget(1, &lbStatusFilename, 1);
     ui->statusBar->insertWidget(2, &lbHelp, 1);
-    //ui->statusBar->addWidget(&lbStatusDatabase);
     ui->lblRemoteConn->setVisible(false);
     ui->lineRemoteKey->setVisible(false);
 
@@ -246,10 +244,8 @@ MainWindow::MainWindow(QWidget *parent) :
     updateTimer.setInterval(250);
     updateTimer.start();
 
-    elapsedTime = new QElapsedTimer;
-    elapsedTime->start();
+    elapsedTime.start();
 
-    isConnected = false;
     allowCapture = true;
 
     //create a temporary frame to be able to capture the correct
@@ -271,7 +267,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->canFramesView->verticalHeader()->setDefaultSectionSize(normalRowHeight);    // Set the default height for all rows to the height that was calculated
 
-    //connect(CANConManager::getInstance(), CANConManager::connectionStatusUpdated, this, MainWindow::connectionStatusUpdated);
     connect(CANConManager::getInstance(), &CANConManager::connectionStatusUpdated, this, &MainWindow::connectionStatusUpdated);
 
     //Automatically create the connection window so it can be updated even if we never opened it.
@@ -283,7 +278,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //these either are unfinished/not working or are not for general use. But,they exist
     //so if you want to enable them and play with them then go for it.
-    //ui->actionFirmware_Update->setVisible(false);
     ui->actionMotorControlConfig->setVisible(false);
     ui->actionSingle_Multi_State_2->setVisible(false);
 
@@ -322,7 +316,6 @@ MainWindow::~MainWindow()
     mRegistry->closeAll();
     delete ui;
     delete model;
-    delete elapsedTime;
     delete frameSender;
     // dbcHandler is a singleton (DBCHandler::getReference) – do NOT delete
 }
@@ -403,7 +396,7 @@ void MainWindow::readSettings()
         ui->canFramesView->setColumnWidth(5, settings.value("Main/BusColumn", 40).toUInt()); //bus
         ui->canFramesView->setColumnWidth(6, settings.value("Main/LengthColumn", 40).toUInt()); //length
         ui->canFramesView->setColumnWidth(7, settings.value("Main/AsciiColumn", 50).toUInt()); //ascii
-        //ui->canFramesView->setColumnWidth(8, settings.value("Main/DataColumn", 225).toUInt()); //data
+        // column 8 (data) is now auto-stretched
     }
     if (settings.value("Main/AutoScroll", false).toBool())
     {
@@ -472,7 +465,7 @@ void MainWindow::writeSettings()
         settings.setValue("Main/BusColumn", ui->canFramesView->columnWidth(5));
         settings.setValue("Main/LengthColumn", ui->canFramesView->columnWidth(6));
         settings.setValue("Main/AsciiColumn", ui->canFramesView->columnWidth(7));
-        //settings.setValue("Main/DataColumn", ui->canFramesView->columnWidth(8));
+        // column 8 width is not persisted
     }
 }
 
@@ -647,20 +640,11 @@ void MainWindow::updateConnectionSettings(QString connectionType, QString port, 
     Q_UNUSED(port);
     Q_UNUSED(speed0);
     Q_UNUSED(speed1);
-    //connType = connectionType;
-    //portName = port;
-
-    //canSpeed0 = speed0;
-    //canSpeed1 = speed1;
-    if (isConnected)
-    {
-        //emit updateBaudRates(speed0, speed1);
-    }
+    // updateBaudRates is not currently implemented
 }
 
 void MainWindow::headerClicked(int logicalIndex)
 {
-    //ui->canFramesView->sortByColumn(logicalIndex);
     model->sortByColumn(logicalIndex);
 
     manageRowExpansion();
@@ -733,7 +717,6 @@ void MainWindow::collapseAllRows()
 
 void MainWindow::gridClicked(QModelIndex idx)
 {
-    //qDebug() << "Grid Clicked";
     if (ui->canFramesView->rowHeight(idx.row()) > normalRowHeight)
     {
         ui->canFramesView->setRowHeight(idx.row(), normalRowHeight);
@@ -915,7 +898,6 @@ void MainWindow::setupSendToLatestGraphWindow()
 void MainWindow::interpretToggled(bool state)
 {
     model->setInterpretMode(state);
-    //ui->canFramesView->resizeRowsToContents();   //a VERY costly operation!
 }
 
 void MainWindow::overwriteToggled(bool state)
@@ -966,17 +948,16 @@ void MainWindow::updateFilterList()
 
     if (filters->isEmpty()) return;
 
-    QMap<int, bool>::const_iterator filterIter;
-    for (filterIter = filters->begin(); filterIter != filters->end(); ++filterIter)
+    for (auto filterIter = filters->begin(); filterIter != filters->end(); ++filterIter)
     {
         /*QListWidgetItem *thisItem = */FilterUtility::createCheckableFilterItem(filterIter.key(), filterIter.value(), ui->listFilters);
     }
 
     if (busFilters->isEmpty()) return;
 
-    for (filterIter = busFilters->begin(); filterIter != busFilters->end(); ++filterIter)
+    for (auto filtIter = busFilters->begin(); filtIter != busFilters->end(); ++filtIter)
     {
-        /*QListWidgetItem *thisItem = */ FilterUtility::createCheckableBusFilterItem(filterIter.key(), filterIter.value(), ui->listBusFilters);
+        /*QListWidgetItem *thisItem = */ FilterUtility::createCheckableBusFilterItem(filtIter.key(), filtIter.value(), ui->listBusFilters);
     }
     inhibitFilterUpdate = false;
 }
@@ -1047,18 +1028,16 @@ void MainWindow::logReceivedFrame(CANConnection* conn, QVector<CANFrame> frames)
 void MainWindow::tickGUIUpdate()
 {
     rxFrames = model->sendBulkRefresh();
-    //if(rxFrames>0)
-    //{
-        int elapsed = elapsedTime->elapsed();
+        int elapsed = elapsedTime.elapsed();
         if(elapsed) {
             framesPerSec = (framesPerSec + (rxFrames * 1000 / elapsed)) / 2;
-            elapsedTime->restart();
+            elapsedTime.restart();
         }
         else
             framesPerSec = 0;
 
         ui->lbNumFrames->setText(QString::number(model->rowCount()));
-        if (rxFrames > 0 && /*allowCapture && */ ui->cbAutoScroll->isChecked())
+        if (rxFrames > 0 &&  ui->cbAutoScroll->isChecked())
                 ui->canFramesView->scrollToBottom();
         ui->lbFPS->setText(QString::number(framesPerSec));
         if (rxFrames > 0)
@@ -1072,9 +1051,6 @@ void MainWindow::tickGUIUpdate()
 
         if (continuousLogging)
         {
-//            const QVector<CANFrame> *modelFrames = model->getListReference();
-//            FrameFileIO::writeContinuousNative(modelFrames, modelFrames->count() - rxFrames);
-
             continuousLogFlushCounter++;
             if ((continuousLogFlushCounter % 3) == 0)
             {
@@ -1107,7 +1083,7 @@ void MainWindow::tickGUIUpdate()
         }
 
         rxFrames = 0;
-    //}
+
 }
 
 void MainWindow::gotFrames(int framesSinceLastUpdate)
@@ -1417,7 +1393,6 @@ Data Bytes: 88 10 00 13 BB 00 06 00
     for (int c = 0; c < frames->count(); c++)
     {
         frame = &frames->at(c);
-        //data = reinterpret_cast<const unsigned char *>(frame->payload().constData());
         dataLen = frame->payload().size();
 
         //add all column names
@@ -1461,12 +1436,9 @@ Data Bytes: 88 10 00 13 BB 00 06 00
     outFile.write(builderString.toUtf8());
 
         //builderString = tr("Data Bytes: ");
-        //for (int temp = 0; temp < dataLen; temp++)
         //{
         //    builderString += Utility::formatNumber(data[temp]) + " ";
-        //}
-        //builderString += "\n";
-        //outFile->write(builderString.toUtf8());
+    
 
     int dataColumnsAdded = 0;
     builderString = "";
@@ -1474,7 +1446,6 @@ Data Bytes: 88 10 00 13 BB 00 06 00
     {
         dataColumnsAdded = 0;
         frame = &frames->at(c);
-        //data = reinterpret_cast<const unsigned char *>(frame->payload().constData());
         dataLen = frame->payload().size();
 
         QString builderString;
@@ -1677,11 +1648,11 @@ void MainWindow::showGraphingWindow()
     auto *lastGraphingWindow = win; // for signal wiring below
 
     connect(lastGraphingWindow, &GraphingWindow::sendCenterTimeID, this, &MainWindow::gotCenterTimeID);
-    connect(this, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(uint32_t,double)));
+    connect(this, &MainWindow::sendCenterTimeID, lastGraphingWindow, &GraphingWindow::gotCenterTimeID);
 
     if (auto *fw = mRegistry->window<FlowViewWindow>("flowview")) {
-        connect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(uint32_t,double)));
-        connect(fw, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(uint32_t,double)));
+        connect(lastGraphingWindow, &GraphingWindow::sendCenterTimeID, fw, &FlowViewWindow::gotCenterTimeID);
+        connect(fw, &FlowViewWindow::sendCenterTimeID, lastGraphingWindow, &GraphingWindow::gotCenterTimeID);
     }
 
     lastGraphingWindow->show();
@@ -1835,7 +1806,7 @@ void MainWindow::showFlowViewWindow()
             ? model->getFilteredListReference()
             : model->getListReference());
         connect(fw, &FlowViewWindow::sendCenterTimeID, this, &MainWindow::gotCenterTimeID);
-        connect(this, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(uint32_t,double)));
+        connect(this, &MainWindow::sendCenterTimeID, fw, &FlowViewWindow::gotCenterTimeID);
         return fw;
     });
 
@@ -1843,8 +1814,8 @@ void MainWindow::showFlowViewWindow()
     if (auto *fw = mRegistry->window<FlowViewWindow>("flowview")) {
         for (auto *gw : mRegistry->graphWindows()) {
             if (auto *graph = qobject_cast<GraphingWindow*>(gw)) {
-                connect(graph, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(uint32_t,double)));
-                connect(fw, SIGNAL(sendCenterTimeID(uint32_t,double)), graph, SLOT(gotCenterTimeID(uint32_t,double)));
+                connect(graph, &GraphingWindow::sendCenterTimeID, fw, &FlowViewWindow::gotCenterTimeID);
+                connect(fw, &FlowViewWindow::sendCenterTimeID, graph, &GraphingWindow::gotCenterTimeID);
             }
         }
     }

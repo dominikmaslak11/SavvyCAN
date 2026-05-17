@@ -62,13 +62,13 @@ public:
      * @brief getPort
      * @return returns the port name of the device
      */
-    QString getPort();
+    QString getPort() const;
 
     /**
      * @brief getDriver
      * @return returns the name of the driver used for this device
      */
-    QString getDriver();
+    QString getDriver() const;
 
 
     /**
@@ -81,13 +81,13 @@ public:
      * @brief getType
      * @return the @ref CANCon::type of the device
      */
-    CANCon::type getType();
+    CANCon::type getType() const;
 
     /**
      * @brief getStatus
      * @return the @ref CANCon::status of the device (either connected or not)
      */
-    CANCon::status getStatus();
+    CANCon::status getStatus() const;
 
     /**
      * @brief setConsoleOutput
@@ -229,7 +229,7 @@ protected:
      * @param pBusId
      * @return true if bus is configured
      */
-    bool isConfigured(int pBusId);
+    bool isConfigured(int pBusId) const;
 
     /**
      * @brief setConfigured
@@ -245,7 +245,7 @@ protected:
      * @param pBus
      * @return true if operation succeeds, false if pBusIdx is invalid or bus has not been configured yet
      */
-    bool getBusConfig(int pBusId, CANBus& pBus);
+    bool getBusConfig(int pBusId, CANBus& pBus) const;
 
     /**
      * @brief setBusConfig
@@ -258,7 +258,7 @@ protected:
      * @brief isCapSuspended
      * @return true if the capture is suspended
      */
-    bool isCapSuspended();
+    bool isCapSuspended() const;
 
     /**
      * @brief setCapSuspended

@@ -220,7 +220,7 @@ int CANConnection::getSerialSpeed() const{
 }
 
 
-bool CANConnection::isConfigured(int pBusId) {
+bool CANConnection::isConfigured(int pBusId) const {
     if( pBusId < 0 || pBusId >= getNumBuses())
         return false;
     return mBusData[pBusId].mConfigured;
@@ -233,7 +233,7 @@ void CANConnection::setConfigured(int pBusId, bool pConfigured) {
 }
 
 
-bool CANConnection::getBusConfig(int pBusId, CANBus& pBus) {
+bool CANConnection::getBusConfig(int pBusId, CANBus& pBus) const {
     if( pBusId < 0 || pBusId >= getNumBuses() || !isConfigured(pBusId))
         return false;
     qDebug() << "getBusConfig id: " << pBusId;
@@ -251,11 +251,11 @@ void CANConnection::setBusConfig(int pBusId, CANBus& pBus) {
 }
 
 
-QString CANConnection::getPort() {
+QString CANConnection::getPort() const {
     return mPort;
 }
 
-QString CANConnection::getDriver()
+QString CANConnection::getDriver() const
 {
     return mDriver;
 }
@@ -265,20 +265,20 @@ LFQueue<CANFrame>& CANConnection::getQueue() {
 }
 
 
-CANCon::type CANConnection::getType() {
+CANCon::type CANConnection::getType() const {
     return mType;
 }
 
 
-CANCon::status CANConnection::getStatus() {
-    return (CANCon::status) mStatus.loadRelaxed();
+CANCon::status CANConnection::getStatus() const {
+    return static_cast<CANCon::status>(mStatus.loadRelaxed());
 }
 
 void CANConnection::setStatus(CANCon::status pStatus) {
     mStatus.storeRelaxed(pStatus);
 }
 
-bool CANConnection::isCapSuspended() {
+bool CANConnection::isCapSuspended() const {
     return mIsCapSuspended;
 }
 

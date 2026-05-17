@@ -208,7 +208,7 @@ void UDSScanWindow::loadScans()
     {
         filename = dialog.selectedFiles()[0];
         QFile inFile(filename);
-        inFile.open(QIODevice::ReadOnly);
+        (void)inFile.open(QIODevice::ReadOnly);
         QDataStream load(&inFile);
         int fileVersion;
         load >> fileVersion;
@@ -271,7 +271,7 @@ void UDSScanWindow::saveScans()
     {
         filename = dialog.selectedFiles()[0];
         QFile outFile(filename);
-        outFile.open(QIODevice::WriteOnly);
+        (void)outFile.open(QIODevice::WriteOnly);
         QDataStream save(&outFile);
         save << 1; //file version
         save << scanEntries.count();

@@ -8,10 +8,10 @@ class FilterUtility
 {
 
 public:
-    static QListWidgetItem * createFilterItem(uint32_t id, QListWidget* parent=NULL);   // if parent is given, add item automatically to listwidget
-    static QListWidgetItem * createCheckableFilterItem(uint32_t id, bool checked, QListWidget* parent=NULL);
-    static QListWidgetItem * createBusFilterItem(uint32_t id, QListWidget* parent=NULL);   // if parent is given, add item automatically to listwidget
-    static QListWidgetItem * createCheckableBusFilterItem(uint32_t id, bool checked, QListWidget* parent=NULL);
+    static QListWidgetItem * createFilterItem(uint32_t id, QListWidget* parent=nullptr);   // if parent is given, add item automatically to listwidget
+    static QListWidgetItem * createCheckableFilterItem(uint32_t id, bool checked, QListWidget* parent=nullptr);
+    static QListWidgetItem * createBusFilterItem(uint32_t id, QListWidget* parent=nullptr);   // if parent is given, add item automatically to listwidget
+    static QListWidgetItem * createCheckableBusFilterItem(uint32_t id, bool checked, QListWidget* parent=nullptr);
 
     static uint32_t getIdAsInt( QListWidgetItem * item );
     static QString getId( QListWidgetItem * item );

@@ -29,9 +29,7 @@ public:
 int main(int argc, char *argv[])
 {
 #ifdef QT_DEBUG
-    //uncomment for verbose debug data in application output
-    //qputenv("QT_FATAL_WARNINGS", "1");
-    //qSetMessagePattern("Type: %{type}\nProduct Name: %{appname}\nFile: %{file}\nLine: %{line}\nMethod: %{function}\nThreadID: %{threadid}\nThreadPtr: %{qthreadptr}\nMessage: %{message}");
+    // Uncomment for verbose debug: qputenv("QT_FATAL_WARNINGS", "1");
 #endif
 
     SavvyCANApplication a(argc, argv);
@@ -90,7 +88,7 @@ int main(int argc, char *argv[])
 
     int retCode = a.exec();
 
-    delete a.mainWindow; a.mainWindow = NULL;
+    delete a.mainWindow; a.mainWindow = nullptr;
 
     return retCode;
 }

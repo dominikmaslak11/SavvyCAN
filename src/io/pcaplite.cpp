@@ -20,32 +20,32 @@ static unsigned char pcap_buffer[MAX_CAN_PACKET_SIZE];
 static pcap_t p;
 
 pcap *pcap_open_offline(const char *filename, char *error_text, int expected_link_type) {
-	FILE *file;
+    FILE *file;
 
     snprintf(error_text, PCAP_ERRBUF_SIZE, "OK");
 
     file = fopen(filename,"rb");
 
-    if (NULL == file) {
+    if (nullptr == file) {
         snprintf(error_text, PCAP_ERRBUF_SIZE,
                "Cannot open input file");
-        return NULL;
+        return nullptr;
     }
 
-	unsigned int magic;
-	size_t bytes_read;
+    unsigned int magic;
+    size_t bytes_read;
 
-	bytes_read = fread(&magic, 1, sizeof(magic), file);
-	if (bytes_read != sizeof(magic)) {
-		snprintf(error_text, PCAP_ERRBUF_SIZE, "Cannot read magic word");
+    bytes_read = fread(&magic, 1, sizeof(magic), file);
+    if (bytes_read != sizeof(magic)) {
+        snprintf(error_text, PCAP_ERRBUF_SIZE, "Cannot read magic word");
         fclose(file);
-		return (NULL);
-	}
+        return nullptr;
+    }
 
     if (magic != MACIG && magic != MAGIC_NG) {
         snprintf(error_text, PCAP_ERRBUF_SIZE, "Not a supported format %04x", magic);
         fclose(file);
-		return (NULL);
+        return nullptr;
     }
 
     unsigned int link_type;
@@ -54,14 +54,14 @@ pcap *pcap_open_offline(const char *filename, char *error_text, int expected_lin
     if (bytes_read != sizeof(link_type)) {
         snprintf(error_text, PCAP_ERRBUF_SIZE, "Cannot read linktype word");
         fclose(file);
-        return (NULL);
+        return nullptr;
     }
     if (expected_link_type >= 0) {
         // Check the link type
         if ((int) link_type != expected_link_type) {
             snprintf(error_text, PCAP_ERRBUF_SIZE, "This link type is not supported by this decoder");
             fclose(file);
-            return (NULL);
+            return nullptr;
         }
     }
 
@@ -73,10 +73,10 @@ pcap *pcap_open_offline(const char *filename, char *error_text, int expected_lin
         unsigned int  section_length;
         bytes_read = fread(&section_length, 1, sizeof(section_length), file);
         if (bytes_read != sizeof(section_length)) {
-		    snprintf(error_text, PCAP_ERRBUF_SIZE, "Cannot read section length");
+            snprintf(error_text, PCAP_ERRBUF_SIZE, "Cannot read section length");
             fclose(file);
-		    return (NULL);
-	    }
+            return nullptr;
+        }
         fseek(file, section_length, SEEK_SET);
     } else {
         p.is_ng = 0;
@@ -84,7 +84,7 @@ pcap *pcap_open_offline(const char *filename, char *error_text, int expected_lin
     }
 
     p.file = file;
-	return(&p);
+    return(&p);
 }
 
 const unsigned char *pcap_next_ng(pcap_t *p, struct pcap_pkthdr *h) {
@@ -114,7 +114,7 @@ const unsigned char *pcap_next_ng(pcap_t *p, struct pcap_pkthdr *h) {
         bytes_read = fread(&bh, 1, sizeof(bh), p->file);
         if (bytes_read != sizeof(bh)) {
             //probably EOF
-            return (NULL);
+            return nullptr;
         }
 
         if (bh.block_type != ENCHANCED_PACKET_BLOCK) {
@@ -125,7 +125,7 @@ const unsigned char *pcap_next_ng(pcap_t *p, struct pcap_pkthdr *h) {
                     bytes_read = fread(&oh, 1, sizeof(oh), p->file);
                     if (bytes_read != sizeof(oh)) {
                         //probably EOF
-                        return (NULL);
+                        return nullptr;
                     }
                     
                     // calculate option length aligned on 4 byte boundary
@@ -137,8 +137,8 @@ const unsigned char *pcap_next_ng(pcap_t *p, struct pcap_pkthdr *h) {
                         bytes_read = fread(pcap_buffer, 1, option_file_length, p->file);
                         if (bytes_read != option_file_length) {
                             //probably EOF
-		                    return (NULL);
-	                    }
+                            return nullptr;
+                        }
                         //check if time resolution option
                         if (0x09 == oh.option_type) {
                             unsigned int res = *(unsigned int*)pcap_buffer;
@@ -150,21 +150,21 @@ const unsigned char *pcap_next_ng(pcap_t *p, struct pcap_pkthdr *h) {
                         }
                     } else if (fseek(p->file, option_file_length, SEEK_CUR)) {
                         //probably EOF
-		                return (NULL);
+                        return nullptr;
                     }
 
                 } while(ftell(p->file) < fpos + bh.block_size - sizeof(bh.block_size));
 
                 if (fseek(p->file, sizeof(bh.block_size), SEEK_CUR)) {
                         //probably EOF
-		                return (NULL);
+                        return nullptr;
                 }
             }
 
             // skip to the next block
             if (fseek(p->file, fpos + bh.block_size, SEEK_SET)) {
                 //probably EOF
-		        return (NULL);
+                return nullptr;
             }
             fpos = ftell(p->file);
         }
@@ -182,13 +182,13 @@ const unsigned char *pcap_next_ng(pcap_t *p, struct pcap_pkthdr *h) {
     bytes_read = fread(pcap_buffer, 1, h->caplen, p->file);
     if (bytes_read != h->caplen) {
         //probably EOF
-		return (NULL);
-	}
+        return nullptr;
+    }
    
     //seek to the next block (go back with bytes read of the block and seek fwd with the block size)
     if (fseek(p->file, fpos + bh.block_size, SEEK_SET)) {
         //probably EOF
-		return (NULL);
+        return nullptr;
     }
 
     return pcap_buffer;
@@ -201,13 +201,13 @@ const unsigned char *pcap_next(pcap_t *p, struct pcap_pkthdr *h)
         return pcap_next_ng(p, h);
     }
 
-	size_t bytes_read;
+    size_t bytes_read;
 
-	bytes_read = fread(pcap_buffer, 1, PCAP_FRAME_HEADER_LENGTH, p->file);
+    bytes_read = fread(pcap_buffer, 1, PCAP_FRAME_HEADER_LENGTH, p->file);
     if (bytes_read != PCAP_FRAME_HEADER_LENGTH) {
         //probably EOF
-		return (NULL);
-	}
+        return nullptr;
+    }
 
     h->ts.tv_sec = *(unsigned int*)(pcap_buffer);
     h->ts.tv_usec = *(unsigned int*)(pcap_buffer + 4);
@@ -218,8 +218,8 @@ const unsigned char *pcap_next(pcap_t *p, struct pcap_pkthdr *h)
     bytes_read = fread(pcap_buffer, 1, h->caplen, p->file);
     if (bytes_read != h->caplen) {
         //probably EOF
-		return (NULL);
-	}
+        return nullptr;
+    }
 
     return pcap_buffer;
 }

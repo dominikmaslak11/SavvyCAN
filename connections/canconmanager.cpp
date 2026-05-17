@@ -75,7 +75,7 @@ void CANConManager::replace(int idx, CANConnection* pConn_p)
 }
 
 //Get total number of buses currently registered with the program
-int CANConManager::getNumBuses()
+int CANConManager::getNumBuses() const
 {
     int buses = 0;
     foreach(CANConnection* conn_p, mConns)
@@ -126,7 +126,7 @@ void CANConManager::refreshCanList()
     }
 }
 
-uint64_t CANConManager::getTimeBasis()
+uint64_t CANConManager::getTimeBasis() const
 {
     return mTimestampBasis;
 }
