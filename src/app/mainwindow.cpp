@@ -79,6 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // ── Python bridge + console ─────────────────────────────────────
     mPythonBridge = new PythonBridge(frameStore, this);
+    mRestApi->setPythonBridge(mPythonBridge);
     mPythonConsole = new PythonConsole(mPythonBridge, this);
     mSidebar->setPythonConsole(mPythonConsole);
 

@@ -1,10 +1,15 @@
 #include "restapiserver.h"
 #include "framestore.h"
 #include "dbc/dbchandler.h"
+#include "connections/canconmanager.h"
+#include "connections/canconfactory.h"
+#include "connections/canbus.h"
+#include "pythonbridge.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDebug>
+#include <QThread>
 #include <QWebSocketServer>
 #include <QWebSocket>
 
@@ -12,6 +17,11 @@ RestApiServer::RestApiServer(FrameStore *store, QObject *parent)
     : QObject(parent), mStore(store)
 {
     setupRoutes();
+}
+
+void RestApiServer::setPythonBridge(PythonBridge *bridge)
+{
+    mPythonBridge = bridge;
 }
 
 bool RestApiServer::start(quint16 port)
@@ -195,12 +205,108 @@ void RestApiServer::setupRoutes()
 
         mStore->addFrame(frame);
 
-        emit requestLog(QString("POST /api/send id=0x%1 bus=%2 len=%3")
-            .arg(id, 0, 16).arg(bus).arg(payload.size()));
+        // Actually transmit on the CAN bus through active connections
+        bool sent = CANConManager::getInstance()->sendFrame(frame);
+
+        emit requestLog(QString("POST /api/send id=0x%1 bus=%2 len=%3 sent=%4")
+            .arg(id, 0, 16).arg(bus).arg(payload.size()).arg(sent));
 
         QJsonObject response;
         response["status"] = "ok";
+        response["transmitted"] = sent;
         return QHttpServerResponse(response);
+    });
+
+    // ── POST /api/connect ─────────────────────────────────────────────
+    mServer.route("/api/connect", [this](const QHttpServerRequest &req) {
+        if (req.method() != QHttpServerRequest::Method::Post) {
+            return QHttpServerResponse(QHttpServerResponse::StatusCode::MethodNotAllowed);
+        }
+
+        QJsonDocument doc = QJsonDocument::fromJson(req.body());
+        if (!doc.isObject()) {
+            return QHttpServerResponse(QHttpServerResponse::StatusCode::BadRequest);
+        }
+
+        QJsonObject body = doc.object();
+        QString driver = body["driver"].toString("peakcan");
+        QString port = body["port"].toString("PCAN_USBBUS1");
+        int busSpeed = body["bitrate"].toInt(250000);
+
+        auto *conn = CanConFactory::create(CANCon::SERIALBUS, port, driver, 0, busSpeed, false, 0);
+        if (!conn) {
+            QJsonObject resp;
+            resp["status"] = "error";
+            resp["message"] = "Failed to create connection";
+            return QHttpServerResponse(resp);
+        }
+
+        CANConManager::getInstance()->add(conn);
+        conn->start();
+
+        // Wait briefly for worker thread to initialize
+        QThread::msleep(100);
+
+        // Configure bus 0 with the requested speed after start
+        CANBus bus;
+        bus.setSpeed(busSpeed);
+        bus.setActive(true);
+        conn->setBusSettings(0, bus);
+
+        // Wait for connection to stabilize
+        QThread::msleep(200);
+
+        CANCon::status st = conn->getStatus();
+        bool connected = (st == CANCon::CONNECTED);
+
+        emit requestLog(QString("POST /api/connect driver=%1 port=%2 bitrate=%3 connected=%4")
+            .arg(driver, port).arg(busSpeed).arg(connected));
+
+        QJsonObject resp;
+        if (connected) {
+            resp["status"] = "ok";
+            resp["message"] = QString("Connected %1 on %2 at %3 bps").arg(driver, port).arg(busSpeed);
+        } else {
+            resp["status"] = "warning";
+            resp["message"] = QString("Device created but not connected. Check hardware and drivers. Driver=%1 Port=%2").arg(driver, port);
+        }
+        resp["connected"] = connected;
+        return QHttpServerResponse(resp);
+    });
+
+    // ── POST /api/python ─────────────────────────────────────────────
+    mServer.route("/api/python", [this](const QHttpServerRequest &req) {
+        if (req.method() != QHttpServerRequest::Method::Post) {
+            return QHttpServerResponse(QHttpServerResponse::StatusCode::MethodNotAllowed);
+        }
+
+        if (!mPythonBridge || !mPythonBridge->isReady()) {
+            QJsonObject resp;
+            resp["status"] = "error";
+            resp["message"] = "Python bridge not available";
+            return QHttpServerResponse(resp);
+        }
+
+        QJsonDocument doc = QJsonDocument::fromJson(req.body());
+        if (!doc.isObject()) {
+            return QHttpServerResponse(QHttpServerResponse::StatusCode::BadRequest);
+        }
+
+        QString code = doc.object()["code"].toString();
+        if (code.isEmpty()) {
+            QJsonObject resp;
+            resp["status"] = "error";
+            resp["message"] = "Missing 'code' field";
+            return QHttpServerResponse(resp);
+        }
+
+        QString result = mPythonBridge->execute(code);
+        emit requestLog(QString("POST /api/python len=%1").arg(code.length()));
+
+        QJsonObject resp;
+        resp["status"] = "ok";
+        resp["result"] = result;
+        return QHttpServerResponse(resp);
     });
 
     // ── GET /api/dbc/signals/<id> ─────────────────────────────────────

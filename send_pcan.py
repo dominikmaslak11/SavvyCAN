@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 SavvyCAN PCAN Frame Sender
-Sends extended CAN frame 0x1421003F every 2 seconds at 250 kbps.
+Sends extended CAN frame 0x1421003F every 10 seconds at 250 kbps.
 """
 
 import can
@@ -13,7 +13,7 @@ import sys
 BITRATE = 250000          # 250 kbps
 FRAME_ID = 0x1421003F     # Extended CAN ID
 DATA = [0x50, 0x01, 0x00, 0x00, 0x00, 0x32, 0x19, 0xB1]
-INTERVAL = 2.0            # seconds
+INTERVAL = 10.0           # seconds
 INTERFACE = "pcan"        # PEAK PCAN USB
 CHANNEL = "PCAN_USBBUS1"  # First PCAN USB device
 

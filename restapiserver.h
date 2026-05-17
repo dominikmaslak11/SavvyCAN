@@ -9,6 +9,7 @@
 
 class FrameStore;
 class MainWindow;
+class PythonBridge;
 
 /// RestApiServer exposes the SavvyCAN frame data and controls
 /// via a local HTTP REST API.  Built on QtHttpServer (Qt 6.4+).
@@ -19,6 +20,8 @@ class MainWindow;
 ///   GET  /api/buses            — active bus list
 ///   POST /api/send             — send a CAN frame (JSON body)
 ///   GET  /api/dbc/signals/:id  — DBC signals for a frame ID
+///   POST /api/connect          — connect to a CAN interface (JSON body)
+///   POST /api/python           — execute Python code via embedded interpreter
 ///   WS   /api/ws/live          — WebSocket live frame stream
 class RestApiServer : public QObject
 {
@@ -27,6 +30,9 @@ class RestApiServer : public QObject
 public:
     explicit RestApiServer(FrameStore *store, QObject *parent = nullptr);
     ~RestApiServer() = default;
+
+    /// Set the Python bridge for /api/python execution
+    void setPythonBridge(PythonBridge *bridge);
 
     /// Start listening on the given port.  Returns true on success.
     bool start(quint16 port = 8080);
@@ -49,6 +55,7 @@ private:
     void setupRoutes();
 
     FrameStore  *mStore;
+    PythonBridge *mPythonBridge = nullptr;
     QHttpServer  mServer;
     QTcpServer   mTcpServer;
     QWebSocketServer *mWsServer = nullptr;

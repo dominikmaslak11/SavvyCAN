@@ -1,12 +1,16 @@
 #include "pythonbridge.h"
 #include "framestore.h"
 #include "dbc/dbchandler.h"
+#include "connections/canconmanager.h"
+#include "connections/canconfactory.h"
+#include "connections/canbus.h"
 
 #pragma push_macro("slots")
 #undef slots
 #include <pybind11/stl.h>
 #pragma pop_macro("slots")
 #include <QDebug>
+#include <QThread>
 #include <sstream>
 
 namespace py = pybind11;
@@ -121,10 +125,43 @@ void PythonBridge::setupModule()
             payload.append(static_cast<char>(item.cast<int>()));
         frame.setPayload(payload);
 
-        // Frame will be picked up by CANConManager for sending
         mStore->addFrame(frame);
-        return true;
+
+        // Actually transmit on the CAN bus
+        bool sent = CANConManager::getInstance()->sendFrame(frame);
+        return sent;
     }, py::arg("id"), py::arg("data"), py::arg("bus") = 0);
+
+    // savvycan.connect_can(driver, port, bitrate)
+    m.def("connect_can", [this](const std::string &driver, const std::string &port, int bitrate) {
+        QString qDriver = QString::fromStdString(driver);
+        QString qPort = QString::fromStdString(port);
+
+        auto *conn = CanConFactory::create(CANCon::SERIALBUS, qPort, qDriver, 0, bitrate, false, 0);
+        if (!conn) {
+            return std::string("error: failed to create connection");
+        }
+
+        CANConManager::getInstance()->add(conn);
+        conn->start();
+
+        // Wait for worker thread
+        QThread::msleep(100);
+
+        CANBus bus;
+        bus.setSpeed(bitrate);
+        bus.setActive(true);
+        conn->setBusSettings(0, bus);
+
+        QThread::msleep(200);
+
+        bool connected = (conn->getStatus() == CANCon::CONNECTED);
+        if (connected) {
+            return std::string("ok: connected " + driver + " on " + port + " at " + std::to_string(bitrate) + " bps");
+        } else {
+            return std::string("warning: device created but not connected. Check hardware/drivers.");
+        }
+    }, py::arg("driver") = "peakcan", py::arg("port") = "PCAN_USBBUS1", py::arg("bitrate") = 250000);
 
     // savvycan.clear_frames()
     m.def("clear_frames", [this]() {
