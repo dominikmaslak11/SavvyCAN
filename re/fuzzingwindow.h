@@ -25,7 +25,7 @@ class FuzzingWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit FuzzingWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit FuzzingWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~FuzzingWindow();
 
 signals:

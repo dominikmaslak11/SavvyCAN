@@ -47,7 +47,7 @@ class CANDataGrid : public QWidget
     Q_OBJECT
 
 public:
-    explicit CANDataGrid(QWidget *parent = 0);
+    explicit CANDataGrid(QWidget *parent = nullptr);
     ~CANDataGrid();
     void paintEvent(QPaintEvent *event) override;
     void setReference(unsigned char *, bool);

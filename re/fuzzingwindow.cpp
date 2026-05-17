@@ -140,14 +140,14 @@ void FuzzingWindow::changedNumDataBytes(int newVal)
 {
     qDebug() << "new num bytes: " << newVal;
 
-    ui->txtByte0->setEnabled((newVal > 0) ? true : false);
-    ui->txtByte1->setEnabled((newVal > 1) ? true : false);
-    ui->txtByte2->setEnabled((newVal > 2) ? true : false);
-    ui->txtByte3->setEnabled((newVal > 3) ? true : false);
-    ui->txtByte4->setEnabled((newVal > 4) ? true : false);
-    ui->txtByte5->setEnabled((newVal > 5) ? true : false);
-    ui->txtByte6->setEnabled((newVal > 6) ? true : false);
-    ui->txtByte7->setEnabled((newVal > 7) ? true : false);
+    ui->txtByte0->setEnabled(newVal > 0);
+    ui->txtByte1->setEnabled(newVal > 1);
+    ui->txtByte2->setEnabled(newVal > 2);
+    ui->txtByte3->setEnabled(newVal > 3);
+    ui->txtByte4->setEnabled(newVal > 4);
+    ui->txtByte5->setEnabled(newVal > 5);
+    ui->txtByte6->setEnabled(newVal > 6);
+    ui->txtByte7->setEnabled(newVal > 7);
 
     ui->bitfield->setBytesToDraw(newVal);
 

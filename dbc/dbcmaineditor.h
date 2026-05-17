@@ -30,7 +30,7 @@ class DBCMainEditor : public QDialog
     Q_OBJECT
 
 public:
-    explicit DBCMainEditor(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit DBCMainEditor(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~DBCMainEditor();
     void setFileIdx(int idx);
 

@@ -13,7 +13,7 @@ class CANConnectionModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit CANConnectionModel(QObject *parent = 0);
+    explicit CANConnectionModel(QObject *parent = nullptr);
     ~CANConnectionModel() override = default;
 
     // from abstractmodel:

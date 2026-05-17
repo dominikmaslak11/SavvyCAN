@@ -33,10 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-#if QT_VERSION < QT_VERSION_CHECK( 6, 0, 0 )
-    qRegisterMetaTypeStreamOperators<QVector<QString>>();
-    qRegisterMetaTypeStreamOperators<QVector<int>>();
-#endif
 
     useHex = true;
     useColorsByCanId = false;
@@ -363,7 +359,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
         case Qt::Key_F1:
             HelpWindow::getRef()->showHelp("mainscreen.md");
             return true;
-            break;
         }
         return false;
     } else {
@@ -558,11 +553,7 @@ void MainWindow::processSenderCellChange(int line, int col)
     case SIMP_COL::SC_COL_DATA: //Data bytes
         for (int i = 0; i < 8; i++) tempData->payload().data()[i] = 0;
 
-#if QT_VERSION >= QT_VERSION_CHECK( 5, 14, 0 )
         tokens = ui->tableSimpleSender->item(line, SIMP_COL::SC_COL_DATA)->text().split(" ", Qt::SkipEmptyParts);
-#else
-        tokens = ui->tableSimpleSender->item(line, SIMP_COL::SC_COL_DATA)->text().split(" ", QString::SkipEmptyParts);
-#endif
         arr.clear();
         arr.reserve(tokens.count());
         for (int j = 0; j < tokens.count(); j++)
@@ -764,7 +755,7 @@ void MainWindow::copyFromTable()
 
 void MainWindow::copySelection()
 {
-    QItemSelectionModel *selectionModel = ui->canFramesView->selectionModel();
+    auto *selectionModel = ui->canFramesView->selectionModel();
     QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
 
     if(selectedIndexes.isEmpty())
@@ -805,7 +796,7 @@ void MainWindow::copySelection()
     if (selectedText.endsWith(QLatin1Char('\t')))
         selectedText.chop(1);
 
-    QClipboard *clipboard = QApplication::clipboard();
+    auto *clipboard = QApplication::clipboard();
     clipboard->setText(selectedText);
 }
 
@@ -864,7 +855,7 @@ void MainWindow::setupSendToLatestGraphWindow()
             param.associatedSignal = sig;
             param.bias = sig->bias;
             param.intelFormat = sig->intelByteOrder;
-            param.isSigned = sig->valType == SIGNED_INT ? true : false;
+            param.isSigned = sig->valType == SIGNED_INT;
             param.numBits = sig->signalSize;
             param.scale = sig->factor;
             param.startBit = sig->startBit;

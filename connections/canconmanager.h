@@ -70,7 +70,7 @@ private slots:
     void refreshCanList();
 
 private:
-    explicit CANConManager(QObject *parent = 0);
+    explicit CANConManager(QObject *parent = nullptr);
     void refreshConnection(CANConnection* pConn_p);
 
     static CANConManager*  mInstance;

@@ -41,7 +41,7 @@ class MotorControllerConfigWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit MotorControllerConfigWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit MotorControllerConfigWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~MotorControllerConfigWindow();
 
 signals:

@@ -32,7 +32,7 @@ class SnifferWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit SnifferWindow(QWidget *parent = 0);
+    explicit SnifferWindow(QWidget *parent = nullptr);
     ~SnifferWindow();
 
     void showEvent(QShowEvent*);

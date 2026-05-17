@@ -16,7 +16,7 @@ class ISOTP_InterpreterWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit ISOTP_InterpreterWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit ISOTP_InterpreterWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~ISOTP_InterpreterWindow();
     void showEvent(QShowEvent*);
 

@@ -13,7 +13,7 @@ class SignalViewerWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit SignalViewerWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit SignalViewerWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~SignalViewerWindow();
 
 private slots:

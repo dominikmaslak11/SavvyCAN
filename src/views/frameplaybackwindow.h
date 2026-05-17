@@ -16,7 +16,7 @@ class FramePlaybackWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit FramePlaybackWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit FramePlaybackWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~FramePlaybackWindow();
 
 private slots:

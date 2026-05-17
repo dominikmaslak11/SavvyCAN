@@ -54,7 +54,7 @@ class UDSFirmwareUploaderWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit UDSFirmwareUploaderWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit UDSFirmwareUploaderWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~UDSFirmwareUploaderWindow();
 
 private slots:

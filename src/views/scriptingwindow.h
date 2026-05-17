@@ -20,7 +20,7 @@ class ScriptingWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit ScriptingWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit ScriptingWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     void showEvent(QShowEvent*);
     ~ScriptingWindow();
 

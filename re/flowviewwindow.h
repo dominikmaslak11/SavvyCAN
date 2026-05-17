@@ -16,7 +16,7 @@ class FlowViewWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit FlowViewWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit FlowViewWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~FlowViewWindow();
     void showEvent(QShowEvent*);
 

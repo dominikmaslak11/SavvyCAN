@@ -13,7 +13,7 @@ class MainSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit MainSettingsDialog(QWidget *parent = 0);
+    explicit MainSettingsDialog(QWidget *parent = nullptr);
     ~MainSettingsDialog();
 
 signals:

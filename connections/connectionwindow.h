@@ -27,7 +27,7 @@ class ConnectionWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit ConnectionWindow(QWidget *parent = 0);
+    explicit ConnectionWindow(QWidget *parent = nullptr);
     ~ConnectionWindow();
 
 signals:

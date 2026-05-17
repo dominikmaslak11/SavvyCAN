@@ -18,7 +18,7 @@ class DBCComparatorWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit DBCComparatorWindow(QWidget *parent = 0);
+    explicit DBCComparatorWindow(QWidget *parent = nullptr);
     ~DBCComparatorWindow();
 
 private slots:

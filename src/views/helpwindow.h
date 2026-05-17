@@ -14,7 +14,7 @@ class HelpWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit HelpWindow(QWidget *parent = 0);
+    explicit HelpWindow(QWidget *parent = nullptr);
     ~HelpWindow();
     void showHelp(QString help);
     static HelpWindow *getRef();    

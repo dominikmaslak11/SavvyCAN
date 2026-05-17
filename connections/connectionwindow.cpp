@@ -541,7 +541,7 @@ CANConnection* ConnectionWindow::create(CANCon::type pTye, QString pPortName, QS
 
 void ConnectionWindow::loadConnections()
 {
-#if QT_VERSION < QT_VERSION_CHECK( 6, 0, 0 )
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qRegisterMetaTypeStreamOperators<CANBus>();
     qRegisterMetaTypeStreamOperators<QList<CANBus>>();
 #endif
@@ -563,7 +563,7 @@ void ConnectionWindow::loadConnections()
 
     for(int i = 0 ; i < portNames.count() ; i++)
     {
-      CANConnection* conn_p = create(static_cast<CANCon::type>(devTypes[i]), portNames[i], driverNames[i], serialSpeeds[i], busSpeeds[i], isCanFds[i] ? true : false, DataRates[i]);
+      CANConnection* conn_p = create(static_cast<CANCon::type>(devTypes[i]), portNames[i], driverNames[i], serialSpeeds[i], busSpeeds[i], static_cast<bool>(isCanFds[i]), DataRates[i]);
         /* add connection to model */
         connModel->add(conn_p);
     }

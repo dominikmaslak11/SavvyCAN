@@ -27,7 +27,7 @@ class FileComparatorWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit FileComparatorWindow(QWidget *parent = 0);
+    explicit FileComparatorWindow(QWidget *parent = nullptr);
     ~FileComparatorWindow();
 
 private slots:

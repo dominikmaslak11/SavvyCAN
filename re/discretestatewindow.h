@@ -26,7 +26,7 @@ class DiscreteStateWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit DiscreteStateWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit DiscreteStateWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~DiscreteStateWindow();
     void showEvent(QShowEvent*);
 

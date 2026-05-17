@@ -24,7 +24,7 @@ class SnifferModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    explicit SnifferModel(QObject *parent = 0);
+    explicit SnifferModel(QObject *parent = nullptr);
     virtual ~SnifferModel();
 
     /* from QAbstractItemModel */

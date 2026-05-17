@@ -14,7 +14,7 @@ class RangeStateWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit RangeStateWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit RangeStateWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~RangeStateWindow();
     void showEvent(QShowEvent*);
 

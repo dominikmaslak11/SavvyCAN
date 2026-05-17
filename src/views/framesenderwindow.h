@@ -35,7 +35,7 @@ class FrameSenderWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit FrameSenderWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit FrameSenderWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~FrameSenderWindow();
 
 private slots:

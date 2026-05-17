@@ -14,7 +14,7 @@ class NewGraphDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit NewGraphDialog(DBCHandler *handler, QWidget *parent = 0);
+    explicit NewGraphDialog(DBCHandler *handler, QWidget *parent = nullptr);
     ~NewGraphDialog();
     void showEvent(QShowEvent*);
     void getParams(GraphParams &);

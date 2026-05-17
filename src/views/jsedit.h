@@ -67,7 +67,7 @@ public:
         FoldIndicator
     } ColorComponent;
 
-    JSEdit(QWidget *parent = 0);
+    JSEdit(QWidget *parent = nullptr);
     ~JSEdit();
 
     void setColor(ColorComponent component, const QColor &color);

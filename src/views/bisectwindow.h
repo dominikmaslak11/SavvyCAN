@@ -13,7 +13,7 @@ class BisectWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit BisectWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
+    explicit BisectWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~BisectWindow();
     void showEvent(QShowEvent*);
 

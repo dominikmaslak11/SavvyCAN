@@ -14,7 +14,7 @@ class DBCSignalEditor : public QDialog
     Q_OBJECT
 
 public:
-    explicit DBCSignalEditor(QWidget *parent = 0);
+    explicit DBCSignalEditor(QWidget *parent = nullptr);
     void setMessageRef(DBC_MESSAGE *msg);
     void setFileIdx(int idx);
     void setSignalRef(DBC_SIGNAL *sig);
