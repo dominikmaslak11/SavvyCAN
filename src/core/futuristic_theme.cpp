@@ -752,4 +752,65 @@ QPalette lightPalette()
     return pal;
 }
 
+// ── High Contrast Stylesheet ──────────────────────────────────────────────
+
+QString highContrastStyleSheet()
+{
+    return QStringLiteral(R"(
+* { color: #ffffff; selection-background-color: #ffff00; selection-color: #000000; }
+QMainWindow { background-color: #000000; }
+QMenuBar { background-color: #111111; border-bottom: 2px solid #ffff00; color: #ffffff; }
+QMenuBar::item:selected { background-color: #ffff00; color: #000000; }
+QMenu { background-color: #111111; border: 2px solid #ffff00; }
+QMenu::item:selected { background-color: #ffff00; color: #000000; }
+QPushButton { background-color: #222222; color: #ffffff; border: 2px solid #ffff00; border-radius: 4px; padding: 8px 16px; font-weight: bold; }
+QPushButton:hover { background-color: #ffff00; color: #000000; }
+QPushButton:pressed { background-color: #ffcc00; color: #000000; }
+QPushButton:disabled { background-color: #333; color: #666; border-color: #666; }
+QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox { background: #000000; color: #ffff00; border: 2px solid #ffff00; border-radius: 4px; padding: 6px 10px; font-weight: bold; }
+QLineEdit:focus, QSpinBox:focus, QComboBox:focus { border-color: #ffffff; background: #111111; }
+QTableView, QTableWidget { background: #000000; alternate-background-color: #0a0a0a; border: 2px solid #ffff00; gridline-color: #333; color: #ffffff; }
+QTableView::item:selected, QTableWidget::item:selected { background-color: #ffff00; color: #000000; }
+QHeaderView::section { background: #222222; color: #ffff00; border-bottom: 3px solid #ffff00; padding: 6px 8px; font-weight: bold; text-transform: uppercase; }
+QScrollBar:vertical { background: #000; width: 16px; border: 1px solid #ffff00; }
+QScrollBar::handle:vertical { background: #ffff00; min-height: 30px; }
+QScrollBar:horizontal { background: #000; height: 16px; border: 1px solid #ffff00; }
+QScrollBar::handle:horizontal { background: #ffff00; min-width: 30px; }
+QStatusBar { background: #111111; border-top: 2px solid #ffff00; color: #ffff00; font-weight: bold; }
+QGroupBox { border: 2px solid #ffff00; border-radius: 6px; margin-top: 12px; padding-top: 18px; color: #ffff00; font-weight: bold; }
+QTabWidget::pane { border: 2px solid #ffff00; background: #000; }
+QTabBar::tab { background: #222; color: #aaa; border: 2px solid #555; padding: 8px 16px; font-weight: bold; }
+QTabBar::tab:selected { background: #000; color: #ffff00; border-color: #ffff00; }
+QCheckBox, QRadioButton { color: #ffffff; spacing: 8px; }
+QCheckBox::indicator, QRadioButton::indicator { border: 2px solid #ffff00; background: #000; }
+QCheckBox::indicator:checked, QRadioButton::indicator:checked { background: #ffff00; }
+QLabel { color: #ffffff; }
+QDialog { background: #000000; }
+QTextEdit, QPlainTextEdit { background: #000; color: #ffff00; border: 2px solid #ffff00; }
+)");
+}
+
+QPalette highContrastPalette()
+{
+    QPalette pal;
+    pal.setColor(QPalette::Window,          QColor("#000000"));
+    pal.setColor(QPalette::WindowText,      QColor("#ffffff"));
+    pal.setColor(QPalette::Base,            QColor("#000000"));
+    pal.setColor(QPalette::AlternateBase,   QColor("#0a0a0a"));
+    pal.setColor(QPalette::Text,            QColor("#ffffff"));
+    pal.setColor(QPalette::Button,          QColor("#222222"));
+    pal.setColor(QPalette::ButtonText,      QColor("#ffffff"));
+    pal.setColor(QPalette::BrightText,      QColor("#ffff00"));
+    pal.setColor(QPalette::Link,            QColor("#ffff00"));
+    pal.setColor(QPalette::Highlight,       QColor("#ffff00"));
+    pal.setColor(QPalette::HighlightedText, QColor("#000000"));
+    pal.setColor(QPalette::PlaceholderText, QColor("#888888"));
+    pal.setColor(QPalette::Disabled, QPalette::WindowText, QColor("#666666"));
+    pal.setColor(QPalette::Disabled, QPalette::Text,       QColor("#666666"));
+    pal.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#666666"));
+    pal.setColor(QPalette::ToolTipBase,     QColor("#111111"));
+    pal.setColor(QPalette::ToolTipText,     QColor("#ffff00"));
+    return pal;
+}
+
 } // namespace FuturisticTheme

@@ -58,17 +58,28 @@ MainWindow::MainWindow(QWidget *parent) :
     // Wire FrameStore signals to Sidebar live stats
     mSidebar->setFrameStore(frameStore);
     connect(mSidebar, &SidebarWidget::toolSelected, this, &MainWindow::onSidebarTool);
-    // Theme toggle: Ctrl+T or sidebar button
+    // Theme toggle: Ctrl+T cycles dark -> light -> highcontrast -> dark
     auto *themeShortcut = new QShortcut(QKeySequence("Ctrl+T"), this);
     connect(themeShortcut, &QShortcut::activated, this, [this] {
-        static bool dark = true;
-        dark = !dark;
-        if (dark) {
-            qApp->setStyleSheet(FuturisticTheme::darkStyleSheet());
-            qApp->setPalette(FuturisticTheme::darkPalette());
-        } else {
+        QSettings settings;
+        QString cur = settings.value("Main/Theme", "dark").toString();
+        QString next;
+        if (cur == "dark") next = "light";
+        else if (cur == "light") next = "highcontrast";
+        else next = "dark";
+
+        settings.setValue("Main/Theme", next);
+        settings.sync();
+
+        if (next == "light") {
             qApp->setStyleSheet(FuturisticTheme::lightStyleSheet());
             qApp->setPalette(FuturisticTheme::lightPalette());
+        } else if (next == "highcontrast") {
+            qApp->setStyleSheet(FuturisticTheme::highContrastStyleSheet());
+            qApp->setPalette(FuturisticTheme::highContrastPalette());
+        } else {
+            qApp->setStyleSheet(FuturisticTheme::darkStyleSheet());
+            qApp->setPalette(FuturisticTheme::darkPalette());
         }
         mSidebar->toggleTheme();
     });

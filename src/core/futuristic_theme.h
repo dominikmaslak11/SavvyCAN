@@ -18,6 +18,12 @@ QPalette darkPalette();
 /// Light QPalette
 QPalette lightPalette();
 
+/// High contrast stylesheet
+QString highContrastStyleSheet();
+
+/// High contrast QPalette
+QPalette highContrastPalette();
+
 } // namespace FuturisticTheme
 
 #endif // FUTURISTIC_THEME_H

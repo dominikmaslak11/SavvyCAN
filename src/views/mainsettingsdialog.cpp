@@ -1,6 +1,7 @@
 #include "mainsettingsdialog.h"
 #include "ui_mainsettingsdialog.h"
 #include "helpwindow.h"
+#include "futuristic_theme.h"
 #include <qevent.h>
 #include <QDebug>
 #include <QDir>
@@ -143,6 +144,15 @@ MainSettingsDialog::MainSettingsDialog(QWidget *parent) :
             ui->comboLanguage->setCurrentIndex(idx);
     }
 
+    // Theme combo
+    QString savedTheme = settings.value("Main/Theme", "dark").toString();
+    if (savedTheme == "light")
+        ui->comboTheme->setCurrentIndex(1);
+    else if (savedTheme == "highcontrast")
+        ui->comboTheme->setCurrentIndex(2);
+    else
+        ui->comboTheme->setCurrentIndex(0); // dark default
+
     int maxFramesDefault;
     if (QSysInfo::WordSize > 32)
     {
@@ -160,6 +170,7 @@ MainSettingsDialog::MainSettingsDialog(QWidget *parent) :
 
     //just for simplicity they all call the same function and that function updates all settings at once
     connect(ui->comboLanguage, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->comboTheme, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSettings()));
     connect(ui->cbDisplayHex, SIGNAL(toggled(bool)), this, SLOT(updateSettings()));
     connect(ui->cbFlowAutoRef, SIGNAL(toggled(bool)), this, SLOT(updateSettings()));
     connect(ui->cbFlowUseTimestamp, SIGNAL(toggled(bool)), this, SLOT(updateSettings()));
@@ -263,6 +274,30 @@ void MainSettingsDialog::updateSettings()
     settings.setValue("Main/FontFixedWidth", ui->cbFontFixedWidth->isChecked());
     settings.setValue("Main/ColorsByCanId", ui->cbColorsByCanId->isChecked());
 
+    // Save theme
+    QString themeValue;
+    switch (ui->comboTheme->currentIndex()) {
+        case 1: themeValue = "light"; break;
+        case 2: themeValue = "highcontrast"; break;
+        default: themeValue = "dark"; break;
+    }
+    QString oldTheme = settings.value("Main/Theme").toString();
+    settings.setValue("Main/Theme", themeValue);
+
     settings.sync();
+
+    // Apply theme immediately if changed
+    if (themeValue != oldTheme) {
+        if (themeValue == "light") {
+            qApp->setStyleSheet(FuturisticTheme::lightStyleSheet());
+            qApp->setPalette(FuturisticTheme::lightPalette());
+        } else if (themeValue == "highcontrast") {
+            qApp->setStyleSheet(FuturisticTheme::highContrastStyleSheet());
+            qApp->setPalette(FuturisticTheme::highContrastPalette());
+        } else {
+            qApp->setStyleSheet(FuturisticTheme::darkStyleSheet());
+            qApp->setPalette(FuturisticTheme::darkPalette());
+        }
+    }
     emit updatedSettings();
 }

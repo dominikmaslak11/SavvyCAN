@@ -11,7 +11,7 @@
     <message>
         <location filename="../ui/bisectwindow.ui" line="20" />
         <source>Splitting Strategy:</source>
-        <translation>Strategia podziaĹ‚u:</translation>
+        <translation>Strategia podziału:</translation>
     </message>
     <message>
         <location filename="../ui/bisectwindow.ui" line="31" />
@@ -41,7 +41,7 @@
     <message>
         <location filename="../ui/bisectwindow.ui" line="130" />
         <source>Save Which Side:</source>
-        <translation>Zapisz ktĂłrÄ… stronÄ™:</translation>
+        <translation>Zapisz którą stronę:</translation>
     </message>
     <message>
         <location filename="../ui/bisectwindow.ui" line="139" />
@@ -51,12 +51,12 @@
     <message>
         <location filename="../ui/bisectwindow.ui" line="149" />
         <source>Upper Section</source>
-        <translation>GĂłrna Sekcja</translation>
+        <translation>Górna Sekcja</translation>
     </message>
     <message>
         <location filename="../ui/bisectwindow.ui" line="166" />
         <source>Number of Frames in Main List:</source>
-        <translation>Liczba ramek w gĹ‚Ăłwnej liĹ›cie:</translation>
+        <translation>Liczba ramek w głównej liście:</translation>
     </message>
     <message>
         <location filename="../ui/bisectwindow.ui" line="178" />
@@ -72,7 +72,7 @@
     <message>
         <location filename="../ui/bisectwindow.ui" line="213" />
         <source>Calculate Split</source>
-        <translation>Oblicz podziaĹ‚</translation>
+        <translation>Oblicz podział</translation>
     </message>
     <message>
         <location filename="../ui/bisectwindow.ui" line="220" />
@@ -82,7 +82,7 @@
     <message>
         <location filename="../ui/bisectwindow.ui" line="227" />
         <source>Replace main list with split frames</source>
-        <translation>ZastÄ…p gĹ‚ĂłwnÄ… listÄ™ podzielonymi ramkami</translation>
+        <translation>Zastąp główną listę podzielonymi ramkami</translation>
     </message>
 </context>
 <context>
@@ -101,12 +101,12 @@
         <location filename="../ui/canbridgewindow.ui" line="35" />
         <location filename="../ui/canbridgewindow.ui" line="69" />
         <source>Enable forwarding</source>
-        <translation>WĹ‚Ä…cz przekazywanie</translation>
+        <translation>Włącz przekazywanie</translation>
     </message>
     <message>
         <location filename="../ui/canbridgewindow.ui" line="45" />
         <source>IDs to forward to side 2</source>
-        <translation>IDs do przekazania na stronÄ™ 2</translation>
+        <translation>IDs do przekazania na stronę 2</translation>
     </message>
     <message>
         <location filename="../ui/canbridgewindow.ui" line="59" />
@@ -116,7 +116,7 @@
     <message>
         <location filename="../ui/canbridgewindow.ui" line="76" />
         <source>IDs to forward to side 1</source>
-        <translation>IDs do przekazania na stronÄ™ 1</translation>
+        <translation>IDs do przekazania na stronę 1</translation>
     </message>
 </context>
 <context>
@@ -160,37 +160,37 @@
     <message>
         <location filename="../ui/connectionwindow.ui" line="17" />
         <source>Connection Settings</source>
-        <translation>Ustawienia poĹ‚Ä…czenia</translation>
+        <translation>Ustawienia połączenia</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="31" />
         <source>Disconnect Selected Device</source>
-        <translation>RozĹ‚Ä…cz wybrane urzÄ…dzenie</translation>
+        <translation>Rozłącz wybrane urządzenie</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="38" />
         <source>Reset Selected Device</source>
-        <translation>Resetuj wybrane urzÄ…dzenie</translation>
+        <translation>Resetuj wybrane urządzenie</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="61" />
         <source>Bus Details:</source>
-        <translation>SzczegĂłĹ‚y magistrali:</translation>
+        <translation>Szczegóły magistrali:</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="72" />
         <source>Speed:</source>
-        <translation>PrÄ™dkoĹ›Ä‡:</translation>
+        <translation>Prędkość:</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="82" />
         <source>Listen Only:</source>
-        <translation>Tylko nasĹ‚uch:</translation>
+        <translation>Tylko nasłuch:</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="96" />
         <source>Enable Bus:</source>
-        <translation>WĹ‚Ä…cz Bus:</translation>
+        <translation>Włącz Bus:</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="110" />
@@ -200,52 +200,52 @@
     <message>
         <location filename="../ui/connectionwindow.ui" line="120" />
         <source>Enable CAN FD:</source>
-        <translation>WĹ‚Ä…cz CAN FD:</translation>
+        <translation>Włącz CAN FD:</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="130" />
         <source>CAN FD Data Rate</source>
-        <translation>SzybkoĹ›Ä‡ danych CAN FD</translation>
+        <translation>Szybkość danych CAN FD</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="171" />
         <source>Connected Devices:</source>
-        <translation>PodĹ‚Ä…czone urzÄ…dzenia:</translation>
+        <translation>Podłączone urządzenia:</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="178" />
         <source>Add New Device Connection</source>
-        <translation>Dodaj nowe poĹ‚Ä…czenie urzÄ…dzenia</translation>
+        <translation>Dodaj nowe połączenie urządzenia</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="224" />
         <source>Enable Console</source>
-        <translation>WĹ‚Ä…cz KonsolÄ™</translation>
+        <translation>Włącz Konsolę</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="231" />
         <source>Device Console:</source>
-        <translation>Konsola urzÄ…dzenia:</translation>
+        <translation>Konsola urządzenia:</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="245" />
         <source>Send:</source>
-        <translation>WyĹ›lij:</translation>
+        <translation>Wyślij:</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="264" />
         <source>Send Hex</source>
-        <translation>WyĹ›lij Hex</translation>
+        <translation>Wyślij Hex</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="274" />
         <source>Send Text</source>
-        <translation>WyĹ›lij tekst</translation>
+        <translation>Wyślij tekst</translation>
     </message>
     <message>
         <location filename="../ui/connectionwindow.ui" line="284" />
         <source>Clear</source>
-        <translation>WyczyĹ›Ä‡</translation>
+        <translation>Wyczyść</translation>
     </message>
 </context>
 <context>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../ui/dbccomparatorwindow.ui" line="117" />
         <source>Save Details to File</source>
-        <translation>Zapisz szczegĂłĹ‚y do pliku</translation>
+        <translation>Zapisz szczegóły do pliku</translation>
     </message>
     <message>
         <location filename="../re/dbccomparatorwindow.cpp" line="91" />
@@ -311,12 +311,12 @@
     <message>
         <location filename="../ui/dbcloadsavewindow.ui" line="14" />
         <source>DBC File Manager</source>
-        <translation>MenedĹĽer plikĂłw DBC</translation>
+        <translation>Menedżer plików DBC</translation>
     </message>
     <message>
         <location filename="../ui/dbcloadsavewindow.ui" line="23" />
         <source>Create new DBC</source>
-        <translation>UtwĂłrz nowy DBC</translation>
+        <translation>Utwórz nowy DBC</translation>
     </message>
     <message>
         <location filename="../ui/dbcloadsavewindow.ui" line="32" />
@@ -326,12 +326,12 @@
     <message>
         <location filename="../ui/dbcloadsavewindow.ui" line="39" />
         <source>Remove</source>
-        <translation>UsuĹ„</translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../ui/dbcloadsavewindow.ui" line="46" />
         <source>Move Up</source>
-        <translation>PrzesuĹ„ w gĂłrÄ™</translation>
+        <translation>Przesuń w górę</translation>
     </message>
     <message>
         <location filename="../ui/dbcloadsavewindow.ui" line="57" />
@@ -346,7 +346,7 @@
     <message>
         <location filename="../ui/dbcloadsavewindow.ui" line="71" />
         <source>Move Down</source>
-        <translation>PrzesuĹ„ w dĂłĹ‚</translation>
+        <translation>Przesuń w dół</translation>
     </message>
     <message>
         <location filename="../dbc/dbcloadsavewindow.cpp" line="162" />
@@ -361,7 +361,7 @@
     <message>
         <location filename="../dbc/dbcloadsavewindow.cpp" line="164" />
         <source>Secret CSV Signal Defs (*.csv)</source>
-        <translation>Sekretne definicje sygnaĹ‚Ăłw CSV (*.csv)</translation>
+        <translation>Sekretne definicje sygnałów CSV (*.csv)</translation>
     </message>
 </context>
 <context>
@@ -374,27 +374,27 @@
     <message>
         <location filename="../ui/dbcmaineditor.ui" line="22" />
         <source>New Node</source>
-        <translation>Nowy wÄ™zeĹ‚</translation>
+        <translation>Nowy węzeł</translation>
     </message>
     <message>
         <location filename="../ui/dbcmaineditor.ui" line="39" />
         <source>New Message</source>
-        <translation>Nowa wiadomoĹ›Ä‡</translation>
+        <translation>Nowa wiadomość</translation>
     </message>
     <message>
         <location filename="../ui/dbcmaineditor.ui" line="56" />
         <source>New Signal</source>
-        <translation>Nowy SygnaĹ‚</translation>
+        <translation>Nowy Sygnał</translation>
     </message>
     <message>
         <location filename="../ui/dbcmaineditor.ui" line="73" />
         <source>Delete</source>
-        <translation>UsuĹ„</translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../ui/dbcmaineditor.ui" line="149" />
         <source>Find:</source>
-        <translation>ZnajdĹş:</translation>
+        <translation>Znajdź:</translation>
     </message>
     <message>
         <location filename="../ui/dbcmaineditor.ui" line="159" />
@@ -419,17 +419,17 @@
     <message>
         <location filename="../dbc/dbcmaineditor.cpp" line="167" />
         <source>Delete currently selected message</source>
-        <translation>UsuĹ„ aktualnie wybranÄ… wiadomoĹ›Ä‡</translation>
+        <translation>Usuń aktualnie wybraną wiadomość</translation>
     </message>
     <message>
         <location filename="../dbc/dbcmaineditor.cpp" line="329" />
         <source>Rebase all messages</source>
-        <translation>Przebazuj wszystkie wiadomoĹ›ci</translation>
+        <translation>Przebazuj wszystkie wiadomości</translation>
     </message>
     <message>
         <location filename="../dbc/dbcmaineditor.cpp" line="330" />
         <source>Rebase all messages in node</source>
-        <translation>Przebazuj wszystkie wiadomoĹ›ci w wÄ™Ĺşle</translation>
+        <translation>Przebazuj wszystkie wiadomości w węźle</translation>
     </message>
     <message>
         <location filename="../dbc/dbcmaineditor.cpp" line="333" />
@@ -439,7 +439,7 @@
     <message>
         <location filename="../dbc/dbcmaineditor.cpp" line="334" />
         <source>Duplicate node and messages</source>
-        <translation>Duplikuj wÄ™zeĹ‚ i wiadomoĹ›ci</translation>
+        <translation>Duplikuj węzeł i wiadomości</translation>
     </message>
 </context>
 <context>
@@ -447,7 +447,7 @@
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="14" />
         <source>Message Editor</source>
-        <translation>Edytor wiadomoĹ›ci</translation>
+        <translation>Edytor wiadomości</translation>
     </message>
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="22" />
@@ -457,12 +457,12 @@
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="35" />
         <source>Message Name:</source>
-        <translation>Nazwa wiadomoĹ›ci:</translation>
+        <translation>Nazwa wiadomości:</translation>
     </message>
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="45" />
         <source>Frame Length:</source>
-        <translation>DĹ‚ugoĹ›Ä‡ ramki:</translation>
+        <translation>Długość ramki:</translation>
     </message>
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="52" />
@@ -472,7 +472,7 @@
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="59" />
         <source>Background Color:</source>
-        <translation>Kolor tĹ‚a:</translation>
+        <translation>Kolor tła:</translation>
     </message>
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="66" />
@@ -482,7 +482,7 @@
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="76" />
         <source>Sending Node:</source>
-        <translation>WÄ™zeĹ‚ nadawczy:</translation>
+        <translation>Węzeł nadawczy:</translation>
     </message>
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="90" />
@@ -493,7 +493,7 @@
     <message>
         <location filename="../ui/dbcmessageeditor.ui" line="106" />
         <source>Sample Colored Output:</source>
-        <translation>PrzykĹ‚adowe kolorowe wyjĹ›cie:</translation>
+        <translation>Przykładowe kolorowe wyjście:</translation>
     </message>
 </context>
 <context>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../ui/dbcnodeduplicateeditor.ui" line="45" />
         <source>Current Base ID:</source>
-        <translation>BieĹĽÄ…ce ID bazowe:</translation>
+        <translation>Bieżące ID bazowe:</translation>
     </message>
     <message>
         <location filename="../ui/dbcnodeduplicateeditor.ui" line="62" />
@@ -530,12 +530,12 @@
     <message>
         <location filename="../ui/dbcnodeeditor.ui" line="14" />
         <source>Node Editor</source>
-        <translation>Edytor wÄ™zĹ‚Ăłw</translation>
+        <translation>Edytor węzłów</translation>
     </message>
     <message>
         <location filename="../ui/dbcnodeeditor.ui" line="22" />
         <source>Node Name:</source>
-        <translation>Nazwa wÄ™zĹ‚a:</translation>
+        <translation>Nazwa węzła:</translation>
     </message>
     <message>
         <location filename="../ui/dbcnodeeditor.ui" line="32" />
@@ -548,12 +548,12 @@
     <message>
         <location filename="../ui/dbcnoderebaseeditor.ui" line="20" />
         <source>Rebase All Node Messages</source>
-        <translation>Rebase wszystkie wiadomoĹ›ci Node</translation>
+        <translation>Rebase wszystkie wiadomości Node</translation>
     </message>
     <message>
         <location filename="../ui/dbcnoderebaseeditor.ui" line="35" />
         <source>Node Name:</source>
-        <translation>Nazwa wÄ™zĹ‚a:</translation>
+        <translation>Nazwa węzła:</translation>
     </message>
     <message>
         <location filename="../ui/dbcnoderebaseeditor.ui" line="52" />
@@ -581,7 +581,7 @@
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="14" />
         <source>Signal Editor</source>
-        <translation>Edytor sygnaĹ‚Ăłw</translation>
+        <translation>Edytor sygnałów</translation>
     </message>
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="26" />
@@ -591,12 +591,12 @@
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="58" />
         <source>Bit Length:</source>
-        <translation>DĹ‚ugoĹ›Ä‡ bitu:</translation>
+        <translation>Długość bitu:</translation>
     </message>
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="68" />
         <source>Byte Order</source>
-        <translation>KolejnoĹ›Ä‡ bajtĂłw</translation>
+        <translation>Kolejność bajtów</translation>
     </message>
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="75" />
@@ -616,17 +616,17 @@
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="102" />
         <source>Bias:</source>
-        <translation>PrzesuniÄ™cie:</translation>
+        <translation>Przesunięcie:</translation>
     </message>
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="112" />
         <source>Min Value:</source>
-        <translation>Minimalna wartoĹ›Ä‡:</translation>
+        <translation>Minimalna wartość:</translation>
     </message>
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="122" />
         <source>Max Value:</source>
-        <translation>Maksymalna wartoĹ›Ä‡:</translation>
+        <translation>Maksymalna wartość:</translation>
     </message>
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="132" />
@@ -666,7 +666,7 @@
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="191" />
         <source>Multiplex value</source>
-        <translation>WartoĹ›Ä‡ multipleksu</translation>
+        <translation>Wartość multipleksu</translation>
     </message>
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="201" />
@@ -683,29 +683,29 @@
         <source>Single values has to be separated by semicolons
 and the value ranges by hypens
 (e.g.: 1;2;5-7)</source>
-        <translation>Pojedyncze wartoĹ›ci muszÄ… byÄ‡ oddzielone Ĺ›rednikami, a zakresy wartoĹ›ci myĹ›lnikami (np.: 1;2;5-7).</translation>
+        <translation>Pojedyncze wartości muszą być oddzielone średnikami, a zakresy wartości myślnikami (np.: 1;2;5-7).</translation>
     </message>
     <message>
         <location filename="../ui/dbcsignaleditor.ui" line="234" />
         <source>Value Table:</source>
-        <translation>Tabela wartoĹ›ci:</translation>
+        <translation>Tabela wartości:</translation>
     </message>
     <message>
         <location filename="../dbc/dbcsignaleditor.cpp" line="295" />
         <source>Error</source>
-        <translation>BĹ‚Ä…d</translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../dbc/dbcsignaleditor.cpp" line="295" />
         <source>The multiplex values field contains errors:
 %1</source>
-        <translation>Pole wartoĹ›ci multiplex zawiera bĹ‚Ä™dy:
+        <translation>Pole wartości multiplex zawiera błędy:
 %1</translation>
     </message>
     <message>
         <location filename="../dbc/dbcsignaleditor.cpp" line="540" />
         <source>Delete currently selected value</source>
-        <translation>UsuĹ„ aktualnie wybranÄ… wartoĹ›Ä‡</translation>
+        <translation>Usuń aktualnie wybraną wartość</translation>
     </message>
 </context>
 <context>
@@ -718,12 +718,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/discretestatewindow.ui" line="20" />
         <source>Candidate Matches:</source>
-        <translation>Dopasowania kandydatĂłw:</translation>
+        <translation>Dopasowania kandydatów:</translation>
     </message>
     <message>
         <location filename="../ui/discretestatewindow.ui" line="38" />
         <source>Number of States:</source>
-        <translation>Liczba stanĂłw:</translation>
+        <translation>Liczba stanów:</translation>
     </message>
     <message>
         <location filename="../ui/discretestatewindow.ui" line="59" />
@@ -738,7 +738,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/discretestatewindow.ui" line="82" />
         <source>Toggle Frequency (Seconds)</source>
-        <translation>CzÄ™stotliwoĹ›Ä‡ przeĹ‚Ä…czania (sekundy)</translation>
+        <translation>Częstotliwość przełączania (sekundy)</translation>
     </message>
     <message>
         <location filename="../ui/discretestatewindow.ui" line="102" />
@@ -758,7 +758,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/discretestatewindow.ui" line="208" />
         <source>Max Bits</source>
-        <translation>Max bitĂłw</translation>
+        <translation>Max bitów</translation>
     </message>
     <message>
         <location filename="../ui/discretestatewindow.ui" line="228" />
@@ -778,7 +778,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/discretestatewindow.ui" line="263" />
         <source>Go for it</source>
-        <translation>ĹšmiaĹ‚o</translation>
+        <translation>śmiało</translation>
     </message>
 </context>
 <context>
@@ -786,7 +786,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="14" />
         <source>File Comparator</source>
-        <translation>PorĂłwnywarka plikĂłw</translation>
+        <translation>Porównywarka plików</translation>
     </message>
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="29" />
@@ -796,7 +796,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="39" />
         <source>Single file to compare to side 2:</source>
-        <translation>Pojedynczy plik do porĂłwnania ze stronÄ… 2:</translation>
+        <translation>Pojedynczy plik do porównania ze stroną 2:</translation>
     </message>
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="49" />
@@ -817,27 +817,27 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="89" />
         <source>One or more files to compare with the single file on side1:</source>
-        <translation>Jeden lub wiÄ™cej plikĂłw do porĂłwnania z pojedynczym plikiem po stronie side1:</translation>
+        <translation>Jeden lub więcej plików do porównania z pojedynczym plikiem po stronie side1:</translation>
     </message>
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="111" />
         <source>Load A File</source>
-        <translation>ZaĹ‚aduj plik</translation>
+        <translation>Załaduj plik</translation>
     </message>
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="118" />
         <source>Clear Frames</source>
-        <translation>WyczyĹ›Ä‡ ramki</translation>
+        <translation>Wyczyść ramki</translation>
     </message>
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="141" />
         <source>Show only data unique to Side 1</source>
-        <translation>PokaĹĽ tylko dane unikalne dla Strony 1</translation>
+        <translation>Pokaż tylko dane unikalne dla Strony 1</translation>
     </message>
     <message>
         <location filename="../ui/filecomparatorwindow.ui" line="157" />
         <source>Save Details to File</source>
-        <translation>Zapisz szczegĂłĹ‚y do pliku</translation>
+        <translation>Zapisz szczegóły do pliku</translation>
     </message>
     <message>
         <location filename="../re/filecomparatorwindow.cpp" line="535" />
@@ -850,7 +850,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/flowviewwindow.ui" line="14" />
         <source>Flow View</source>
-        <translation>Widok przepĹ‚ywu</translation>
+        <translation>Widok przepływu</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="44" />
@@ -860,17 +860,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/flowviewwindow.ui" line="208" />
         <source>Playback Speed:</source>
-        <translation>PrÄ™dkoĹ›Ä‡ odtwarzania:</translation>
+        <translation>Prędkość odtwarzania:</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="240" />
         <source>Loop Playback</source>
-        <translation>Odtwarzanie w pÄ™tli</translation>
+        <translation>Odtwarzanie w pętli</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="253" />
         <source>Current Frame:</source>
-        <translation>BieĹĽÄ…ca ramka:</translation>
+        <translation>Bieżąca ramka:</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="266" />
@@ -880,7 +880,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/flowviewwindow.ui" line="282" />
         <source>Live Mode (No Playback)</source>
-        <translation>Tryb na ĹĽywo (Brak odtwarzania)</translation>
+        <translation>Tryb na żywo (Brak odtwarzania)</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="295" />
@@ -890,7 +890,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/flowviewwindow.ui" line="308" />
         <source>Graph by timestamp</source>
-        <translation>Wykres wedĹ‚ug znacznika czasu</translation>
+        <translation>Wykres według znacznika czasu</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="332" />
@@ -900,7 +900,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/flowviewwindow.ui" line="345" />
         <source>Reference Values (Hex)</source>
-        <translation>WartoĹ›ci odniesienia (Hex)</translation>
+        <translation>Wartości odniesienia (Hex)</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="353" />
@@ -969,12 +969,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/flowviewwindow.ui" line="584" />
         <source>Current Values (Hex)</source>
-        <translation>Aktualne wartoĹ›ci (Hex)</translation>
+        <translation>Aktualne wartości (Hex)</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="799" />
         <source>Data Seek Values</source>
-        <translation>WartoĹ›ci wyszukiwania danych</translation>
+        <translation>Wartości wyszukiwania danych</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="851" />
@@ -1001,7 +1001,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/flowviewwindow.ui" line="1592" />
         <source>Timeline:</source>
-        <translation>OĹ› czasu:</translation>
+        <translation>Oś czasu:</translation>
     </message>
     <message>
         <location filename="../ui/flowviewwindow.ui" line="1607" />
@@ -1042,7 +1042,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/frameinfowindow.ui" line="14" />
         <source>Detailed Frame Information</source>
-        <translation>SzczegĂłĹ‚owe informacje o ramce</translation>
+        <translation>Szczegółowe informacje o ramce</translation>
     </message>
     <message>
         <location filename="../ui/frameinfowindow.ui" line="34" />
@@ -1057,22 +1057,22 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/frameinfowindow.ui" line="68" />
         <source>Details:</source>
-        <translation>SzczegĂłĹ‚y:</translation>
+        <translation>Szczegóły:</translation>
     </message>
     <message>
         <location filename="../ui/frameinfowindow.ui" line="87" />
         <source>Save details to file</source>
-        <translation>Zapisz szczegĂłĹ‚y do pliku</translation>
+        <translation>Zapisz szczegóły do pliku</translation>
     </message>
     <message>
         <location filename="../ui/frameinfowindow.ui" line="94" />
         <source>Interval Histogram</source>
-        <translation>Histogram przedziaĹ‚Ăłw</translation>
+        <translation>Histogram przedziałów</translation>
     </message>
     <message>
         <location filename="../ui/frameinfowindow.ui" line="131" />
         <source>Bytes Graph</source>
-        <translation>Wykres bajtĂłw</translation>
+        <translation>Wykres bajtów</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="367" />
@@ -1088,7 +1088,7 @@ and the value ranges by hypens
     <message>
         <location filename="../re/frameinfowindow.cpp" line="449" />
         <source>   Broadcast Frame</source>
-        <translation>Ramka rozgĹ‚oszeniowa</translation>
+        <translation>Ramka rozgłoszeniowa</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="458" />
@@ -1108,7 +1108,7 @@ and the value ranges by hypens
     <message>
         <location filename="../re/frameinfowindow.cpp" line="469" />
         <source>   SRC: </source>
-        <translation>ĹąrĂłdĹ‚o:</translation>
+        <translation>źródło:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="473" />
@@ -1148,7 +1148,7 @@ and the value ranges by hypens
     <message>
         <location filename="../re/frameinfowindow.cpp" line="501" />
         <source>   Arbitration Id: </source>
-        <translation>ID arbitraĹĽu:</translation>
+        <translation>ID arbitrażu:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="504" />
@@ -1164,7 +1164,7 @@ and the value ranges by hypens
         <location filename="../re/frameinfowindow.cpp" line="680" />
         <location filename="../re/frameinfowindow.cpp" line="682" />
         <source>Data Length: </source>
-        <translation>DĹ‚ugoĹ›Ä‡ danych:</translation>
+        <translation>Długość danych:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="680" />
@@ -1175,32 +1175,32 @@ and the value ranges by hypens
     <message>
         <location filename="../re/frameinfowindow.cpp" line="687" />
         <source>Average inter-frame interval: </source>
-        <translation>Ĺšredni odstÄ™p miÄ™dzyramkowy:</translation>
+        <translation>średni odstęp międzyramkowy:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="690" />
         <source>Minimum inter-frame interval: </source>
-        <translation>Minimalny odstÄ™p miÄ™dzy ramkami:</translation>
+        <translation>Minimalny odstęp między ramkami:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="693" />
         <source>Maximum inter-frame interval: </source>
-        <translation>Maksymalny interwaĹ‚ miÄ™dzyramkowy:</translation>
+        <translation>Maksymalny interwał międzyramkowy:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="696" />
         <source>Inter-frame interval variation: </source>
-        <translation>ZmiennoĹ›Ä‡ odstÄ™pu miÄ™dzyramkowego:</translation>
+        <translation>Zmienność odstępu międzyramkowego:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="699" />
         <source>Interval standard deviation: </source>
-        <translation>Odchylenie standardowe interwaĹ‚u:</translation>
+        <translation>Odchylenie standardowe interwału:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="702" />
         <source>Minimum range to fit 90% of inter-frame intervals: </source>
-        <translation>Minimalny zakres do dopasowania 90% odstÄ™pĂłw miÄ™dzyramkowych:</translation>
+        <translation>Minimalny zakres do dopasowania 90% odstępów międzyramkowych:</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="711" />
@@ -1230,7 +1230,7 @@ and the value ranges by hypens
     <message>
         <location filename="../re/frameinfowindow.cpp" line="754" />
         <source>Bitchange Heatmap</source>
-        <translation>Bitchange mapa ciepĹ‚a</translation>
+        <translation>Bitchange mapa ciepła</translation>
     </message>
     <message>
         <location filename="../re/frameinfowindow.cpp" line="867" />
@@ -1248,27 +1248,27 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="106" />
         <source>Use original frame timing from captured frames</source>
-        <translation>UĹĽyj oryginalnego czasu ramek z przechwyconych ramek.</translation>
+        <translation>Użyj oryginalnego czasu ramek z przechwyconych ramek.</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="113" />
         <source>Wait for traffic before starting playback</source>
-        <translation>Poczekaj na ruch przed rozpoczÄ™ciem odtwarzania</translation>
+        <translation>Poczekaj na ruch przed rozpoczęciem odtwarzania</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="124" />
         <source>Playback speed (ms):</source>
-        <translation>PrÄ™dkoĹ›Ä‡ odtwarzania (ms):</translation>
+        <translation>Prędkość odtwarzania (ms):</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="148" />
         <source>Burst Rate:</source>
-        <translation>SzybkoĹ›Ä‡ serii:</translation>
+        <translation>Szybkość serii:</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="192" />
         <source>Current Playback Item:</source>
-        <translation>BieĹĽÄ…cy element odtwarzania:</translation>
+        <translation>Bieżący element odtwarzania:</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="199" />
@@ -1278,7 +1278,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="210" />
         <source>Current frame:</source>
-        <translation>BieĹĽÄ…ca ramka:</translation>
+        <translation>Bieżąca ramka:</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="217" />
@@ -1288,12 +1288,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="244" />
         <source>Loop Sequence</source>
-        <translation>PÄ™tla sekwencji</translation>
+        <translation>Pętla sekwencji</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="251" />
         <source>Send to CANBus</source>
-        <translation>WyĹ›lij do CANBus</translation>
+        <translation>Wyślij do CANBus</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="281" />
@@ -1308,12 +1308,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="300" />
         <source>Load Captured Data</source>
-        <translation>ZaĹ‚aduj przechwycone dane</translation>
+        <translation>Załaduj przechwycone dane</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="307" />
         <source>Delete Selected</source>
-        <translation>UsuĹ„ zaznaczone</translation>
+        <translation>Usuń zaznaczone</translation>
     </message>
     <message>
         <location filename="../ui/frameplaybackwindow.ui" line="320" />
@@ -1351,17 +1351,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/framesenderwindow.ui" line="29" />
         <source>Enable All</source>
-        <translation>WĹ‚Ä…cz wszystkie</translation>
+        <translation>Włącz wszystkie</translation>
     </message>
     <message>
         <location filename="../ui/framesenderwindow.ui" line="36" />
         <source>Disable All</source>
-        <translation>WyĹ‚Ä…cz wszystko</translation>
+        <translation>Wyłącz wszystko</translation>
     </message>
     <message>
         <location filename="../ui/framesenderwindow.ui" line="43" />
         <source>Clear Grid</source>
-        <translation>WyczyĹ›Ä‡ siatkÄ™</translation>
+        <translation>Wyczyść siatkę</translation>
     </message>
     <message>
         <location filename="../ui/framesenderwindow.ui" line="66" />
@@ -1371,7 +1371,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/framesenderwindow.ui" line="73" />
         <source>Save Grid</source>
-        <translation>Zapisz siatkÄ™</translation>
+        <translation>Zapisz siatkę</translation>
     </message>
 </context>
 <context>
@@ -1384,22 +1384,22 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="24" />
         <source>Interframe Timing (ms)</source>
-        <translation>Czas miÄ™dzyramkowy (ms)</translation>
+        <translation>Czas międzyramkowy (ms)</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="41" />
         <source>Number of data bytes</source>
-        <translation>Liczba bajtĂłw danych</translation>
+        <translation>Liczba bajtów danych</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="62" />
         <source>Burst Rate</source>
-        <translation>SzybkoĹ›Ä‡ serii</translation>
+        <translation>Szybkość serii</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="82" />
         <source>Bus or Buses to Send On</source>
-        <translation>Magistrala lub magistrale do wysyĹ‚ania</translation>
+        <translation>Magistrala lub magistrale do wysyłania</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="98" />
@@ -1420,7 +1420,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="127" />
         <source>ID Selection</source>
-        <translation>WybĂłr ID</translation>
+        <translation>Wybór ID</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="133" />
@@ -1430,12 +1430,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="143" />
         <source>Filter List</source>
-        <translation>Lista filtrĂłw</translation>
+        <translation>Lista filtrów</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="153" />
         <source>Bit Scanning</source>
-        <translation>Skanowanie bitĂłw</translation>
+        <translation>Skanowanie bitów</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="159" />
@@ -1455,7 +1455,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="198" />
         <source>Start ID:</source>
-        <translation>ID poczÄ…tkowe:</translation>
+        <translation>ID początkowe:</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="212" />
@@ -1476,7 +1476,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="254" />
         <source>Byte Values (Always in hexadecimal)</source>
-        <translation>WartoĹ›ci bajtĂłw (zawsze w systemie szesnastkowym)</translation>
+        <translation>Wartości bajtów (zawsze w systemie szesnastkowym)</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="271" />
@@ -1561,7 +1561,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="486" />
         <source>White = Bit always 0, Green = Fuzz Bit, Black = Bit always set, Gray = Past end of data bytes</source>
-        <translation>BiaĹ‚y = Bit zawsze 0, Zielony = Fuzz Bit, Czarny = Bit zawsze ustawiony, Szary = Poza koĹ„cem bajtĂłw danych</translation>
+        <translation>Biały = Bit zawsze 0, Zielony = Fuzz Bit, Czarny = Bit zawsze ustawiony, Szary = Poza końcem bajtów danych</translation>
     </message>
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="493" />
@@ -1586,7 +1586,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/fuzzingwindow.ui" line="527" />
         <source># of sent frames:</source>
-        <translation>Liczba wysĹ‚anych ramek:</translation>
+        <translation>Liczba wysłanych ramek:</translation>
     </message>
 </context>
 <context>
@@ -1599,27 +1599,27 @@ and the value ranges by hypens
     <message>
         <location filename="../re/graphingwindow.cpp" line="662" />
         <source>Move to top left</source>
-        <translation>PrzenieĹ› w lewy gĂłrny rĂłg</translation>
+        <translation>Przenieś w lewy górny róg</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="663" />
         <source>Move to top center</source>
-        <translation>PrzesuĹ„ na gĂłrny Ĺ›rodek</translation>
+        <translation>Przesuń na górny środek</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="664" />
         <source>Move to top right</source>
-        <translation>PrzesuĹ„ w prawy gĂłrny rĂłg</translation>
+        <translation>Przesuń w prawy górny róg</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="665" />
         <source>Move to bottom right</source>
-        <translation>PrzesuĹ„ w prawy dolny rĂłg</translation>
+        <translation>Przesuń w prawy dolny róg</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="666" />
         <source>Move to bottom left</source>
-        <translation>PrzenieĹ› w lewy dolny rĂłg</translation>
+        <translation>Przenieś w lewy dolny róg</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="670" />
@@ -1634,7 +1634,7 @@ and the value ranges by hypens
     <message>
         <location filename="../re/graphingwindow.cpp" line="672" />
         <source>Load graph definitions from file</source>
-        <translation>Wczytaj definicje wykresĂłw z pliku</translation>
+        <translation>Wczytaj definicje wykresów z pliku</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="673" />
@@ -1644,7 +1644,7 @@ and the value ranges by hypens
     <message>
         <location filename="../re/graphingwindow.cpp" line="674" />
         <source>Follow end of graph</source>
-        <translation>ĹšledĹş koniec wykresu</translation>
+        <translation>śledź koniec wykresu</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="677" />
@@ -1659,12 +1659,12 @@ and the value ranges by hypens
     <message>
         <location filename="../re/graphingwindow.cpp" line="682" />
         <source>Remove selected graph</source>
-        <translation>UsuĹ„ wybrany wykres</translation>
+        <translation>Usuń wybrany wykres</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="687" />
         <source>Remove all graphs</source>
-        <translation>UsuĹ„ wszystkie wykresy</translation>
+        <translation>Usuń wszystkie wykresy</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="690" />
@@ -1679,7 +1679,7 @@ and the value ranges by hypens
     <message>
         <location filename="../re/graphingwindow.cpp" line="695" />
         <source>Zoom In</source>
-        <translation>PowiÄ™ksz</translation>
+        <translation>Powiększ</translation>
     </message>
     <message>
         <location filename="../re/graphingwindow.cpp" line="696" />
@@ -1731,37 +1731,37 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/isotp_interpreterwindow.ui" line="20" />
         <source>Interpreted Messages Overview</source>
-        <translation>PrzeglÄ…d interpretowanych wiadomoĹ›ci</translation>
+        <translation>Przegląd interpretowanych wiadomości</translation>
     </message>
     <message>
         <location filename="../ui/isotp_interpreterwindow.ui" line="32" />
         <source>Interpret Previously Captured Frames</source>
-        <translation>Interpretuj wczeĹ›niej przechwycone ramki</translation>
+        <translation>Interpretuj wcześniej przechwycone ramki</translation>
     </message>
     <message>
         <location filename="../ui/isotp_interpreterwindow.ui" line="39" />
         <source>Clear Messages List</source>
-        <translation>WyczyĹ›Ä‡ listÄ™ wiadomoĹ›ci</translation>
+        <translation>Wyczyść listę wiadomości</translation>
     </message>
     <message>
         <location filename="../ui/isotp_interpreterwindow.ui" line="46" />
         <source>Save List</source>
-        <translation>Zapisz listÄ™</translation>
+        <translation>Zapisz listę</translation>
     </message>
     <message>
         <location filename="../ui/isotp_interpreterwindow.ui" line="55" />
         <source>Show incomplete and/or corrupted messages</source>
-        <translation>PokaĹĽ niekompletne i/lub uszkodzone wiadomoĹ›ci</translation>
+        <translation>Pokaż niekompletne i/lub uszkodzone wiadomości</translation>
     </message>
     <message>
         <location filename="../ui/isotp_interpreterwindow.ui" line="62" />
         <source>Use extended addressing</source>
-        <translation>UĹĽyj rozszerzonego adresowania</translation>
+        <translation>Użyj rozszerzonego adresowania</translation>
     </message>
     <message>
         <location filename="../ui/isotp_interpreterwindow.ui" line="73" />
         <source>Data Details of Selected Message</source>
-        <translation>SzczegĂłĹ‚y danych wybranej wiadomoĹ›ci</translation>
+        <translation>Szczegóły danych wybranej wiadomości</translation>
     </message>
     <message>
         <location filename="../ui/isotp_interpreterwindow.ui" line="94" />
@@ -1786,7 +1786,7 @@ and the value ranges by hypens
     <message>
         <location filename="../re/isotp_interpreterwindow.cpp" line="298" />
         <source>Raw Payload: </source>
-        <translation>Surowa zawartoĹ›Ä‡:</translation>
+        <translation>Surowa zawartość:</translation>
     </message>
 </context>
 <context>
@@ -1794,72 +1794,72 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="14" />
         <source>Main Settings</source>
-        <translation>Ustawienia gĹ‚Ăłwne</translation>
+        <translation>Ustawienia główne</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="22" />
         <source>Main Form Settings:</source>
-        <translation>Ustawienia gĹ‚Ăłwnego formularza:</translation>
+        <translation>Ustawienia głównego formularza:</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="28" />
         <source>Autoscroll main frame window by default</source>
-        <translation>Autoscroll gĹ‚Ăłwnego okna ramki domyĹ›lnie</translation>
+        <translation>Autoscroll głównego okna ramki domyślnie</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="37" />
         <source>Maximum data bytes per line</source>
-        <translation>Maksymalna liczba bajtĂłw danych na liniÄ™</translation>
+        <translation>Maksymalna liczba bajtów danych na linię</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="61" />
         <source>Language</source>
-        <translation>JÄ™zyk</translation>
+        <translation>Język</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="76" />
         <source>General Settings:</source>
-        <translation>Ustawienia ogĂłlne:</translation>
+        <translation>Ustawienia ogólne:</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="82" />
         <source>Save/Restore window positions and sizes</source>
-        <translation>Zapisz/PrzywrĂłÄ‡ pozycje i rozmiary okien</translation>
+        <translation>Zapisz/Przywróć pozycje i rozmiary okien</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="89" />
         <source>Save/Restore CAN bus connections</source>
-        <translation>Zapisz/PrzywrĂłÄ‡ poĹ‚Ä…czenia magistrali CAN</translation>
+        <translation>Zapisz/Przywróć połączenia magistrali CAN</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="96" />
         <source>Display values as hexadecimal</source>
-        <translation>WyĹ›wietlaj wartoĹ›ci jako szesnastkowe</translation>
+        <translation>Wyświetlaj wartości jako szesnastkowe</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="103" />
         <source>Require validation of GVRET connection</source>
-        <translation>Wymagaj walidacji poĹ‚Ä…czenia GVRET</translation>
+        <translation>Wymagaj walidacji połączenia GVRET</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="110" />
         <source>Use filtered frames in sub-windows</source>
-        <translation>UĹĽywaj filtrowanych ramek w podoknach</translation>
+        <translation>Używaj filtrowanych ramek w podoknach</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="117" />
         <source>Color rows by CAN ID</source>
-        <translation>Koloruj wiersze wedĹ‚ug ID CAN</translation>
+        <translation>Koloruj wiersze według ID CAN</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="124" />
         <source>OpenGL Accelerated AntiAliased Graphing</source>
-        <translation>OpenGL Przyspieszone WygĹ‚adzane Wykresy</translation>
+        <translation>OpenGL Przyspieszone Wygładzane Wykresy</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="139" />
         <source>CAN Frame Pre-allocation Size</source>
-        <translation>Rozmiar wstÄ™pnej alokacji ramek CAN</translation>
+        <translation>Rozmiar wstępnej alokacji ramek CAN</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="164" />
@@ -1869,7 +1869,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="170" />
         <source>Seconds/Milli/Micro are dongle based</source>
-        <translation>Seconds/Milli/Micro sÄ… oparte na donglu</translation>
+        <translation>Seconds/Milli/Micro są oparte na donglu</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="179" />
@@ -1894,12 +1894,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="224" />
         <source>Time Format String:</source>
-        <translation>CiÄ…g formatu czasu:</translation>
+        <translation>Ciąg formatu czasu:</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="236" />
         <source>Use absolute time in decoded CSV output</source>
-        <translation>UĹĽyj czasu absolutnego w zdekodowanym wyjĹ›ciu CSV</translation>
+        <translation>Użyj czasu absolutnego w zdekodowanym wyjściu CSV</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="246" />
@@ -1909,7 +1909,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="252" />
         <source>Use fixed-width font in tables</source>
-        <translation>UĹĽyj czcionki o staĹ‚ej szerokoĹ›ci w tabelach</translation>
+        <translation>Użyj czcionki o stałej szerokości w tabelach</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="259" />
@@ -1924,18 +1924,18 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="288" />
         <source>Use timestamp mode by default</source>
-        <translation>UĹĽywaj trybu timestamp domyĹ›lnie</translation>
+        <translation>Używaj trybu timestamp domyślnie</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="295" />
         <source>Set Auto Reference by default</source>
-        <translation>Ustaw domyĹ›lnie Auto Reference</translation>
+        <translation>Ustaw domyślnie Auto Reference</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="302" />
         <location filename="../ui/mainsettingsdialog.ui" line="416" />
         <source>Hexadecimal Graph Y Axis</source>
-        <translation>OĹ› Y wykresu szesnastkowego</translation>
+        <translation>Oś Y wykresu szesnastkowego</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="332" />
@@ -1945,17 +1945,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="338" />
         <source>Loop by default</source>
-        <translation>DomyĹ›lnie zapÄ™tlaj</translation>
+        <translation>Domyślnie zapętlaj</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="347" />
         <source>Default playback speed (ms)</source>
-        <translation>DomyĹ›lna prÄ™dkoĹ›Ä‡ odtwarzania (ms)</translation>
+        <translation>Domyślna prędkość odtwarzania (ms)</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="365" />
         <source>Default Sending Bus</source>
-        <translation>DomyĹ›lna magistrala wysyĹ‚ania</translation>
+        <translation>Domyślna magistrala wysyłania</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="380" />
@@ -1965,22 +1965,22 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="386" />
         <source>Label DBC messages by default</source>
-        <translation>Oznaczaj komunikaty DBC domyĹ›lnie</translation>
+        <translation>Oznaczaj komunikaty DBC domyślnie</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="393" />
         <source>Ignore DBC message colors</source>
-        <translation>Ignoruj kolory komunikatĂłw DBC</translation>
+        <translation>Ignoruj kolory komunikatów DBC</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="403" />
         <source>File Info and Comparator Settings:</source>
-        <translation>Ustawienia informacji o pliku i porĂłwnywarki:</translation>
+        <translation>Ustawienia informacji o pliku i porównywarki:</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="409" />
         <source>Auto expand all nodes</source>
-        <translation>Automatycznie rozwijaj wszystkie wÄ™zĹ‚y</translation>
+        <translation>Automatycznie rozwijaj wszystkie węzły</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="429" />
@@ -2000,17 +2000,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="455" />
         <source>User Name:</source>
-        <translation>Nazwa uĹĽytkownika:</translation>
+        <translation>Nazwa użytkownika:</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="465" />
         <source>Password</source>
-        <translation>HasĹ‚o</translation>
+        <translation>Hasło</translation>
     </message>
     <message>
         <location filename="../ui/mainsettingsdialog.ui" line="482" />
         <source>Some settings will not take effect until the application is restarted</source>
-        <translation>NiektĂłre ustawienia nie zacznÄ… obowiÄ…zywaÄ‡ do czasu ponownego uruchomienia aplikacji.</translation>
+        <translation>Niektóre ustawienia nie zaczną obowiązywać do czasu ponownego uruchomienia aplikacji.</translation>
     </message>
 </context>
 <context>
@@ -2023,17 +2023,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="69" />
         <source>Remote Connection Active:</source>
-        <translation>Zdalne poĹ‚Ä…czenie aktywne:</translation>
+        <translation>Zdalne połączenie aktywne:</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="172" />
         <source>Total Frames Captured:</source>
-        <translation>CaĹ‚kowita liczba przechwyconych ramek:</translation>
+        <translation>Całkowita liczba przechwyconych ramek:</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="198" />
         <source>Frames Per Second:</source>
-        <translation>Klatki na sekundÄ™:</translation>
+        <translation>Klatki na sekundę:</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="218" />
@@ -2048,7 +2048,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="235" />
         <source>Clear Frames</source>
-        <translation>WyczyĹ›Ä‡ ramki</translation>
+        <translation>Wyczyść ramki</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="242" />
@@ -2073,12 +2073,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="280" />
         <source>Expand All Rows</source>
-        <translation>RozwiĹ„ wszystkie wiersze</translation>
+        <translation>Rozwiń wszystkie wiersze</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="287" />
         <source>Collapse All Rows</source>
-        <translation>ZwiĹ„ wszystkie wiersze</translation>
+        <translation>Zwiń wszystkie wiersze</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="294" />
@@ -2103,12 +2103,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="390" />
         <source>RE Tools</source>
-        <translation>RE NarzÄ™dzia</translation>
+        <translation>RE Narzędzia</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="407" />
         <source>Send Frames</source>
-        <translation>WyĹ›lij ramki</translation>
+        <translation>Wyślij ramki</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="420" />
@@ -2118,7 +2118,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="441" />
         <source>Connection</source>
-        <translation>PoĹ‚Ä…czenie</translation>
+        <translation>Połączenie</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="453" />
@@ -2133,7 +2133,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="463" />
         <source>Flow View</source>
-        <translation>Widok przepĹ‚ywu</translation>
+        <translation>Widok przepływu</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="468" />
@@ -2143,12 +2143,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="473" />
         <source>New Graphing Window</source>
-        <translation>Nowe okno wykresĂłw</translation>
+        <translation>Nowe okno wykresów</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="478" />
         <source>Load Log File</source>
-        <translation>Wczytaj plik logĂłw</translation>
+        <translation>Wczytaj plik logów</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="481" />
@@ -2173,7 +2173,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="501" />
         <source>Edit Messages/Signals</source>
-        <translation>Edytuj wiadomoĹ›ci/sygnaĹ‚y</translation>
+        <translation>Edytuj wiadomości/sygnały</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="506" />
@@ -2188,12 +2188,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="516" />
         <source>Exit Application</source>
-        <translation>ZakoĹ„cz aplikacjÄ™</translation>
+        <translation>Zakończ aplikację</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="521" />
         <source>File Comparison</source>
-        <translation>PorĂłwnanie plikĂłw</translation>
+        <translation>Porównanie plików</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="526" />
@@ -2208,27 +2208,27 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="536" />
         <source>Load Filter Definition</source>
-        <translation>Wczytaj definicjÄ™ filtra</translation>
+        <translation>Wczytaj definicję filtra</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="541" />
         <source>Save Filter Definition</source>
-        <translation>Zapisz definicjÄ™ filtra</translation>
+        <translation>Zapisz definicję filtra</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="546" />
         <source>Firmware Uploader</source>
-        <translation>PrzesyĹ‚anie firmware</translation>
+        <translation>Przesyłanie firmware</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="551" />
         <source>Open Connection Window</source>
-        <translation>OtwĂłrz okno poĹ‚Ä…czenia</translation>
+        <translation>Otwórz okno połączenia</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="556" />
         <source>Connect</source>
-        <translation>PoĹ‚Ä…cz</translation>
+        <translation>Połącz</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="561" />
@@ -2248,7 +2248,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="576" />
         <source>DBC File Manager</source>
-        <translation>MenedĹĽer plikĂłw DBC</translation>
+        <translation>Menedżer plików DBC</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="581" />
@@ -2273,7 +2273,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="601" />
         <source>Firmware Update</source>
-        <translation>Aktualizacja oprogramowania ukĹ‚adowego</translation>
+        <translation>Aktualizacja oprogramowania układowego</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="606" />
@@ -2283,17 +2283,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="611" />
         <source>Capture Bisector</source>
-        <translation>PrzechwyÄ‡ dwusiecznÄ…</translation>
+        <translation>Przechwyć dwusieczną</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="616" />
         <source>Signal Viewer</source>
-        <translation>PrzeglÄ…darka sygnaĹ‚Ăłw</translation>
+        <translation>Przeglądarka sygnałów</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="621" />
         <source>Start Continuous Logging</source>
-        <translation>Rozpocznij ciÄ…gĹ‚e logowanie</translation>
+        <translation>Rozpocznij ciągłe logowanie</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="626" />
@@ -2303,7 +2303,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/mainwindow.ui" line="631" />
         <source>DBC Comparison</source>
-        <translation>PorĂłwnanie DBC</translation>
+        <translation>Porównanie DBC</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="636" />
@@ -2336,7 +2336,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/motorcontrollerconfigwindow.ui" line="39" />
         <source>Refresh</source>
-        <translation>OdĹ›wieĹĽ</translation>
+        <translation>Odśwież</translation>
     </message>
     <message>
         <location filename="../ui/motorcontrollerconfigwindow.ui" line="46" />
@@ -2349,12 +2349,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="14" />
         <source>New Connection</source>
-        <translation>Nowe poĹ‚Ä…czenie</translation>
+        <translation>Nowe połączenie</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="20" />
         <source>Connection Type</source>
-        <translation>Typ poĹ‚Ä…czenia</translation>
+        <translation>Typ połączenia</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="29" />
@@ -2369,17 +2369,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="46" />
         <source>MQTT Connection</source>
-        <translation>PoĹ‚Ä…czenie MQTT</translation>
+        <translation>Połączenie MQTT</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="53" />
         <source>Serial Connection (GVRET)</source>
-        <translation>PoĹ‚Ä…czenie szeregowe (GVRET)</translation>
+        <translation>Połączenie szeregowe (GVRET)</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="63" />
         <source>Network connection (GVRET)</source>
-        <translation>PoĹ‚Ä…czenie sieciowe (GVRET)</translation>
+        <translation>Połączenie sieciowe (GVRET)</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="70" />
@@ -2394,12 +2394,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="84" />
         <source>CANlogserver</source>
-        <translation>Serwer logĂłw CAN</translation>
+        <translation>Serwer logów CAN</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="94" />
         <source>SerialBus Device Type:</source>
-        <translation>Typ urzÄ…dzenia SerialBus:</translation>
+        <translation>Typ urządzenia SerialBus:</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="110" />
@@ -2409,12 +2409,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="136" />
         <source>Serial Port Speed:</source>
-        <translation>PrÄ™dkoĹ›Ä‡ portu szeregowego:</translation>
+        <translation>Prędkość portu szeregowego:</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="146" />
         <source>CAN Bus Speed:</source>
-        <translation>PrÄ™dkoĹ›Ä‡ magistrali CAN:</translation>
+        <translation>Prędkość magistrali CAN:</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="156" />
@@ -2424,12 +2424,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="163" />
         <source>CAN-FD data rate</source>
-        <translation>PrÄ™dkoĹ›Ä‡ danych CAN-FD</translation>
+        <translation>Prędkość danych CAN-FD</translation>
     </message>
     <message>
         <location filename="../ui/newconnectiondialog.ui" line="186" />
         <source>Create New Connection</source>
-        <translation>UtwĂłrz nowe poĹ‚Ä…czenie</translation>
+        <translation>Utwórz nowe połączenie</translation>
     </message>
 </context>
 <context>
@@ -2452,37 +2452,37 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newgraphdialog.ui" line="44" />
         <source>Start Bit:</source>
-        <translation>Bit poczÄ…tkowy:</translation>
+        <translation>Bit początkowy:</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="84" />
         <source>Graph a DBC Signal:</source>
-        <translation>Wykres sygnaĹ‚u DBC:</translation>
+        <translation>Wykres sygnału DBC:</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="94" />
         <source>Node:</source>
-        <translation>WÄ™zeĹ‚:</translation>
+        <translation>Węzeł:</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="113" />
         <source>Message:</source>
-        <translation>WiadomoĹ›Ä‡:</translation>
+        <translation>Wiadomość:</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="132" />
         <source>Signal:</source>
-        <translation>SygnaĹ‚:</translation>
+        <translation>Sygnał:</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="145" />
         <source>Copy Signal Parameters</source>
-        <translation>Kopiuj parametry sygnaĹ‚u</translation>
+        <translation>Kopiuj parametry sygnału</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="193" />
         <source>Bit Len:</source>
-        <translation>DĹ‚ugoĹ›Ä‡ bitu:</translation>
+        <translation>Długość bitu:</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="203" />
@@ -2507,7 +2507,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newgraphdialog.ui" line="244" />
         <source>Bias:</source>
-        <translation>PrzesuniÄ™cie:</translation>
+        <translation>Przesunięcie:</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="254" />
@@ -2522,7 +2522,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newgraphdialog.ui" line="274" />
         <source>Associated Bus</source>
-        <translation>PowiÄ…zana magistrala</translation>
+        <translation>Powiązana magistrala</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="281" />
@@ -2537,12 +2537,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/newgraphdialog.ui" line="313" />
         <source>Point Style</source>
-        <translation>Styl punktĂłw</translation>
+        <translation>Styl punktów</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="323" />
         <source>Line Thickness</source>
-        <translation>GruboĹ›Ä‡ linii</translation>
+        <translation>Grubość linii</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="340" />
@@ -2553,12 +2553,12 @@ and the value ranges by hypens
         <location filename="../ui/newgraphdialog.ui" line="350" />
         <location filename="../ui/newgraphdialog.ui" line="370" />
         <source>CHANGE</source>
-        <translation>ZMIEĹ�</translation>
+        <translation>ZMIE</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="360" />
         <source>Fill Color</source>
-        <translation>Kolor wypeĹ‚nienia</translation>
+        <translation>Kolor wypełnienia</translation>
     </message>
     <message>
         <location filename="../ui/newgraphdialog.ui" line="384" />
@@ -2571,14 +2571,14 @@ and the value ranges by hypens
     <message>
         <location filename="../dbc/dbc_classes.cpp" line="111" />
         <source>The %1 part contains more than one '-' sign</source>
-        <translation>CzÄ™Ĺ›Ä‡ %1 zawiera wiÄ™cej niĹĽ jeden znak '-</translation>
+        <translation>Część %1 zawiera więcej niż jeden znak '-</translation>
     </message>
     <message>
         <location filename="../dbc/dbc_classes.cpp" line="117" />
         <location filename="../dbc/dbc_classes.cpp" line="123" />
         <location filename="../dbc/dbc_classes.cpp" line="131" />
         <source>Unable to parse the %1 part to integer</source>
-        <translation>Nie moĹĽna przeanalizowaÄ‡ czÄ™Ĺ›ci %1 na liczbÄ™ caĹ‚kowitÄ…</translation>
+        <translation>Nie można przeanalizować części %1 na liczbę całkowitą</translation>
     </message>
 </context>
 <context>
@@ -2591,37 +2591,37 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/rangestatewindow.ui" line="22" />
         <source>Candidate Signals:</source>
-        <translation>SygnaĹ‚y kandydujÄ…ce:</translation>
+        <translation>Sygnały kandydujące:</translation>
     </message>
     <message>
         <location filename="../ui/rangestatewindow.ui" line="32" />
         <source>Graphical Representation of Selected Signal:</source>
-        <translation>Graficzna reprezentacja wybranego sygnaĹ‚u:</translation>
+        <translation>Graficzna reprezentacja wybranego sygnału:</translation>
     </message>
     <message>
         <location filename="../ui/rangestatewindow.ui" line="55" />
         <source>Sensitivity</source>
-        <translation>CzuĹ‚oĹ›Ä‡</translation>
+        <translation>Czułość</translation>
     </message>
     <message>
         <location filename="../ui/rangestatewindow.ui" line="75" />
         <source>Min Signal Size:</source>
-        <translation>Minimalny rozmiar sygnaĹ‚u:</translation>
+        <translation>Minimalny rozmiar sygnału:</translation>
     </message>
     <message>
         <location filename="../ui/rangestatewindow.ui" line="92" />
         <source>Max Signal Size:</source>
-        <translation>Maksymalny rozmiar sygnaĹ‚u:</translation>
+        <translation>Maksymalny rozmiar sygnału:</translation>
     </message>
     <message>
         <location filename="../ui/rangestatewindow.ui" line="109" />
         <source>Granularity:</source>
-        <translation>GranularnoĹ›Ä‡:</translation>
+        <translation>Granularność:</translation>
     </message>
     <message>
         <location filename="../ui/rangestatewindow.ui" line="126" />
         <source>Signal Mode:</source>
-        <translation>Tryb sygnaĹ‚u:</translation>
+        <translation>Tryb sygnału:</translation>
     </message>
     <message>
         <location filename="../ui/rangestatewindow.ui" line="136" />
@@ -2646,7 +2646,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/rangestatewindow.ui" line="191" />
         <source>Recalculate Candidate Signals</source>
-        <translation>Przelicz sygnaĹ‚y kandydujÄ…ce</translation>
+        <translation>Przelicz sygnały kandydujące</translation>
     </message>
     <message>
         <location filename="../re/rangestatewindow.cpp" line="24" />
@@ -2662,17 +2662,17 @@ and the value ranges by hypens
         <location filename="../re/rangestatewindow.cpp" line="26" />
         <location filename="../re/rangestatewindow.cpp" line="30" />
         <source>Try Both</source>
-        <translation>SprĂłbuj oba</translation>
+        <translation>Spróbuj oba</translation>
     </message>
     <message>
         <location filename="../re/rangestatewindow.cpp" line="28" />
         <source>Signed Value</source>
-        <translation>WartoĹ›Ä‡ ze znakiem</translation>
+        <translation>Wartość ze znakiem</translation>
     </message>
     <message>
         <location filename="../re/rangestatewindow.cpp" line="29" />
         <source>Unsigned Value</source>
-        <translation>wartoĹ›Ä‡ bez znaku</translation>
+        <translation>wartość bez znaku</translation>
     </message>
 </context>
 <context>
@@ -2690,7 +2690,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/scriptingwindow.ui" line="47" />
         <source>Loaded Scripts</source>
-        <translation>ZaĹ‚adowane skrypty</translation>
+        <translation>Załadowane skrypty</translation>
     </message>
     <message>
         <location filename="../ui/scriptingwindow.ui" line="62" />
@@ -2700,7 +2700,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/scriptingwindow.ui" line="69" />
         <source>&amp;Del</source>
-        <translation>&amp;UsuĹ„</translation>
+        <translation>&amp;Usuń</translation>
     </message>
     <message>
         <location filename="../ui/scriptingwindow.ui" line="76" />
@@ -2710,7 +2710,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/scriptingwindow.ui" line="95" />
         <source>Script Editing Window</source>
-        <translation>Okno edycji skryptĂłw</translation>
+        <translation>Okno edycji skryptów</translation>
     </message>
     <message>
         <location filename="../ui/scriptingwindow.ui" line="107" />
@@ -2725,12 +2725,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/scriptingwindow.ui" line="121" />
         <source>&amp;Revert</source>
-        <translation>&amp;PrzywrĂłÄ‡</translation>
+        <translation>&amp;Przywróć</translation>
     </message>
     <message>
         <location filename="../ui/scriptingwindow.ui" line="128" />
         <source>R&amp;eload</source>
-        <translation>Prz&amp;eĹ‚aduj</translation>
+        <translation>Prz&amp;eładuj</translation>
     </message>
     <message>
         <location filename="../ui/scriptingwindow.ui" line="135" />
@@ -2740,7 +2740,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/scriptingwindow.ui" line="150" />
         <source>Log Window</source>
-        <translation>Okno logĂłw</translation>
+        <translation>Okno logów</translation>
     </message>
     <message>
         <location filename="../ui/scriptingwindow.ui" line="163" />
@@ -2750,7 +2750,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/scriptingwindow.ui" line="176" />
         <source>Clear Log &amp;Window</source>
-        <translation>WyczyĹ›Ä‡ log &amp;Okno</translation>
+        <translation>Wyczyść log &amp;Okno</translation>
     </message>
     <message>
         <location filename="../ui/scriptingwindow.ui" line="183" />
@@ -2763,32 +2763,32 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="14" />
         <source>Signal Viewer</source>
-        <translation>PrzeglÄ…darka sygnaĹ‚Ăłw</translation>
+        <translation>Przeglądarka sygnałów</translation>
     </message>
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="44" />
         <source>Remove Selected Signal</source>
-        <translation>UsuĹ„ wybrany sygnaĹ‚</translation>
+        <translation>Usuń wybrany sygnał</translation>
     </message>
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="55" />
         <source>Node</source>
-        <translation>WÄ™zeĹ‚</translation>
+        <translation>Węzeł</translation>
     </message>
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="65" />
         <source>Message</source>
-        <translation>WiadomoĹ›Ä‡</translation>
+        <translation>Wiadomość</translation>
     </message>
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="75" />
         <source>Signal</source>
-        <translation>SygnaĹ‚</translation>
+        <translation>Sygnał</translation>
     </message>
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="85" />
         <source>Add To Viewer</source>
-        <translation>Dodaj do przeglÄ…darki</translation>
+        <translation>Dodaj do przeglądarki</translation>
     </message>
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="105" />
@@ -2803,12 +2803,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="119" />
         <source>Append to View</source>
-        <translation>DoĹ‚Ä…cz do widoku</translation>
+        <translation>Dołącz do widoku</translation>
     </message>
     <message>
         <location filename="../ui/signalviewerwindow.ui" line="126" />
         <source>Clear View</source>
-        <translation>WyczyĹ›Ä‡ widok</translation>
+        <translation>Wyczyść widok</translation>
     </message>
 </context>
 <context>
@@ -2824,7 +2824,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="14" />
         <source>UDS Firmware Uploader</source>
-        <translation>PrzesyĹ‚anie oprogramowania ukĹ‚adowego UDS</translation>
+        <translation>Przesyłanie oprogramowania układowego UDS</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="22" />
@@ -2839,17 +2839,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="41" />
         <source>Path to Tesla firmware root directory</source>
-        <translation>ĹšcieĹĽka do katalogu gĹ‚Ăłwnego firmware Tesli</translation>
+        <translation>ścieżka do katalogu głównego firmware Tesli</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="50" />
         <source>Browse...</source>
-        <translation>PrzeglÄ…daj...</translation>
+        <translation>Przeglądaj...</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="57" />
         <source>Reload</source>
-        <translation>PrzeĹ‚aduj</translation>
+        <translation>Przeładuj</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="64" />
@@ -2869,7 +2869,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="88" />
         <source>Target Request ID:</source>
-        <translation>Docelowe ID ĹĽÄ…dania:</translation>
+        <translation>Docelowe ID żądania:</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="95" />
@@ -2879,7 +2879,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="102" />
         <source>Device Build ID:</source>
-        <translation>ID kompilacji urzÄ…dzenia:</translation>
+        <translation>ID kompilacji urządzenia:</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="111" />
@@ -2894,7 +2894,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="125" />
         <source>Lookup Version</source>
-        <translation>SprawdĹş wersjÄ™</translation>
+        <translation>Sprawdź wersję</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="134" />
@@ -2914,12 +2914,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="155" />
         <source>Security Level:</source>
-        <translation>Poziom bezpieczeĹ„stwa:</translation>
+        <translation>Poziom bezpieczeństwa:</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="177" />
         <source>Enable Security</source>
-        <translation>WĹ‚Ä…cz BezpieczeĹ„stwo</translation>
+        <translation>Włącz Bezpieczeństwo</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="189" />
@@ -2939,12 +2939,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="212" />
         <source>No file loaded</source>
-        <translation>Nie zaĹ‚adowano pliku</translation>
+        <translation>Nie załadowano pliku</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="235" />
         <source>Start Upload</source>
-        <translation>Rozpocznij przesyĹ‚anie</translation>
+        <translation>Rozpocznij przesyłanie</translation>
     </message>
     <message>
         <location filename="../ui/udsfirmwareuploaderwindow.ui" line="245" />
@@ -2972,7 +2972,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsscanwindow.ui" line="41" />
         <source>Delete</source>
-        <translation>UsuĹ„</translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="52" />
@@ -2987,7 +2987,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsscanwindow.ui" line="76" />
         <source>Starting ID</source>
-        <translation>PoczÄ…tkowy ID</translation>
+        <translation>Początkowy ID</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="83" />
@@ -3003,17 +3003,17 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsscanwindow.ui" line="103" />
         <source>Ending ID</source>
-        <translation>KoĹ„cowe ID</translation>
+        <translation>Końcowe ID</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="130" />
         <source>Show "No Reply"</source>
-        <translation>PokaĹĽ "Brak odpowiedzi</translation>
+        <translation>Pokaż "Brak odpowiedzi</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="140" />
         <source>Allow adaptive reply offset</source>
-        <translation>Zezwalaj na adaptacyjne przesuniÄ™cie odpowiedzi</translation>
+        <translation>Zezwalaj na adaptacyjne przesunięcie odpowiedzi</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="156" />
@@ -3023,7 +3023,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsscanwindow.ui" line="166" />
         <source>Maximum reply delay (ms)</source>
-        <translation>Maksymalne opĂłĹşnienie odpowiedzi (ms)</translation>
+        <translation>Maksymalne opóźnienie odpowiedzi (ms)</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="189" />
@@ -3043,7 +3043,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsscanwindow.ui" line="260" />
         <source>Subfunct Len:</source>
-        <translation>Podfunkcja DĹ‚:</translation>
+        <translation>Podfunkcja Dł:</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="283" />
@@ -3053,22 +3053,22 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/udsscanwindow.ui" line="306" />
         <source>Upper Bound:</source>
-        <translation>GĂłrna granica:</translation>
+        <translation>Górna granica:</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="332" />
         <source>Increment</source>
-        <translation>ZwiÄ™ksz</translation>
+        <translation>Zwiększ</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="362" />
         <source>Lower Service:</source>
-        <translation>NiĹĽsza usĹ‚uga:</translation>
+        <translation>Niższa usługa:</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="385" />
         <source>Upper Service:</source>
-        <translation>UsĹ‚uga gĂłrna:</translation>
+        <translation>Usługa górna:</translation>
     </message>
     <message>
         <location filename="../ui/udsscanwindow.ui" line="432" />
@@ -3094,7 +3094,7 @@ and the value ranges by hypens
         <location filename="../re/udsscanwindow.cpp" line="199" />
         <location filename="../re/udsscanwindow.cpp" line="261" />
         <source>UDS Test Specification (*.uds *.UDS)</source>
-        <translation>Specyfikacja testĂłw UDS (*.uds *.UDS)</translation>
+        <translation>Specyfikacja testów UDS (*.uds *.UDS)</translation>
     </message>
     <message>
         <location filename="../re/udsscanwindow.cpp" line="523" />
@@ -3112,7 +3112,7 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/snifferwindow.ui" line="46" />
         <source>Notch</source>
-        <translation>WyciÄ™cie</translation>
+        <translation>Wycięcie</translation>
     </message>
     <message>
         <location filename="../ui/snifferwindow.ui" line="65" />
@@ -3122,12 +3122,12 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/snifferwindow.ui" line="72" />
         <source>Mute notched bits</source>
-        <translation>Wycisz naciÄ™te bity</translation>
+        <translation>Wycisz nacięte bity</translation>
     </message>
     <message>
         <location filename="../ui/snifferwindow.ui" line="79" />
         <source>Notch Interval</source>
-        <translation>OdstÄ™p naciÄ™cia</translation>
+        <translation>Odstęp nacięcia</translation>
     </message>
     <message>
         <location filename="../ui/snifferwindow.ui" line="89" />
@@ -3138,22 +3138,22 @@ and the value ranges by hypens
     <message>
         <location filename="../ui/snifferwindow.ui" line="137" />
         <source>Expire Interval</source>
-        <translation>InterwaĹ‚ wygaĹ›niÄ™cia</translation>
+        <translation>Interwał wygaśnięcia</translation>
     </message>
     <message>
         <location filename="../ui/snifferwindow.ui" line="166" />
         <source>Never Expire IDs</source>
-        <translation>Nigdy nie wygasajÄ…ce ID</translation>
+        <translation>Nigdy nie wygasające ID</translation>
     </message>
     <message>
         <location filename="../ui/snifferwindow.ui" line="192" />
         <source>Fade inactive bytes</source>
-        <translation>PrzygaĹ› nieaktywne bajty</translation>
+        <translation>Przygaś nieaktywne bajty</translation>
     </message>
     <message>
         <location filename="../ui/snifferwindow.ui" line="199" />
         <source>View Bits</source>
-        <translation>PokaĹĽ bity</translation>
+        <translation>Pokaż bity</translation>
     </message>
     <message>
         <location filename="../ui/snifferwindow.ui" line="234" />

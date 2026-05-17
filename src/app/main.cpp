@@ -36,10 +36,6 @@ int main(int argc, char *argv[])
 
     SavvyCANApplication a(argc, argv);
 
-    // ── Apply Futuristic Dark Theme ──────────────────────────────────
-    a.setStyleSheet(FuturisticTheme::darkStyleSheet());
-    a.setPalette(FuturisticTheme::darkPalette());
-
     //Add a local path for Qt extensions, to allow for per-application extensions.
     a.addLibraryPath("plugins");
 
@@ -50,6 +46,19 @@ int main(int argc, char *argv[])
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
     QSettings settings;
+
+    // ── Apply saved theme ────────────────────────────────────────────
+    QString theme = settings.value("Main/Theme", "dark").toString();
+    if (theme == "light") {
+        a.setStyleSheet(FuturisticTheme::lightStyleSheet());
+        a.setPalette(FuturisticTheme::lightPalette());
+    } else if (theme == "highcontrast") {
+        a.setStyleSheet(FuturisticTheme::highContrastStyleSheet());
+        a.setPalette(FuturisticTheme::highContrastPalette());
+    } else {
+        a.setStyleSheet(FuturisticTheme::darkStyleSheet());
+        a.setPalette(FuturisticTheme::darkPalette());
+    }
 
     QString localeString = settings.value("Main/Language").toString();
     if (localeString.isEmpty()) {
