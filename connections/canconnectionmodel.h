@@ -14,7 +14,7 @@ class CANConnectionModel : public QAbstractTableModel
 
 public:
     explicit CANConnectionModel(QObject *parent = 0);
-    virtual ~CANConnectionModel();
+    ~CANConnectionModel() override = default;
 
     // from abstractmodel:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;

@@ -23,10 +23,10 @@ public:
 
     CANConnection* getByName(const QString& pName) const;
 
-    uint64_t getTimeBasis() const;
+    uint64_t getTimeBasis() const noexcept;
     void resetTimeBasis();
 
-    int getNumBuses() const;
+    int getNumBuses() const noexcept;
     int getBusBase(CANConnection *);
 
     /**

@@ -7,10 +7,6 @@ CANConnectionModel::CANConnectionModel(QObject *parent)
 {
 }
 
-CANConnectionModel::~CANConnectionModel()
-{
-}
-
 enum class Column {
     Type       = 0, ///< The CAN driver/backend type, e.g. GVRET, peakcan, or socketcan
     Subtype    = 1, ///< Mostly used by SerialBus devices to pick the sub type

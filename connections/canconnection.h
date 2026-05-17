@@ -50,44 +50,44 @@ public:
      * @brief getNumBuses
      * @return returns the number of buses of the device
      */
-    int getNumBuses() const;
+    int getNumBuses() const noexcept;
 
     /**
      * @brief getserialSpeed
      * @return returns the serial speed of the device
      */
-    int getSerialSpeed() const;
+    int getSerialSpeed() const noexcept;
 
     /**
      * @brief getPort
      * @return returns the port name of the device
      */
-    QString getPort() const;
+    QString getPort() const noexcept;
 
     /**
      * @brief getDriver
      * @return returns the name of the driver used for this device
      */
-    QString getDriver() const;
+    QString getDriver() const noexcept;
 
 
     /**
      * @brief getQueue
      * @return the lock free queue of the device
      */
-    LFQueue<CANFrame>& getQueue();
+    LFQueue<CANFrame>& getQueue() noexcept;
 
     /**
      * @brief getType
      * @return the @ref CANCon::type of the device
      */
-    CANCon::type getType() const;
+    CANCon::type getType() const noexcept;
 
     /**
      * @brief getStatus
      * @return the @ref CANCon::status of the device (either connected or not)
      */
-    CANCon::status getStatus() const;
+    CANCon::status getStatus() const noexcept;
 
     /**
      * @brief setConsoleOutput
@@ -229,7 +229,7 @@ protected:
      * @param pBusId
      * @return true if bus is configured
      */
-    bool isConfigured(int pBusId) const;
+    bool isConfigured(int pBusId) const noexcept;
 
     /**
      * @brief setConfigured
@@ -258,7 +258,7 @@ protected:
      * @brief isCapSuspended
      * @return true if the capture is suspended
      */
-    bool isCapSuspended() const;
+    bool isCapSuspended() const noexcept;
 
     /**
      * @brief setCapSuspended
