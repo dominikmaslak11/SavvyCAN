@@ -102,11 +102,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->canFramesView->setModel(proxyModel);
 
     // Instantiate settings dialog early so defaults are written on first run
-    mRegistry->show<MainSettingsDialog>("settings", [this] {
-        auto *dlg = new MainSettingsDialog();
-        connect(dlg, SIGNAL(updatedSettings()), this, SLOT(readUpdateableSettings()));
-        return dlg;
-    })->updateSettings();
+    if (auto *dlg = mRegistry->show<MainSettingsDialog>("settings", [this] {
+        auto *d = new MainSettingsDialog();
+        connect(d, SIGNAL(updatedSettings()), this, SLOT(readUpdateableSettings()));
+        return d;
+    }))
+        dlg->updateSettings();
 
     readSettings();
 
@@ -308,7 +309,8 @@ MainWindow::~MainWindow()
     delete ui;
     delete model;
     delete elapsedTime;
-    delete dbcHandler;
+    delete frameSender;
+    // dbcHandler is a singleton (DBCHandler::getReference) – do NOT delete
 }
 
 // killEmAll() and killWindow() replaced by WindowRegistry::closeAll()
@@ -1354,14 +1356,14 @@ void MainWindow::handleSaveDecodedMethod(bool csv)
 
 void MainWindow::saveDecodedTextFileAsColumns(QString filename)
 {
-    QFile *outFile = new QFile(filename);
+    QFile outFile(filename);
     const QVector<CANFrame> *frames = model->getFilteredListReference();
 
     //const unsigned char *data;
     int dataLen;
     const CANFrame *frame;
 
-    if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
+    if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
 /*
 Time: 205.173000   ID: 0x20E Std Bus: 0 Len: 8
@@ -1443,7 +1445,7 @@ Data Bytes: 88 10 00 13 BB 00 06 00
     //add EOL
     builderString += "\n";
     //write out the header row
-    outFile->write(builderString.toUtf8());
+    outFile.write(builderString.toUtf8());
 
         //builderString = tr("Data Bytes: ");
         //for (int temp = 0; temp < dataLen; temp++)
@@ -1521,22 +1523,22 @@ Data Bytes: 88 10 00 13 BB 00 06 00
                 }
             }
             builderString.append("\n");
-            outFile->write(builderString.toUtf8());
+            outFile.write(builderString.toUtf8());
         }
     }
-    outFile->close();
+    outFile.close();
 }
 
 void MainWindow::saveDecodedTextFile(QString filename)
 {
-    QFile *outFile = new QFile(filename);
+    QFile outFile(filename);
     const QVector<CANFrame> *frames = model->getFilteredListReference();
 
     const unsigned char *data;
     int dataLen;
     const CANFrame *frame;
 
-    if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
+    if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
 /*
 Time: 205.173000   ID: 0x20E Std Bus: 0 Len: 8
@@ -1556,7 +1558,7 @@ Data Bytes: 88 10 00 13 BB 00 06 00
         else builderString += tr(" Std ");
         builderString += tr("Bus: ") + QString::number(frame->bus);
         builderString += " Len: " + QString::number(dataLen) + "\n";
-        outFile->write(builderString.toUtf8());
+        outFile.write(builderString.toUtf8());
 
         builderString = tr("Data Bytes: ");
         for (int temp = 0; temp < dataLen; temp++)
@@ -1564,7 +1566,7 @@ Data Bytes: 88 10 00 13 BB 00 06 00
             builderString += Utility::formatNumber(data[temp]) + " ";
         }
         builderString += "\n";
-        outFile->write(builderString.toUtf8());
+        outFile.write(builderString.toUtf8());
 
         builderString = "";
         if (dbcHandler != nullptr)
@@ -1584,10 +1586,10 @@ Data Bytes: 88 10 00 13 BB 00 06 00
                 }
             }
             builderString.append("\n");
-            outFile->write(builderString.toUtf8());
+            outFile.write(builderString.toUtf8());
         }
     }
-    outFile->close();
+    outFile.close();
 }
 
 void MainWindow::toggleCapture()
