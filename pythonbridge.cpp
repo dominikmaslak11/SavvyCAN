@@ -37,6 +37,15 @@ PythonBridge::PythonBridge(FrameStore *store, QObject *parent)
     } catch (const std::exception &e) {
         qWarning() << "PythonBridge init failed:" << e.what();
         mReady = false;
+        // If Py_Initialize() succeeded but the interpreter setup threw, finalize
+        // Python so we don't crash during process teardown.
+        if (Py_IsInitialized())
+            Py_Finalize();
+    } catch (...) {
+        qWarning() << "PythonBridge init failed with unknown exception";
+        mReady = false;
+        if (Py_IsInitialized())
+            Py_Finalize();
     }
 
     if (mReady) {

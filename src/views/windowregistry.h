@@ -46,6 +46,24 @@ public:
         return win;
     }
 
+    /// Create (or retrieve) a window without showing it.
+    /// Use at startup to pre-initialize windows that should not appear yet.
+    template <typename Win, typename Factory>
+    Win *createHidden(const QString &key, Factory fn)
+    {
+        if (auto *w = mSingletons.value(key))
+            return qobject_cast<Win *>(w);
+        Win *win = fn();
+        if (win) {
+            win->setAttribute(Qt::WA_DeleteOnClose, false);
+            mSingletons.insert(key, win);
+            connect(win, &QWidget::destroyed, this, [this, key] {
+                mSingletons.remove(key);
+            });
+        }
+        return win;
+    }
+
     /// Create a new *multi-instance* graph window.  These are tracked
     /// separately so `closeAll()` can clean them up.
     template <typename Win, typename Factory>
