@@ -1497,18 +1497,14 @@ bool DBCFile::saveFile(QString fileName)
             {
                 foreach (DBC_ATTRIBUTE_VALUE val, node.attributes) {
                     attrValOutput.append("BA_ \"" + val.attrName + "\" BU_ ");
-                    switch (val.value.type())
-                    {
-                    case QVariant::Type::String:
+            const QMetaType vt = val.value.metaType();
+            if (vt == QMetaType(QMetaType::QString)) {
                         attrValOutput.append("\"" + val.value.toString() + "\";\n");
-                        break;
-                    case QVariant::Type::Bool:
+            } else if (vt == QMetaType(QMetaType::Bool)) {
                         attrValOutput.append(QString::number(val.value.toBool() ? 1 : 0) + ";\n");
-                        break;
-                    default:
+            } else {
                         attrValOutput.append(val.value.toString() + ";\n");
-                        break;
-                    }
+            }
                 }
             }
         }
@@ -1562,17 +1558,13 @@ bool DBCFile::saveFile(QString fileName)
         {
             foreach (DBC_ATTRIBUTE_VALUE val, msg->attributes) {
                 attrValOutput.append("BA_ \"" + val.attrName + "\" BO_ " + QString::number(ID) + " ");
-                switch (val.value.type())
-                {
-                case QVariant::Type::String:
+                const QMetaType vt = val.value.metaType();
+                if (vt == QMetaType(QMetaType::QString)) {
                     attrValOutput.append("\"" + val.value.toString() + "\";\n");
-                    break;
-                case QVariant::Type::Bool:
+                } else if (vt == QMetaType(QMetaType::Bool)) {
                     attrValOutput.append(QString::number(val.value.toBool() ? 1 : 0) + ";\n");
-                    break;
-                default:
+                } else {
                     attrValOutput.append(val.value.toString() + ";\n");
-                    break;
                 }
             }
         }
@@ -1639,18 +1631,14 @@ bool DBCFile::saveFile(QString fileName)
             {
                 foreach (DBC_ATTRIBUTE_VALUE val, sig->attributes) {
                     attrValOutput.append("BA_ \"" + val.attrName + "\" SG_ " + QString::number(ID) + " " + sig->name + " ");
-                    switch (val.value.type())
-                    {
-                    case QVariant::Type::String:
+            const QMetaType vt = val.value.metaType();
+            if (vt == QMetaType(QMetaType::QString)) {
                         attrValOutput.append("\"" + val.value.toString() + "\";\n");
-                        break;
-                    case QVariant::Type::Bool:
+            } else if (vt == QMetaType(QMetaType::Bool)) {
                         attrValOutput.append(QString::number(val.value.toBool() ? 1 : 0) + ";\n");
-                        break;
-                    default:
+            } else {
                         attrValOutput.append(val.value.toString() + ";\n");
-                        break;
-                    }
+            }
                 }
             }
 
