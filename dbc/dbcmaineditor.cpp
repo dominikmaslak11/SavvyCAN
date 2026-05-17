@@ -164,7 +164,7 @@ void DBCMainEditor::onCustomMenuTree(QPoint point)
     QMenu *menu = new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
-    menu->addAction(tr("Delete currently selected message"), this, SLOT(deleteCurrentMessage()));
+    menu->addAction(tr("Delete currently selected message"), this, &DBCMainEditor::deleteCurrentTreeItem);
 
     //menu->popup(ui->MessagesTable->mapToGlobal(point));
 
@@ -328,11 +328,11 @@ void DBCMainEditor::onTreeContextMenu(const QPoint & pos)
 
         QAction *actionRebase = new QAction(QIcon(":/Resource/warning32.ico"), tr("Rebase all messages"), this);
         actionRebase->setStatusTip(tr("Rebase all messages in node"));
-        connect(actionRebase, SIGNAL(triggered()), this, SLOT(onRebaseMessages()));
+        connect(actionRebase, &QAction::triggered, this, &DBCMainEditor::onRebaseMessages);
 
         QAction *actionDupe = new QAction(QIcon(":/Resource/warning32.ico"), tr("Duplicate node"), this);
         actionDupe->setStatusTip(tr("Duplicate node and messages"));
-        connect(actionDupe, SIGNAL(triggered()), this, SLOT(onDuplicateNode()));
+        connect(actionDupe, &QAction::triggered, this, &DBCMainEditor::onDuplicateNode);
 
         QMenu menu(this);
         menu.addAction(actionRebase);

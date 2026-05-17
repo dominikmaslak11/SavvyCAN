@@ -23,11 +23,11 @@ CanLogServer::CanLogServer(QString serverAddressString) :
     setBusConfig(0, bus_info);
 
     // Connect data ready signal
-    connect(m_ptcpSocket, SIGNAL(readyRead()), this, SLOT(readNetworkData()));
+    connect(m_ptcpSocket, &QIODevice::readyRead, this, &CanLogServer::readNetworkData);
     // Connect network connected signal
-    connect(m_ptcpSocket, SIGNAL(connected()),this, SLOT(networkConnected()));
+    connect(m_ptcpSocket, &QAbstractSocket::connected, this, &CanLogServer::networkConnected);
     // Connect network disconnected signal
-    connect(m_ptcpSocket, SIGNAL(disconnected()),this, SLOT(networkDisconnected()));
+    connect(m_ptcpSocket, &QAbstractSocket::disconnected, this, &CanLogServer::networkDisconnected);
     // Save address
     this->m_qsAddress = serverAddressString;
 }

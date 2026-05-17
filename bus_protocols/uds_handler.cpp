@@ -259,13 +259,13 @@ void UDS_HANDLER::setReception(bool mode)
 
     if (isReceiving)
     {
-        connect(isoHandler, SIGNAL(newISOMessage(ISOTP_MESSAGE)), this, SLOT(gotISOTPFrame(ISOTP_MESSAGE)));
+        connect(isoHandler, &ISOTP_HANDLER::newISOMessage, this, &UDS_HANDLER::gotISOTPFrame);
         isoHandler->setReception(true); //must enable ISOTP reception too.
         qDebug() << "Enabling reception of ISO-TP frames in UDS handler";
     }
     else
     {
-        disconnect(isoHandler, SIGNAL(newISOMessage(ISOTP_MESSAGE)), this, SLOT(gotISOTPFrame(ISOTP_MESSAGE)));
+        disconnect(isoHandler, &ISOTP_HANDLER::newISOMessage, this, &UDS_HANDLER::gotISOTPFrame);
         isoHandler->setReception(false);
         qDebug() << "Disabling reception of ISOTP frames in UDS handler";
     }

@@ -34,10 +34,10 @@ CANserver::CANserver(QString serverAddressString) :
     
     // setup udp client
     this->_canserverAddress = QHostAddress(serverAddressString);
-    connect(_udpClient, SIGNAL(readyRead()), this, SLOT(readNetworkData()));
+    connect(_udpClient, &QIODevice::readyRead, this, &CANserver::readNetworkData);
 
     // setup signal and slot
-    connect(_heartbeatTimer, SIGNAL(timeout()), this, SLOT(heartbeatTimerSlot()));
+    connect(_heartbeatTimer, &QTimer::timeout, this, &CANserver::heartbeatTimerSlot);
     _heartbeatTimer->stop();
 }
 

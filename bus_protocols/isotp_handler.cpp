@@ -13,12 +13,12 @@ ISOTP_HANDLER::ISOTP_HANDLER()
 
     modelFrames = MainWindow::getReference()->getCANFrameModel()->getListReference();
 
-    connect(&frameTimer, SIGNAL(timeout()), this, SLOT(frameTimerTick()));
+    connect(&frameTimer, &QTimer::timeout, this, &ISOTP_HANDLER::frameTimerTick);
 }
 
 ISOTP_HANDLER::~ISOTP_HANDLER()
 {
-    disconnect(&frameTimer, SIGNAL(timeout()), this, SLOT(frameTimerTick()));
+    disconnect(&frameTimer, &QTimer::timeout, this, &ISOTP_HANDLER::frameTimerTick);
 }
 
 void ISOTP_HANDLER::setExtendedAddressing(bool mode)

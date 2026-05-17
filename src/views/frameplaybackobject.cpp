@@ -145,7 +145,7 @@ void FramePlaybackObject::initialize()
         /* move ourself to the thread */
         moveToThread(mThread_p); /*TODO handle errors */
         /* connect started() */
-        connect(mThread_p, SIGNAL(started()), this, SLOT(initialize()));
+        connect(mThread_p, &QThread::started, this, &FramePlaybackObject::initialize);
         /* start the thread */
         mThread_p->start(QThread::HighPriority);
         return;

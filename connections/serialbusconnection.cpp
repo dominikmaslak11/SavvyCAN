@@ -42,7 +42,7 @@ void SerialBusConnection::piStarted()
     connect(mDev_p, &QCanBusDevice::framesWritten, this, &SerialBusConnection::framesWritten);
     connect(mDev_p, &QCanBusDevice::framesReceived, this, &SerialBusConnection::framesReceived);
 
-    connect(&mTimer, SIGNAL(timeout()), this, SLOT(testConnection()));
+    connect(&mTimer, &QTimer::timeout, this, &SerialBusConnection::testConnection);
     mTimer.setInterval(1000);
     mTimer.setSingleShot(false); //keep ticking
     mTimer.start();

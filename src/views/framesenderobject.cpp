@@ -39,7 +39,7 @@ void FrameSenderObject::initialize()
         /* move ourself to the thread */
         moveToThread(mThread_p); /*TODO handle errors */
         /* connect started() */
-        connect(mThread_p, SIGNAL(started()), this, SLOT(initialize()));
+        connect(mThread_p, &QThread::started, this, &FrameSenderObject::initialize);
         /* start the thread */
         mThread_p->start(QThread::HighPriority);
         return;
@@ -48,7 +48,7 @@ void FrameSenderObject::initialize()
     /* set started flag */
     //mStarted = true;
 
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &FrameSenderObject::updatedFrames);
 
     /* in multithread case, this will be called before entering thread event loop */
     return piStart();

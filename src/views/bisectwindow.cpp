@@ -17,7 +17,7 @@ BisectWindow::BisectWindow(const QVector<CANFrame> *frames, QWidget *parent) :
 
     modelFrames = frames;
 
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &BisectWindow::updatedFrames);
     connect(ui->btnCalculate, &QAbstractButton::clicked, this, &BisectWindow::handleCalculateButton);
     connect(ui->btnReplaceFrames, &QAbstractButton::clicked, this, &BisectWindow::handleReplaceButton);
     connect(ui->btnSaveFrames, &QAbstractButton::clicked, this, &BisectWindow::handleSaveButton);

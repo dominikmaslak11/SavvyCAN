@@ -76,7 +76,7 @@ void CANConnection::start()
         /* move ourself to the thread */
         moveToThread(mThread_p); /*TODO handle errors */
         /* connect started() */
-        connect(mThread_p, SIGNAL(started()), this, SLOT(start()));
+        connect(mThread_p, &QThread::started, this, &CANConnection::start);
         /* start the thread */
         mThread_p->start(QThread::HighPriority);
         return;

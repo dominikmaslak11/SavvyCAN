@@ -16,7 +16,7 @@ SocketCANd::SocketCANd(QString portName) :
 
     mTimer.setInterval(10000); //tick every 10 seconds
     mTimer.setSingleShot(false); //keep ticking
-    connect(&mTimer, SIGNAL(timeout()), this, SLOT(checkConnection()));
+    connect(&mTimer, &QTimer::timeout, this, &SocketCANd::checkConnection);
 
     sendDebug("SocketCANd()");
     //tcpClient = nullptr;
@@ -205,7 +205,7 @@ void SocketCANd::connectDevice()
         tcpClient.append(new QTcpSocket());
         tcpClient[i]->connectToHost(hostIP, hostPort);
         //connect(tcpClient[i], SIGNAL(readyRead()), this, SLOT(readTCPData()));
-        connect(tcpClient[i], SIGNAL(readyRead()), this, SLOT(invokeReadTCPData()));
+        connect(tcpClient[i], &QIODevice::readyRead, this, &SocketCANd::invokeReadTCPData);
         sendDebug("Created TCP Socket to Kayak device " + hostCanIDs.at(i));
     }
     setStatus(CANCon::CONNECTED);

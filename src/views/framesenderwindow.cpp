@@ -34,12 +34,12 @@ FrameSenderWindow::FrameSenderWindow(const QVector<CANFrame> *frames, QWidget *p
     setupGrid();
     createBlankRow();
 
-    connect(ui->tableSender, SIGNAL(cellChanged(int,int)), this, SLOT(onCellChanged(int,int)));
-    connect(ui->tableSender, SIGNAL(cellDoubleClicked(int, int)), SLOT(onCellDoubleTap(int, int)));
-    connect(intervalTimer, SIGNAL(timeout()), this, SLOT(handleTick()));
-    connect(ui->btnClearGrid, SIGNAL(clicked(bool)), this, SLOT(clearGrid()));
-    connect(ui->btnDisableAll, SIGNAL(clicked(bool)), this, SLOT(disableAll()));
-    connect(ui->btnEnableAll, SIGNAL(clicked(bool)), this, SLOT(enableAll()));
+    connect(ui->tableSender, &QTableWidget::cellChanged, this, &FrameSenderWindow::onCellChanged);
+    connect(ui->tableSender, &QTableWidget::cellDoubleClicked, this, &FrameSenderWindow::onCellDoubleTap);
+    connect(intervalTimer, &QTimer::timeout, this, &FrameSenderWindow::handleTick);
+    connect(ui->btnClearGrid, &QPushButton::clicked, this, &FrameSenderWindow::clearGrid);
+    connect(ui->btnDisableAll, &QPushButton::clicked, this, &FrameSenderWindow::disableAll);
+    connect(ui->btnEnableAll, &QPushButton::clicked, this, &FrameSenderWindow::enableAll);
     connect(ui->btnLoadGrid, SIGNAL(clicked(bool)), this, SLOT(loadGrid()));
     connect(ui->btnSaveGrid, SIGNAL(clicked(bool)), this, SLOT(saveGrid()));
     bool connected = connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));

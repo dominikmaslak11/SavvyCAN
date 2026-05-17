@@ -307,15 +307,15 @@ void GVRetSerial::connectDevice()
         sendDebug("TCP Connection to a GVRET device");
         tcpClient = new QTcpSocket();
         tcpClient->connectToHost(getPort(), 23);
-        connect(tcpClient, SIGNAL(readyRead()), this, SLOT(readSerialData()));
-        connect(tcpClient, SIGNAL(connected()), this, SLOT(deviceConnected()));
+        connect(tcpClient, &QIODevice::readyRead, this, &GVRetSerial::readSerialData);
+        connect(tcpClient, &QAbstractSocket::connected, this, &GVRetSerial::deviceConnected);
         sendDebug("Created TCP Socket");
         // */
         /*
         qDebug() << "UDP Connection to a GVRET device";
         udpClient = new QUdpSocket();
         udpClient->connectToHost(getPort(), 17222);
-        connect(udpClient, SIGNAL(readyRead()), this, SLOT(readSerialData()));
+        connect(udpClient, &QIODevice::readyRead, this, &GVRetSerial::readSerialData);
         //connect(udpClient, SIGNAL(connected()), this, SLOT(tcpConnected()));
         debugOutput("Created UDP Socket");
         tcpConnected();
@@ -331,8 +331,8 @@ void GVRetSerial::connectDevice()
         sendDebug("Created Serial Port Object");
 
         /* connect reading event */
-        connect(serial, SIGNAL(readyRead()), this, SLOT(readSerialData()));
-        connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(serialError(QSerialPort::SerialPortError)));
+        connect(serial, &QSerialPort::readyRead, this, &GVRetSerial::readSerialData);
+        connect(serial, &QSerialPort::errorOccurred, this, &GVRetSerial::serialError);
 
         /* configure */
         serial->setBaudRate(1000000); //most GVRET devices ignore baud, ESP32 needs it set explicitly to the proper value
@@ -350,7 +350,7 @@ void GVRetSerial::connectDevice()
             {
                 serial->setDataTerminalReady(false); //ESP32 uses these for bootloader selection and reset so turn them off
                 serial->setRequestToSend(false);                
-                QTimer::singleShot(3000, this, SLOT(deviceConnected())); //give ESP32 some time as it could have rebooted
+                QTimer::singleShot(3000, this, &GVRetSerial::deviceConnected); //give ESP32 some time as it could have rebooted
             }
         }
         else
@@ -410,7 +410,7 @@ void GVRetSerial::deviceConnected()
     sendToSerial(output);
 
     if(doValidation) {
-        QTimer::singleShot(5000, this, SLOT(connectionTimeout()));
+        QTimer::singleShot(5000, this, &GVRetSerial::connectionTimeout);
     }
     else {
         setStatus(CANCon::CONNECTED);
@@ -563,7 +563,7 @@ void GVRetSerial::connectionTimeout()
     else
     {
         /* start timer */
-        connect(&mTimer, SIGNAL(timeout()), this, SLOT(handleTick()));
+        connect(&mTimer, &QTimer::timeout, this, &GVRetSerial::handleTick);
         mTimer.setInterval(250); //tick four times per second
         mTimer.setSingleShot(false); //keep ticking
         mTimer.start();

@@ -63,10 +63,10 @@ FramePlaybackWindow::FramePlaybackWindow(const QVector<CANFrame> *frames, QWidge
     connect(ui->btnSelectAll, &QAbstractButton::clicked, this, &FramePlaybackWindow::btnSelectAllClick);
     connect(ui->btnSelectNone, &QAbstractButton::clicked, this, &FramePlaybackWindow::btnSelectNoneClick);
     connect(ui->btnDelete, &QAbstractButton::clicked, this, &FramePlaybackWindow::btnDeleteCurrSeq);
-    connect(ui->spinPlaySpeed, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
-    connect(ui->spinBurstSpeed, SIGNAL(valueChanged(int)), this, SLOT(changeBurstRate(int)));
+    connect(ui->spinPlaySpeed, QOverload<int>::of(&QSpinBox::valueChanged), this, &FramePlaybackWindow::changePlaybackSpeed);
+    connect(ui->spinBurstSpeed, QOverload<int>::of(&QSpinBox::valueChanged), this, &FramePlaybackWindow::changeBurstRate);
     //connect(ui->cbLoop, SIGNAL(clicked(bool)), this, SLOT(changeLooping(bool)));
-    connect(ui->comboCANBus, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSendingBus(int)));
+    connect(ui->comboCANBus, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FramePlaybackWindow::changeSendingBus);
     connect(ui->listID, &QListWidget::itemChanged, this, &FramePlaybackWindow::changeIDFiltering);
     connect(ui->btnLoadFile, &QAbstractButton::clicked, this, &FramePlaybackWindow::btnLoadFile);
     connect(ui->btnLoadLive, &QAbstractButton::clicked, this, &FramePlaybackWindow::btnLoadLive);
@@ -75,13 +75,13 @@ FramePlaybackWindow::FramePlaybackWindow(const QVector<CANFrame> *frames, QWidge
     connect(ui->btnLoadFilters, &QAbstractButton::clicked, this, &FramePlaybackWindow::loadFilters);
     connect(ui->btnSaveFilters, &QAbstractButton::clicked, this, &FramePlaybackWindow::saveFilters);
     connect(ui->cbOriginalTiming, &QCheckBox::toggled, this, &FramePlaybackWindow::useOrigTimingClicked);
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &FramePlaybackWindow::updatedFrames);
 
     connect(&playbackObject, &FramePlaybackObject::EndOfFrameCache, this, &FramePlaybackWindow::EndOfFrameCache);
     connect(&playbackObject, &FramePlaybackObject::statusUpdate, this, &FramePlaybackWindow::getStatusUpdate);
 
     ui->listID->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->listID, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuFilters(QPoint)));
+    connect(ui->listID, &QWidget::customContextMenuRequested, this, &FramePlaybackWindow::contextMenuFilters);
 
     playbackObject.setPlaybackInterval(ui->spinPlaySpeed->value());
 
@@ -176,8 +176,8 @@ void FramePlaybackWindow::contextMenuFilters(QPoint pos)
 {
     QMenu *menu = new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    menu->addAction(tr("Save filter definition to file"), this, SLOT(saveFilters()));
-    menu->addAction(tr("Load filter definition from file"), this, SLOT(loadFilters()));
+    menu->addAction(tr("Save filter definition to file"), this, &FramePlaybackWindow::saveFilters);
+    menu->addAction(tr("Load filter definition from file"), this, &FramePlaybackWindow::loadFilters);
     menu->popup(ui->listID->mapToGlobal(pos));
 }
 

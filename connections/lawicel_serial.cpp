@@ -237,8 +237,8 @@ void LAWICELSerial::connectDevice()
     sendDebug("Created Serial Port Object");
 
     /* connect reading event */
-    connect(serial, SIGNAL(readyRead()), this, SLOT(readSerialData()));
-    connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(serialError(QSerialPort::SerialPortError)));
+    connect(serial, &QSerialPort::readyRead, this, &LAWICELSerial::readSerialData);
+    connect(serial, &QSerialPort::errorOccurred, this, &LAWICELSerial::serialError);
 
     /* configure */
     serial->setBaudRate(mSerialSpeed);
@@ -465,7 +465,7 @@ void LAWICELSerial::connectionTimeout()
     else
     {
         /* start timer */
-        connect(&mTimer, SIGNAL(timeout()), this, SLOT(handleTick()));
+        connect(&mTimer, &QTimer::timeout, this, &LAWICELSerial::handleTick);
         mTimer.setInterval(250); //tick four times per second
         mTimer.setSingleShot(false); //keep ticking
         mTimer.start();
