@@ -14,6 +14,7 @@
 #include "lin/lin_sniffer/lin_sniffer_window.h"
 #include "lin/lin_schedule/lin_schedule_view.h"
 #include "lin/lin_fileio.h"
+#include "re/j1939window.h"
 
 #include <QClipboard>
 #include <QShortcut>
@@ -186,6 +187,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave_Continuous_Logfile, &QAction::triggered, this, &MainWindow::handleContinousLogging);
     connect(ui->actionTemporal_Graph, &QAction::triggered, this, &MainWindow::showTemporalGraphWindow);
     connect(ui->actionCAN_Bridge, &QAction::triggered, this, &MainWindow::showCANBridgeWindow);
+    connect(ui->actionJ1939_Decoder, &QAction::triggered, this, &MainWindow::showJ1939Window);
     connect(ui->actionLIN_Sniffer, &QAction::triggered, this, &MainWindow::showLINSniffer);
     connect(ui->actionLIN_Schedule, &QAction::triggered, this, &MainWindow::showLINScheduleEditor);
     connect(ui->actionLIN_LoadLDF, &QAction::triggered, this, &MainWindow::loadLDFFile);
@@ -1876,6 +1878,7 @@ void MainWindow::onSidebarTool(const QString &toolId)
     else if (toolId == "canbridge")     showCANBridgeWindow();
     else if (toolId == "linsniffer")     showLINSniffer();
     else if (toolId == "linschedule")    showLINScheduleEditor();
+    else if (toolId == "j1939")          showJ1939Window();
     else if (toolId == "dbcfile")       showDBCFileWindow();
     else if (toolId == "connection")    showConnectionSettingsWindow();
     else if (toolId == "settings")      showSettingsDialog();
@@ -1938,4 +1941,10 @@ void MainWindow::loadLDFFile()
     } else {
         QMessageBox::warning(this, tr("Error"), db.errorString);
     }
+}
+void MainWindow::showJ1939Window()
+{
+    mRegistry->show<J1939Window>("j1939", [this] {
+        return new J1939Window();
+    });
 }

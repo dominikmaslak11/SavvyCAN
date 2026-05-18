@@ -135,6 +135,7 @@ set(SOURCES
     re/temporalgraphwindow.cpp
     re/udsfirmwareuploaderwindow.cpp
     re/udsscanwindow.cpp
+    re/j1939window.cpp
 
     re/sniffer/snifferitem.cpp
     re/sniffer/sniffermodel.cpp
@@ -199,6 +200,7 @@ set(HEADERS
     bus_protocols/isotp_message.h
     bus_protocols/j1939_handler.h
     bus_protocols/uds_handler.h
+    bus_protocols/j1939_structs.h
 
     connections/canbus.h
     connections/canconnection.h
@@ -259,6 +261,7 @@ set(HEADERS
     re/temporalgraphwindow.h
     re/udsfirmwareuploaderwindow.h
     re/udsscanwindow.h
+    re/j1939window.h
 
     re/sniffer/SnifferDelegate.h
     re/sniffer/snifferitem.h

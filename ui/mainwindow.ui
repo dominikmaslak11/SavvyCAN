@@ -412,8 +412,15 @@
     <addaction name="actionFuzzing"/>
     <addaction name="actionUDS_Scanner"/>
     <addaction name="actionUDS_Firmware_Update"/>
+    <addaction name="actionJ1939_Decoder"/>
+  <action name="actionJ1939_Decoder">
+   <property name="text">
+    <string>J1939 Decoder</string>
+   </property>
+  </action>
     <addaction name="actionMotorControlConfig"/>
     <addaction name="actionCAN_Bridge"/>
+    <addaction name="actionJ1939_Decoder"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -653,6 +660,11 @@
   <action name="actionUDS_Firmware_Update">
    <property name="text">
     <string>UDS Firmware Update</string>
+   </property>
+  </action>
+  <action name="actionJ1939_Decoder">
+   <property name="text">
+    <string>J1939 Decoder</string>
    </property>
   </action>
   <action name="actionLIN_Sniffer">

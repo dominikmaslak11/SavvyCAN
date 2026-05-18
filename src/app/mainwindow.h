@@ -110,6 +110,7 @@ private slots:
     void showTemporalGraphWindow();
     void showDBCComparisonWindow();
     void showCANBridgeWindow();
+    void showJ1939Window();
     void showLINSniffer();
     void showLINScheduleEditor();
     void loadLDFFile();

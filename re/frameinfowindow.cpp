@@ -428,14 +428,7 @@ void FrameInfoWindow::updateDetailsWindow(QString newID)
         if (frameCache[0].hasExtendedFrameFormat()) //if these frames seem to be extended then try for J1939 decoding
         {
             // ------- J1939 decoding ----------
-            J1939ID jid;
-            jid.src = targettedID & 0xFF;
-            jid.priority = targettedID >> 26;
-            jid.edp = (targettedID >> 25) & 1;
-            jid.dp = (targettedID >> 24) & 1;
-            jid.pgn = (targettedID >> 8) & 0x3FFFF; //18 bits
-            jid.pf = (targettedID >> 16) & 0xFF;
-            jid.ps = (targettedID >> 8) & 0xFF;
+            J1939_ID jid = J1939_ID::fromCANID(targettedID);
 
             tempItem = new QTreeWidgetItem();
             tempItem->setText(0, tr("J1939 decoding"));
@@ -444,18 +437,18 @@ void FrameInfoWindow::updateDetailsWindow(QString newID)
             if (jid.pf > 0xEF)
             {
                 jid.isBroadcast = true;
-                jid.dest = 0xFFFF;
+                jid.da = 0xFFFF;
                 tempItem = new QTreeWidgetItem();
                 tempItem->setText(0, tr("   Broadcast Frame"));
                 baseNode->addChild(tempItem);
             }
             else
             {
-                jid.dest = jid.ps;
+                jid.da = jid.ps;
                 jid.pgn &= 0xFFFF00; //targetted messages use PGN with 00 in low nibbles
                 tempItem = new QTreeWidgetItem();
-                if (jid.dest < 0xFF)
-                    tempItem->setText(0, tr("   Destination ID: ") + Utility::formatNumber(static_cast<uint64_t>(jid.dest)));
+                if (jid.da < 0xFF)
+                    tempItem->setText(0, tr("   Destination ID: ") + Utility::formatNumber(static_cast<uint64_t>(jid.da)));
                 else
                     tempItem->setText(0, tr("   Destination ID: Global (ALL)"));
                 baseNode->addChild(tempItem);
@@ -466,7 +459,7 @@ void FrameInfoWindow::updateDetailsWindow(QString newID)
             baseNode->addChild(tempItem);
 
             tempItem = new QTreeWidgetItem();
-            tempItem->setText(0, tr("   SRC: ") + Utility::formatNumber(static_cast<uint64_t>(jid.src)));
+            tempItem->setText(0, tr("   SRC: ") + Utility::formatNumber(static_cast<uint64_t>(jid.sa)));
             baseNode->addChild(tempItem);
 
             tempItem = new QTreeWidgetItem();
