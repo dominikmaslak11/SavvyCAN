@@ -10,7 +10,7 @@ public:
     explicit SnifferDelegate(QWidget *parent = nullptr);
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    bool getFadeInactive();
+    bool getFadeInactive() const;
     void setFadeInactive(bool val);
 
 signals:

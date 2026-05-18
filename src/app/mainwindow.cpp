@@ -1618,7 +1618,7 @@ void MainWindow::updateFileStatus()
     lbStatusFilename.setText(output);
 }
 
-CANFrameModel* MainWindow::getCANFrameModel()
+CANFrameModel* MainWindow::getCANFrameModel() const
 {
     return model;
 }

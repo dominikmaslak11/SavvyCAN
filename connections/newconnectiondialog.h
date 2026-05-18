@@ -21,13 +21,13 @@ public:
     explicit NewConnectionDialog(QVector<QString>* gvretips, QVector<QString>* kayakips, QWidget *parent = nullptr);
     ~NewConnectionDialog();
 
-    CANCon::type getConnectionType();
-    QString getPortName();
-    QString getDriverName();
-    int getSerialSpeed();
-    int getBusSpeed();
-    bool isCanFd();
-    int getDataRate();
+    CANCon::type getConnectionType() const;
+    QString getPortName() const;
+    QString getDriverName() const;
+    int getSerialSpeed() const;
+    int getBusSpeed() const;
+    bool isCanFd() const;
+    int getDataRate() const;
 
 public slots:
     void handleConnTypeChanged();

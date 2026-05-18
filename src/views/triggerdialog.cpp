@@ -76,7 +76,7 @@ TriggerDialog::~TriggerDialog()
     delete ui;
 }
 
-QList<Trigger> TriggerDialog::getUpdatedTriggers()
+QList<Trigger> TriggerDialog::getUpdatedTriggers() const
 {
     return triggers;
 }

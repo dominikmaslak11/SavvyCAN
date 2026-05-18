@@ -138,7 +138,7 @@ void CANFrameModel::setInterpretMode(bool mode)
     }
 }
 
-bool CANFrameModel::getInterpretMode()
+bool CANFrameModel::getInterpretMode() const
 {
     return interpretFrames;
 }

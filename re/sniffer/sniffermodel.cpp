@@ -190,7 +190,7 @@ QModelIndex SnifferModel::parent(const QModelIndex &) const
     return QModelIndex();
 }
 
-bool SnifferModel::getNeverExpire()
+bool SnifferModel::getNeverExpire() const
 {
     return mNeverExpire;
 }

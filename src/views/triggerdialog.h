@@ -15,7 +15,7 @@ class TriggerDialog : public QDialog
 
 public:
     explicit TriggerDialog(QList<Trigger> triggers, QWidget *parent = nullptr);
-    QList<Trigger> getUpdatedTriggers();
+    QList<Trigger> getUpdatedTriggers() const;
     void showEvent(QShowEvent*);
     ~TriggerDialog();
     QString buildEntry(Trigger trig);

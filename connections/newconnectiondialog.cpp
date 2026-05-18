@@ -368,7 +368,7 @@ void NewConnectionDialog::setPortName(CANCon::type pType, QString pPortName, QSt
     }
 }
 
-QString NewConnectionDialog::getPortName()
+QString NewConnectionDialog::getPortName() const
 {
     switch( getConnectionType() ) {
     case CANCon::GVRET_SERIAL:
@@ -393,7 +393,7 @@ QString NewConnectionDialog::getPortName()
     return "";
 }
 
-QString NewConnectionDialog::getDriverName()
+QString NewConnectionDialog::getDriverName() const
 {
     if (getConnectionType() == CANCon::SERIALBUS)
     {
@@ -402,7 +402,7 @@ QString NewConnectionDialog::getDriverName()
     return "N/A";
 }
 
-int NewConnectionDialog::getSerialSpeed()
+int NewConnectionDialog::getSerialSpeed() const
 {
     if (getConnectionType() == CANCon::LAWICEL || getConnectionType() == CANCon::LIN_SERIAL)
     {
@@ -411,7 +411,7 @@ int NewConnectionDialog::getSerialSpeed()
     else return 0;
 }
 
-int NewConnectionDialog::getBusSpeed()
+int NewConnectionDialog::getBusSpeed() const
 {
     if (getConnectionType() == CANCon::LAWICEL || getConnectionType() == CANCon::LIN_SERIAL)
     {
@@ -420,7 +420,7 @@ int NewConnectionDialog::getBusSpeed()
     else return 0;
 }
 
-CANCon::type NewConnectionDialog::getConnectionType()
+CANCon::type NewConnectionDialog::getConnectionType() const
 {
     if (ui->rbGVRET->isChecked()) return CANCon::GVRET_SERIAL;
     if (ui->rbSocketCAN->isChecked()) return CANCon::SERIALBUS;
@@ -443,7 +443,7 @@ bool NewConnectionDialog::isSerialBusAvailable()
     return false;
 }
 
-int NewConnectionDialog::getDataRate()
+int NewConnectionDialog::getDataRate() const
 {
     if (getConnectionType() == CANCon::LAWICEL || getConnectionType() == CANCon::LIN_SERIAL)
     {
@@ -513,7 +513,7 @@ void NewConnectionDialog::selectLINSocketCAN()
     ui->cbPort->addItem("slcan0");
 }
 
-bool NewConnectionDialog::isCanFd()
+bool NewConnectionDialog::isCanFd() const
  {
      if (getConnectionType() == CANCon::LAWICEL || getConnectionType() == CANCon::LIN_SERIAL)
      {

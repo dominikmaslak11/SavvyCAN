@@ -70,8 +70,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     static QString loadedFileName;
     static MainWindow *getReference();
-    CANFrameModel * getCANFrameModel();
-    FrameStore * getFrameStore() { return frameStore; }
+    CANFrameModel * getCANFrameModel() const;
+    FrameStore * getFrameStore() const { return frameStore; }
     ~MainWindow();
 
     void handleDroppedFile(const QString &filename);

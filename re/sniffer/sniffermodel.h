@@ -40,7 +40,7 @@ public:
     void refresh();
     void clear();
     void filter(fltType pType, int pId=0);
-    bool getNeverExpire();
+    bool getNeverExpire() const;
     bool getFadeInactive();
     bool getMuteNotched();
     void setNeverExpire(bool val);

@@ -83,7 +83,7 @@ ConnectionWindow::ConnectionWindow(QWidget *parent) :
 
     //Doing the same for socketcand/kayak hosts:
     rxBroadcastKayak = new QUdpSocket(this);
-    rxBroadcastKayak->bind(QHostAddress::AnyIPv4, 42000, QAbstractSocket::ShareAddress);
+    rxBroadcastKayak->bind(QHostAddress::AnyIPv4, CANCon::Port::KAYAK_UDP, QAbstractSocket::ShareAddress);
     connect(rxBroadcastKayak, &QUdpSocket::readyRead, this, &ConnectionWindow::readPendingDatagrams);
 
 }

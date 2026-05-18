@@ -61,7 +61,7 @@ public:
     void setSignalNames(int sigIdx, const QString sigName);
     void clearSignalNames();
     int getUsedSignalNum(int bit);
-    GridMode getMode();
+    GridMode getMode() const;
     void setMode(GridMode mode);
     void setBytesToDraw(int num);
 

@@ -49,7 +49,7 @@ public:
     int  sendBulkRefresh();
     void clearFrames();
     void setInterpretMode(bool);
-    bool getInterpretMode();
+    bool getInterpretMode() const;
     void setOverwriteMode(bool);
     void setHexMode(bool);
     void setUseColorsByCanId(bool);

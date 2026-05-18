@@ -29,7 +29,7 @@ SnifferDelegate::SnifferDelegate(QWidget *parent) : QItemDelegate(parent)
 
 }
 
-bool SnifferDelegate::getFadeInactive()
+bool SnifferDelegate::getFadeInactive() const
 {
     return mFadeInactive;
 }

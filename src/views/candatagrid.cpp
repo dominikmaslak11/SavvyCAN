@@ -114,7 +114,7 @@ CANDataGrid::~CANDataGrid()
     delete ui;
 }
 
-GridMode CANDataGrid::getMode()
+GridMode CANDataGrid::getMode() const
 {
     return gridMode;
 }
