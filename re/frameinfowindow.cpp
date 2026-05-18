@@ -6,6 +6,7 @@
 #include <vector>
 #include "filterutility.h"
 #include "qcpaxistickerhex.h"
+#include <memory>
 
 const QColor FrameInfoWindow::byteGraphColors[8] = {Qt::blue, Qt::green,  Qt::black, Qt::red, //0 1 2 3
                                                     Qt::gray, Qt::darkYellow, Qt::cyan,  Qt::darkMagenta}; //4 5 6 7
@@ -260,7 +261,6 @@ bool FrameInfoWindow::eventFilter(QObject *obj, QEvent *event)
 FrameInfoWindow::~FrameInfoWindow()
 {
     removeEventFilter(this);
-    delete ui;
 }
 
 void FrameInfoWindow::closeEvent(QCloseEvent *event)
@@ -872,11 +872,10 @@ void FrameInfoWindow::saveDetails()
         if (!filename.contains('.')) filename += ".txt";
         if (dialog.selectedNameFilter() == filters[0])
         {
-            QFile *outFile = new QFile(filename);
+            auto outFile = std::make_unique<QFile>(filename);
 
             if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
             {
-                delete outFile;
                 return;
             }
 
@@ -884,12 +883,11 @@ void FrameInfoWindow::saveDetails()
             for (int i = 0; i < ui->listFrameID->count(); i++)
             {
                 updateDetailsWindow(FilterUtility::getId(ui->listFrameID->item(i)));
-                dumpNode(ui->treeDetails->invisibleRootItem(), outFile, 0);
+                dumpNode(ui->treeDetails->invisibleRootItem(), outFile.get(), 0);
                 outFile->write("\n\n");
             }
 
             outFile->close();
-            delete outFile;
         }
     }
 }

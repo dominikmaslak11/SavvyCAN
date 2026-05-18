@@ -3,6 +3,7 @@
 
 #include "mainwindow.h"
 #include <QDebug>
+#include <memory>
 
 /*
  * Nothing to see here, these are not the droids you're looking for. Go away
@@ -45,7 +46,6 @@ MotorControllerConfigWindow::MotorControllerConfigWindow(const QVector<CANFrame>
 
 MotorControllerConfigWindow::~MotorControllerConfigWindow()
 {
-    delete ui;
 }
 
 void MotorControllerConfigWindow::updatedFrames(int numFrames)
@@ -112,7 +112,7 @@ void MotorControllerConfigWindow::loadFile()
 {
     QString filename;
     QFileDialog dialog;
-    QFile *inFile;
+    std::unique_ptr<QFile> inFile;
     QByteArray line;
     PARAM param;
 
@@ -126,11 +126,10 @@ void MotorControllerConfigWindow::loadFile()
     if (dialog.exec() == QDialog::Accepted)
     {
         filename = dialog.selectedFiles()[0];
-        inFile = new QFile(filename);
+        inFile = std::make_unique<QFile>(filename);
 
         if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            delete inFile;
             return;
         }
 
@@ -170,7 +169,6 @@ void MotorControllerConfigWindow::loadFile()
         refreshData();
 
         inFile->close();
-        delete inFile;
     }
 }
 

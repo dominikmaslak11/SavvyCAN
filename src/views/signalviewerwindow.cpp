@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 #include "utility.h"
 #include <QDebug>
+#include <memory>
 
 #define MSG_COL     1
 #define VALUE_COL   2
@@ -58,7 +59,6 @@ SignalViewerWindow::SignalViewerWindow(const QVector<CANFrame> *frames, QWidget 
 
 SignalViewerWindow::~SignalViewerWindow()
 {
-    delete ui;
 }
 
 void SignalViewerWindow::updatedFrames(int numFrames)
@@ -293,7 +293,7 @@ void SignalViewerWindow::saveDefinitions()
 
         if (!filename.contains('.')) filename += ".sdf";
 
-        QFile *outFile = new QFile(filename);
+        auto outFile = std::make_unique<QFile>(filename);
 
         if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
             return;
@@ -341,7 +341,7 @@ void SignalViewerWindow::loadDefinitions(bool append)
         filename = dialog.selectedFiles()[0];
         settings.setValue("SignalViewer/LoadSaveDirectory", dialog.directory().path());
 
-        QFile *inFile = new QFile(filename);
+        auto inFile = std::make_unique<QFile>(filename);
         QByteArray line;
 
         if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))

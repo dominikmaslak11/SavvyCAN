@@ -5,6 +5,7 @@
 #include "bus_protocols/uds_handler.h"
 #include "utility.h"
 #include "helpwindow.h"
+#include <memory>
 
 
 static QVector<QString> SCANTYPE_NAMES = {
@@ -92,10 +93,7 @@ UDSScanWindow::UDSScanWindow(const QVector<CANFrame> *frames, QWidget *parent) :
 UDSScanWindow::~UDSScanWindow()
 {
     removeEventFilter(this);
-    delete ui;
     waitTimer->stop();
-    delete waitTimer;
-    delete udsHandler;
 }
 
 bool UDSScanWindow::eventFilter(QObject *obj, QEvent *event)
@@ -154,7 +152,6 @@ void UDSScanWindow::deleteSelectedScan()
     scanEntries.removeAt(idx);
 
     QListWidgetItem *item = ui->listScansToRun->takeItem(idx);
-    delete item;
     int rows = ui->listScansToRun->count();
     ui->listScansToRun->setCurrentRow(rows - 1);
 
@@ -536,18 +533,16 @@ void UDSScanWindow::saveResults()
         if (!filename.contains('.')) filename += ".txt";
         if (dialog.selectedNameFilter() == filters[0])
         {
-            QFile *outFile = new QFile(filename);
+            auto outFile = std::make_unique<QFile>(filename);
 
             if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
             {
-                delete outFile;
                 return;
             }
             outFile->write("UDS Scan Log:\n\n");
-            dumpNode(ui->treeResults->invisibleRootItem(), outFile, 0);
+            dumpNode(ui->treeResults->invisibleRootItem(), outFile.get(), 0);
 
             outFile->close();
-            delete outFile;
         }
     }
 }

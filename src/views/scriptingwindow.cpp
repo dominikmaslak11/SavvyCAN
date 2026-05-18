@@ -8,6 +8,7 @@
 
 #include "connections/canconmanager.h"
 #include "helpwindow.h"
+#include <memory>
 
 ScriptingWindow::ScriptingWindow(const QVector<CANFrame> *frames, QWidget *parent) :
     QDialog(parent),
@@ -62,8 +63,6 @@ ScriptingWindow::ScriptingWindow(const QVector<CANFrame> *frames, QWidget *paren
 
 ScriptingWindow::~ScriptingWindow()
 {
-    delete editor;
-    delete ui;
 }
 
 
@@ -299,17 +298,15 @@ void ScriptingWindow::refreshSourceWindow()
 
 void ScriptingWindow::saveScript()
 {
-    QFile *outFile = new QFile(currentScript->filePath);
+    auto outFile = std::make_unique<QFile>(currentScript->filePath);
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return;
     }
     outFile->write(editor->toPlainText().toUtf8());
     currentScript->scriptText = editor->toPlainText();
     outFile->close();
-    delete outFile;
 }
 
 void ScriptingWindow::saveAsScript()
@@ -333,16 +330,14 @@ void ScriptingWindow::saveAsScript()
         if (!filename.contains('.')) filename += ".js";
         if (dialog.selectedNameFilter() == filters[0])
         {
-            QFile *outFile = new QFile(filename);
+            auto outFile = std::make_unique<QFile>(filename);
 
             if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
             {
-                delete outFile;
                 return;
             }
             outFile->write(editor->toPlainText().toUtf8());
             outFile->close();
-            delete outFile;
             settings.setValue("ScriptingWindow/LoadSaveDirectory", dialog.directory().path());
         }
     }
@@ -438,11 +433,10 @@ void ScriptingWindow::saveLog()
         if (!filename.contains('.')) filename += ".log";
         if (dialog.selectedNameFilter() == filters[0])
         {
-            QFile *outFile = new QFile(filename);
+            auto outFile = std::make_unique<QFile>(filename);
 
             if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
             {
-                delete outFile;
                 return;
             }
             int c = ui->listLog ->count();
@@ -450,7 +444,6 @@ void ScriptingWindow::saveLog()
                 outFile->write(ui->listLog->item(row)->data(Qt::DisplayRole).toString().toUtf8() + "\n");
             }
             outFile->close();
-            delete outFile;
             settings.setValue("ScriptingWindow/LoadSaveDirectory", dialog.directory().path());
         }
     }

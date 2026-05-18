@@ -4,6 +4,7 @@
 #include <QProgressDialog>
 #include <QSettings>
 #include <qevent.h>
+#include <memory>
 
 FileComparatorWindow::FileComparatorWindow(QWidget *parent) :
     QDialog(parent),
@@ -28,7 +29,6 @@ FileComparatorWindow::FileComparatorWindow(QWidget *parent) :
 FileComparatorWindow::~FileComparatorWindow()
 {
     removeEventFilter(this);
-    delete ui;
 }
 
 void FileComparatorWindow::showEvent(QShowEvent *)
@@ -545,7 +545,7 @@ void FileComparatorWindow::saveDetails()
         filename = dialog.selectedFiles()[0];
         settings.setValue("FileComparator/LoadSaveDirectory", dialog.directory().path());
         if (!filename.contains('.')) filename += ".txt";
-        QFile *outFile = new QFile(filename);
+        auto outFile = std::make_unique<QFile>(filename);
 
         if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
             return;

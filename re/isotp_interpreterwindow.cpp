@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "helpwindow.h"
 #include "filterutility.h"
+#include <memory>
 
 ISOTP_InterpreterWindow::ISOTP_InterpreterWindow(const QVector<CANFrame> *frames, QWidget *parent) :
     QDialog(parent),
@@ -55,8 +56,6 @@ ISOTP_InterpreterWindow::ISOTP_InterpreterWindow(const QVector<CANFrame> *frames
 
 ISOTP_InterpreterWindow::~ISOTP_InterpreterWindow()
 {
-    delete decoder;
-    delete ui;
 }
 
 void ISOTP_InterpreterWindow::showEvent(QShowEvent* event)
@@ -200,11 +199,10 @@ void ISOTP_InterpreterWindow::saveList()
         if (!filename.contains('.')) filename += ".txt";
         if (dialog.selectedNameFilter() == filters[0])
         {
-            QFile *outFile = new QFile(filename);
+            auto outFile = std::make_unique<QFile>(filename);
 
             if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
             {
-                delete outFile;
                 return;
             }
 
@@ -241,7 +239,6 @@ void ISOTP_InterpreterWindow::saveList()
             }
 
             outFile->close();
-            delete outFile;
         }
     }
 }

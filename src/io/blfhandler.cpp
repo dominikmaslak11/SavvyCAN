@@ -30,11 +30,10 @@ bool BLFHandler::loadBLF(QString filename, QVector<CANFrame>* frames)
     BLF_CAN_OBJ canObject;
     BLF_CAN_OBJ2 canObject2;
 
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
 
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
     inFile->read((char *)&header, sizeof(header));

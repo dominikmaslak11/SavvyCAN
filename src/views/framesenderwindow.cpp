@@ -8,6 +8,7 @@
 #include "helpwindow.h"
 #include "connections/canconmanager.h"
 #include "triggerdialog.h"
+#include <memory>
 
 /*
  * notes: need to ensure that you grab pointers when modifying data structures and dont
@@ -76,10 +77,8 @@ void FrameSenderWindow::setupGrid()
 FrameSenderWindow::~FrameSenderWindow()
 {
     removeEventFilter(this);
-    delete ui;
 
     intervalTimer->stop();
-    delete intervalTimer;
 }
 
 bool FrameSenderWindow::eventFilter(QObject *obj, QEvent *event)
@@ -366,12 +365,11 @@ void FrameSenderWindow::loadGrid()
 
 void FrameSenderWindow::saveSenderFile(QString filename)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     QString outString;
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return;
     }
 
@@ -401,17 +399,15 @@ void FrameSenderWindow::saveSenderFile(QString filename)
     }
 
     outFile->close();
-    delete outFile;
 }
 
 void FrameSenderWindow::loadSenderFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return;
     }
 
@@ -471,7 +467,6 @@ void FrameSenderWindow::loadSenderFile(QString filename)
         }
     }
     inFile->close();
-    delete inFile;
 }
 
 void FrameSenderWindow::onCellDoubleTap(int row, int column)
@@ -508,7 +503,6 @@ void FrameSenderWindow::onCellDoubleTap(int row, int column)
             ui->tableSender->item(row, ST_COLS::SENDTAB_COL_TRIGGER)->setText(output);
             inhibitChanged = false;
         }
-        delete td;
         td = nullptr;
     }
 }

@@ -528,13 +528,12 @@ bool FrameFileIO::autoDetectLoadFile(QString filename, QVector<CANFrame>* frames
 
 bool FrameFileIO::isVehicleSpyFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     bool foundProbableHeader = false;
     bool isMatch = false;
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
     try {
@@ -577,7 +576,7 @@ bool FrameFileIO::isVehicleSpyFile(QString filename)
 // 0       1             2             3   4  5   6             7     8     9     10     11 12 13 14 15 16 17 18 19  20     21      22
 bool FrameFileIO::loadVehicleSpyFile(QString filename, QVector<CANFrame> *frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -589,7 +588,6 @@ bool FrameFileIO::loadVehicleSpyFile(QString filename, QVector<CANFrame> *frames
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -639,7 +637,6 @@ bool FrameFileIO::loadVehicleSpyFile(QString filename, QVector<CANFrame> *frames
         else foundErrors = true;
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
@@ -652,14 +649,13 @@ bool FrameFileIO::saveVehicleSpyFile(QString filename, const QVector<CANFrame> *
 
 bool FrameFileIO::isCRTDFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int lineCounter = 0;
     bool isMatch = false;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -697,7 +693,6 @@ bool FrameFileIO::isCRTDFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -730,7 +725,7 @@ tokens:
 */
 bool FrameFileIO::loadCRTDFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -738,7 +733,6 @@ bool FrameFileIO::loadCRTDFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -804,13 +798,12 @@ bool FrameFileIO::loadCRTDFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::isCARBUSAnalyzerFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
 
     bool isMatch = false;
@@ -818,7 +811,6 @@ bool FrameFileIO::isCARBUSAnalyzerFile(QString filename)
     // not Text mode because file contains `\r` new lines
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
     try
@@ -832,7 +824,6 @@ bool FrameFileIO::isCARBUSAnalyzerFile(QString filename)
     }
 
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -845,10 +836,9 @@ bool FrameFileIO::isCARBUSAnalyzerFile(QString filename)
 //            sec,us - for version 3
 bool FrameFileIO::loadCARBUSAnalyzerFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
 
@@ -916,19 +906,17 @@ bool FrameFileIO::loadCARBUSAnalyzerFile(QString filename, QVector<CANFrame>* fr
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveCARBUSAnalzyer(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
-    QTextStream outTextStream(outFile);
+    QTextStream outTextStream(outFile.get());
 
     int lineCounter = 0;
 
@@ -1013,21 +1001,19 @@ bool FrameFileIO::saveCARBUSAnalzyer(QString filename, const QVector<CANFrame>* 
     }
 
     outFile->close();
-    delete outFile;
 
     return true;
 }
 
 bool FrameFileIO::isCANHackerFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int lineCounter = 0;
     bool isMatch = false;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
     try
@@ -1062,7 +1048,6 @@ bool FrameFileIO::isCANHackerFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -1071,7 +1056,7 @@ bool FrameFileIO::isCANHackerFile(QString filename)
 // 00[.|,]000 00004000 8 36 47 19 43 01 00 00 80 
 bool FrameFileIO::loadCANHackerFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -1082,7 +1067,6 @@ bool FrameFileIO::loadCANHackerFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -1146,20 +1130,18 @@ bool FrameFileIO::loadCANHackerFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::isCANOpenFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int lineCounter = 0;
     bool isMatch = false;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -1200,7 +1182,6 @@ bool FrameFileIO::isCANOpenFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -1208,7 +1189,7 @@ bool FrameFileIO::isCANOpenFile(QString filename)
 //"0","0.000","8:09:42:48.7953090'",43447.7100146116,"","0x2E1","","Default: PDO","","Default: TPDO 2 of Node 0x61 (97)","","10 21 04 00 00 00 00 00 ",". ! . . . . . . ","U:0 S:0","8","10 21 04 00 00 00 00 00"
 bool FrameFileIO::loadCANOpenFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -1216,7 +1197,6 @@ bool FrameFileIO::loadCANOpenFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         qDebug() << "Could not open the file!";
         return false;
     }
@@ -1264,13 +1244,12 @@ bool FrameFileIO::loadCANOpenFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveCRTDFile(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     int lineCounter = 0;
 
     const unsigned char *data;
@@ -1279,7 +1258,6 @@ bool FrameFileIO::saveCRTDFile(QString filename, const QVector<CANFrame>* frames
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -1324,7 +1302,6 @@ bool FrameFileIO::saveCRTDFile(QString filename, const QVector<CANFrame>* frames
         outFile->write("\n");
     }
     outFile->close();
-    delete outFile;
 
     return true;
 }
@@ -1332,7 +1309,7 @@ bool FrameFileIO::saveCRTDFile(QString filename, const QVector<CANFrame>* frames
 
 bool FrameFileIO::isPCANFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int lineCounter = 0;
     bool hasFileVer = false;
@@ -1340,7 +1317,6 @@ bool FrameFileIO::isPCANFile(QString filename)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -1362,7 +1338,6 @@ bool FrameFileIO::isPCANFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -1409,7 +1384,7 @@ bool FrameFileIO::isPCANFile(QString filename)
 */
 bool FrameFileIO::loadPCANFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -1418,7 +1393,6 @@ bool FrameFileIO::loadPCANFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -1633,20 +1607,18 @@ bool FrameFileIO::loadPCANFile(QString filename, QVector<CANFrame>* frames)
         //else foundErrors = true;
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 //supporting two styles now and they have very different line layouts. Just checking for the header for now. That should still match only ASC files.
 bool FrameFileIO::isCanalyzerASC(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
     try
@@ -1667,7 +1639,6 @@ bool FrameFileIO::isCanalyzerASC(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -1693,7 +1664,7 @@ bool FrameFileIO::isCanalyzerASC(QString filename)
 //This seems like a rather eclectic mix. It's almost arbitrary!
 bool FrameFileIO::loadCanalyzerASC(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -1708,7 +1679,6 @@ bool FrameFileIO::loadCanalyzerASC(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -1875,13 +1845,12 @@ bool FrameFileIO::loadCanalyzerASC(QString filename, QVector<CANFrame>* frames)
         //else foundErrors = true;
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveCanalyzerASC(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     int lineCounter = 0;
     int64_t offsetTime = frames->at(0).timeStamp().microSeconds();
 
@@ -1896,7 +1865,6 @@ bool FrameFileIO::saveCanalyzerASC(QString filename, const QVector<CANFrame>* fr
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -1965,7 +1933,6 @@ bool FrameFileIO::saveCanalyzerASC(QString filename, const QVector<CANFrame>* fr
         outFile->write("\n");
     }
     outFile->close();
-    delete outFile;
 
     return true;
 }
@@ -1974,12 +1941,11 @@ bool FrameFileIO::isCanalyzerBLF(QString filename)
 {
     BLF_FILE_HEADER header;
 
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     bool isMatch = false;
 
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
     inFile->read(reinterpret_cast<char *>(&header), sizeof(header));
@@ -1991,7 +1957,6 @@ bool FrameFileIO::isCanalyzerBLF(QString filename)
     else isMatch = false;
 
     inFile->close();
-    delete inFile;
 
     return isMatch;
 }
@@ -2005,14 +1970,13 @@ bool FrameFileIO::loadCanalyzerBLF(QString filename, QVector<CANFrame> *frames)
 
 bool FrameFileIO::isNativeCSVFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int fileVersion = 1;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
     try
@@ -2050,7 +2014,6 @@ bool FrameFileIO::isNativeCSVFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
 
     return isMatch;
 }
@@ -2060,7 +2023,7 @@ bool FrameFileIO::isNativeCSVFile(QString filename)
 //39747828,000005EB,false,Rx,0,8,E8,45,85,4B,4A,28,36,69,
 bool FrameFileIO::loadNativeCSVFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int fileVersion = 1;
@@ -2071,7 +2034,6 @@ bool FrameFileIO::loadNativeCSVFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -2149,13 +2111,12 @@ bool FrameFileIO::loadNativeCSVFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveNativeCSVFile(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     int lineCounter = 0;
 
     const unsigned char *data;
@@ -2164,7 +2125,6 @@ bool FrameFileIO::saveNativeCSVFile(QString filename, const QVector<CANFrame>* f
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -2215,7 +2175,6 @@ bool FrameFileIO::saveNativeCSVFile(QString filename, const QVector<CANFrame>* f
 
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
@@ -2320,13 +2279,12 @@ bool FrameFileIO::flushContinuousNative()
 
 bool FrameFileIO::isGenericCSVFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
     try
@@ -2363,13 +2321,12 @@ bool FrameFileIO::isGenericCSVFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
 bool FrameFileIO::loadGenericCSVFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     uint64_t timeStamp = Utility::GetTimeMS();
@@ -2379,7 +2336,6 @@ bool FrameFileIO::loadGenericCSVFile(QString filename, QVector<CANFrame>* frames
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -2419,14 +2375,13 @@ bool FrameFileIO::loadGenericCSVFile(QString filename, QVector<CANFrame>* frames
         else foundErrors = true;
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 //4f5,ff 34 23 45 24 e4
 bool FrameFileIO::saveGenericCSVFile(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     int lineCounter = 0;
 
     const unsigned char *data;
@@ -2435,7 +2390,6 @@ bool FrameFileIO::saveGenericCSVFile(QString filename, const QVector<CANFrame>* 
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -2468,19 +2422,17 @@ bool FrameFileIO::saveGenericCSVFile(QString filename, const QVector<CANFrame>* 
 
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
 bool FrameFileIO::isLogFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -2520,7 +2472,6 @@ bool FrameFileIO::isLogFile(QString filename)
     }
 
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -2558,7 +2509,7 @@ Sample chunk of a busmaster log:
 */
 bool FrameFileIO::loadLogFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -2566,7 +2517,6 @@ bool FrameFileIO::loadLogFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -2624,13 +2574,12 @@ bool FrameFileIO::loadLogFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveLogFile(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     QDateTime timestamp, tempStamp;
     int lineCounter = 0;
 
@@ -2642,7 +2591,6 @@ bool FrameFileIO::saveLogFile(QString filename, const QVector<CANFrame>* frames)
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -2705,19 +2653,17 @@ bool FrameFileIO::saveLogFile(QString filename, const QVector<CANFrame>* frames)
 
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
 bool FrameFileIO::isIXXATFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -2740,14 +2686,13 @@ bool FrameFileIO::isIXXATFile(QString filename)
     }
 
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
 //"00:01:03.03","223","Std","","00 00 00 00 49 00 00 01 "
 bool FrameFileIO::loadIXXATFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     uint64_t timeStamp = Utility::GetTimeMS();
@@ -2757,7 +2702,6 @@ bool FrameFileIO::loadIXXATFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -2821,13 +2765,12 @@ bool FrameFileIO::loadIXXATFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveIXXATFile(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     QDateTime timestamp, tempStamp;
     int lineCounter = 0;
 
@@ -2839,7 +2782,6 @@ bool FrameFileIO::saveIXXATFile(QString filename, const QVector<CANFrame>* frame
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -2883,20 +2825,18 @@ bool FrameFileIO::saveIXXATFile(QString filename, const QVector<CANFrame>* frame
 
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
 bool FrameFileIO::isCANDOFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     int lineCounter = 0;
     QByteArray data;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
 
@@ -2931,13 +2871,12 @@ bool FrameFileIO::isCANDOFile(QString filename)
     }
 
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
 bool FrameFileIO::loadCANDOFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     int lineCounter = 0;
     QByteArray data;
@@ -2948,7 +2887,6 @@ bool FrameFileIO::loadCANDOFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
 
@@ -2997,13 +2935,12 @@ bool FrameFileIO::loadCANDOFile(QString filename, QVector<CANFrame>* frames)
     }
 
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveCANDOFile(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     int lineCounter = 0;
     QByteArray data;
     CANFrame thisFrame;
@@ -3016,7 +2953,6 @@ bool FrameFileIO::saveCANDOFile(QString filename, const QVector<CANFrame>* frame
 
     if (!outFile->open(QIODevice::WriteOnly))
     {
-        delete outFile;
         return false;
     }
 
@@ -3060,13 +2996,12 @@ bool FrameFileIO::saveCANDOFile(QString filename, const QVector<CANFrame>* frame
         }
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
 bool FrameFileIO::isMicrochipFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     bool inComment = false;
     int lineCounter = 0;
@@ -3074,7 +3009,6 @@ bool FrameFileIO::isMicrochipFile(QString filename)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
     try
@@ -3113,7 +3047,6 @@ bool FrameFileIO::isMicrochipFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -3128,7 +3061,7 @@ tokens:
 */
 bool FrameFileIO::loadMicrochipFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     bool inComment = false;
@@ -3139,7 +3072,6 @@ bool FrameFileIO::loadMicrochipFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -3190,7 +3122,6 @@ bool FrameFileIO::loadMicrochipFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
@@ -3207,7 +3138,7 @@ tokens:
 */
 bool FrameFileIO::saveMicrochipFile(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     QDateTime timestamp, tempStamp;
     int lineCounter = 0;
 
@@ -3219,7 +3150,6 @@ bool FrameFileIO::saveMicrochipFile(QString filename, const QVector<CANFrame>* f
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -3261,20 +3191,18 @@ bool FrameFileIO::saveMicrochipFile(QString filename, const QVector<CANFrame>* f
 
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
 bool FrameFileIO::isTraceFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int lineCounter = 0;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -3317,7 +3245,6 @@ bool FrameFileIO::isTraceFile(QString filename)
     }
 
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -3352,7 +3279,7 @@ shown in the file comments. The bytes seem to be space delimited and in hex
 
 bool FrameFileIO::loadTraceFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     long long timeStamp = 0;
@@ -3362,7 +3289,6 @@ bool FrameFileIO::loadTraceFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -3415,13 +3341,12 @@ bool FrameFileIO::loadTraceFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveTraceFile(QString filename, const QVector<CANFrame> * frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     QDateTime timestamp;
     int lineCounter = 0;
     int64_t tempTime;
@@ -3435,7 +3360,6 @@ bool FrameFileIO::saveTraceFile(QString filename, const QVector<CANFrame> * fram
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -3511,13 +3435,12 @@ bool FrameFileIO::saveTraceFile(QString filename, const QVector<CANFrame> * fram
 
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
 bool FrameFileIO::saveCanDumpFile(QString filename, const QVector<CANFrame> * frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     QDateTime timestamp;
     int lineCounter = 0;
     double tempTime;
@@ -3530,7 +3453,6 @@ bool FrameFileIO::saveCanDumpFile(QString filename, const QVector<CANFrame> * fr
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -3574,13 +3496,12 @@ bool FrameFileIO::saveCanDumpFile(QString filename, const QVector<CANFrame> * fr
 
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
 bool FrameFileIO::isCanDumpFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     QList<QByteArray> tokens;
     QRegularExpression timeExp(QRegularExpression::anchoredPattern("^\\((\\S+)\\)$")); //anchored pattern causes exact match
@@ -3593,7 +3514,6 @@ bool FrameFileIO::isCanDumpFile(QString filename)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -3700,7 +3620,6 @@ bool FrameFileIO::isCanDumpFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -3711,7 +3630,7 @@ bool FrameFileIO::isCanDumpFile(QString filename)
 */
 bool FrameFileIO::loadCanDumpFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     QList<QByteArray> tokens;
@@ -3723,7 +3642,6 @@ bool FrameFileIO::loadCanDumpFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -3839,20 +3757,18 @@ bool FrameFileIO::loadCanDumpFile(QString filename, QVector<CANFrame>* frames)
        frames->append(thisFrame);
     }
     inFile->close();
-    delete inFile;
     return true;
 }
 
 bool FrameFileIO::isLawicelFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int lineCounter = 0;
     bool isMatch = false;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -3879,7 +3795,6 @@ bool FrameFileIO::isLawicelFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -3890,7 +3805,7 @@ Skip all lines that start with an S
 */
 bool FrameFileIO::loadLawicelFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -3899,7 +3814,6 @@ bool FrameFileIO::loadLawicelFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -3931,20 +3845,18 @@ bool FrameFileIO::loadLawicelFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::isKvaserFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int lineCounter = 0;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
     try
@@ -3975,7 +3887,6 @@ bool FrameFileIO::isKvaserFile(QString filename)
         isMatch = false;
     }
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -3983,7 +3894,7 @@ bool FrameFileIO::isKvaserFile(QString filename)
 // 0    000000AD         8  FF  FF  00  00  00  00  00  00     154.266550 R
 bool FrameFileIO::loadKvaserFile(QString filename, QVector<CANFrame> *frames, bool useHex)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     int lineCounter = 0;
@@ -3995,7 +3906,6 @@ bool FrameFileIO::loadKvaserFile(QString filename, QVector<CANFrame> *frames, bo
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -4037,20 +3947,18 @@ bool FrameFileIO::loadKvaserFile(QString filename, QVector<CANFrame> *frames, bo
         //else foundErrors = true;
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::isCabanaFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int lineCounter = 0;
     bool isMatch = true;
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
     try
@@ -4081,7 +3989,6 @@ bool FrameFileIO::isCabanaFile(QString filename)
     }
 
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
@@ -4094,7 +4001,7 @@ bool FrameFileIO::isCabanaFile(QString filename)
 //There also may or may not be some blank lines in between the csv column headers and the beginning of data.
 bool FrameFileIO::loadCabanaFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray line;
     bool timeStampBaseSet = false;
@@ -4106,7 +4013,6 @@ bool FrameFileIO::loadCabanaFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return false;
     }
 
@@ -4189,13 +4095,12 @@ bool FrameFileIO::loadCabanaFile(QString filename, QVector<CANFrame>* frames)
         }
     }
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::saveCabanaFile(QString filename, const QVector<CANFrame>* frames)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
     int lineCounter = 0;
 
     const unsigned char *data;
@@ -4204,7 +4109,6 @@ bool FrameFileIO::saveCabanaFile(QString filename, const QVector<CANFrame>* fram
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
     
@@ -4249,13 +4153,12 @@ bool FrameFileIO::saveCabanaFile(QString filename, const QVector<CANFrame>* fram
 
     }
     outFile->close();
-    delete outFile;
     return true;
 }
 
 bool FrameFileIO::isTeslaAPFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     QByteArray data;
     bool isValidFile = true;
@@ -4263,7 +4166,6 @@ bool FrameFileIO::isTeslaAPFile(QString filename)
 
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
 
@@ -4276,13 +4178,12 @@ bool FrameFileIO::isTeslaAPFile(QString filename)
     }
 
     inFile->close();
-    delete inFile;
     return isValidFile;
 }
 
 bool FrameFileIO::loadTeslaAPFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     CANFrame thisFrame;
     int lineCounter = 0;
     QByteArray data;
@@ -4294,7 +4195,6 @@ bool FrameFileIO::loadTeslaAPFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
 
@@ -4330,12 +4230,11 @@ bool FrameFileIO::loadTeslaAPFile(QString filename, QVector<CANFrame>* frames)
     }
 
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 
 bool FrameFileIO::isCLX000File(QString filename) {
-    std::unique_ptr<QFile> inFile = std::unique_ptr<QFile>(new QFile(filename));
+    auto inFile = std::make_unique<QFile>(filename);
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -4460,7 +4359,7 @@ bool FrameFileIO::isCLX000File(QString filename) {
 }
 
 bool FrameFileIO::loadCLX000File(QString filename, QVector<CANFrame>* frames) {
-    std::unique_ptr<QFile> inFile = std::unique_ptr<QFile>(new QFile(filename));
+    auto inFile = std::make_unique<QFile>(filename);
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -4782,13 +4681,12 @@ bool FrameFileIO::loadCLX000File(QString filename, QVector<CANFrame>* frames) {
 
 bool FrameFileIO::isCANServerFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray headerData;
     bool isMatch = false;
 
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
     try
@@ -4814,13 +4712,12 @@ bool FrameFileIO::isCANServerFile(QString filename)
     }
 
     inFile->close();
-    delete inFile;
     return isMatch;
 }
 
 bool FrameFileIO::loadCANServerFile(QString filename, QVector<CANFrame>* frames)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     
     union framedata_U
     {
@@ -4837,7 +4734,6 @@ bool FrameFileIO::loadCANServerFile(QString filename, QVector<CANFrame>* frames)
 
     if (!inFile->open(QIODevice::ReadOnly))
     {
-        delete inFile;
         return false;
     }
 
@@ -5010,7 +4906,6 @@ bool FrameFileIO::loadCANServerFile(QString filename, QVector<CANFrame>* frames)
     }
     
     inFile->close();
-    delete inFile;
     return !foundErrors;
 }
 

@@ -8,6 +8,7 @@
 #include <QDateTime>
 #include <QSettings>
 #include "utility.h"
+#include <memory>
 
 CANFrameModel::~CANFrameModel()
 {
@@ -944,7 +945,7 @@ int CANFrameModel::getIndexFromTimeID(unsigned int ID, double timestamp)
 
 void CANFrameModel::loadFilterFile(QString filename)
 {
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
     QByteArray line;
     int ID;
 
@@ -973,7 +974,7 @@ void CANFrameModel::loadFilterFile(QString filename)
 
 void CANFrameModel::saveFilterFile(QString filename)
 {
-    QFile *outFile = new QFile(filename);
+    auto outFile = std::make_unique<QFile>(filename);
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
         return;

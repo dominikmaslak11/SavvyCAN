@@ -10,6 +10,7 @@
 #include "connections/canconmanager.h"
 #include "helpwindow.h"
 #include "filterutility.h"
+#include <memory>
 
 /*
  * Notes about new functionality:
@@ -98,7 +99,6 @@ FramePlaybackWindow::FramePlaybackWindow(const QVector<CANFrame> *frames, QWidge
 
 FramePlaybackWindow::~FramePlaybackWindow()
 {
-    delete ui;
 }
 
 void FramePlaybackWindow::showEvent(QShowEvent *)
@@ -202,7 +202,7 @@ void FramePlaybackWindow::saveFilters()
         if (!filename.contains('.')) filename += ".ftl";
         if (dialog.selectedNameFilter() == filters[0])
         {
-            QFile *outFile = new QFile(filename);
+            auto outFile = std::make_unique<QFile>(filename);
 
             if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
                 return;
@@ -241,7 +241,7 @@ void FramePlaybackWindow::loadFilters()
     {
         filename = dialog.selectedFiles()[0];
         //right now there is only one file type that can be loaded here so just do it.
-        QFile *inFile = new QFile(filename);
+        auto inFile = std::make_unique<QFile>(filename);
         QByteArray line;
         int ID;
         bool checked = false;

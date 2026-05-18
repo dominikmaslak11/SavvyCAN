@@ -13,6 +13,7 @@
 #include <QJsonObject>
 #include "utility.h"
 #include "connections/canconmanager.h"
+#include <memory>
 
 DBCHandler* DBCHandler::instance = nullptr;
 
@@ -963,7 +964,7 @@ bool DBCFile::parseDefaultAttrLine(QString line)
 
 bool DBCFile::loadFile(QString fileName)
 {
-    QFile *inFile = new QFile(fileName);
+    auto inFile = std::make_unique<QFile>(fileName);
     QString line, rawLine;
     QRegularExpression regex;
     QRegularExpressionMatch match;
@@ -981,7 +982,6 @@ bool DBCFile::loadFile(QString fileName)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         qDebug() << "Could not load the file!";
         return false;
     }
@@ -1300,7 +1300,6 @@ bool DBCFile::loadFile(QString fileName)
         msgBox.exec();
     }
     inFile->close();
-    delete inFile;
     QStringList fileList = fileName.split('/');
     this->fileName = fileList[fileList.length() - 1]; //whoops... same name as parameter in this function.
     filePath = fileName.left(fileName.length() - this->fileName.length());
@@ -1429,14 +1428,13 @@ bool DBCFile::saveFile(QString fileName)
     int nodeNumber = 1;
     int msgNumber = 1;
     int sigNumber = 1;
-    QFile *outFile = new QFile(fileName);
+    auto outFile = std::make_unique<QFile>(fileName);
     QString nodesOutput, msgOutput, commentsOutput, valuesOutput, valueTableOutput, extMultiplexOutput;
     QString defaultsOutput, attrValOutput, sigValTypeOutput;
     bool hasExtendedMultiplexing = false;
 
     if (!outFile->open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        delete outFile;
         return false;
     }
 
@@ -1779,7 +1777,6 @@ bool DBCFile::saveFile(QString fileName)
     sigValTypeOutput.clear();
 
     outFile->close();
-    delete outFile;
 
     isDirty = false;
 
@@ -1930,11 +1927,10 @@ DBCFile* DBCHandler::loadSecretCSVFile(QString filename)
     createBlankFile();
     thisFile = &loadedFiles.last();
 
-    QFile *inFile = new QFile(filename);
+    auto inFile = std::make_unique<QFile>(filename);
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        delete inFile;
         return nullptr;
     }
 
@@ -2099,16 +2095,14 @@ DBCFile* DBCHandler::loadJSONFile(QString filename)
          createBlankFile();
          thisFile = &loadedFiles.last();
 
-         QFile *inFile = new QFile(filename);
+         auto inFile = std::make_unique<QFile>(filename);
          if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
          {
              qDebug() << "Could not open JSON file for reading.";
-             delete inFile;
              return nullptr;
          }
          QByteArray wholeFileData = inFile->readAll();
          inFile->close();
-         delete inFile;
          //qDebug() << "Data Length: " << wholeFileData.length();
          QJsonDocument jsonDoc = QJsonDocument::fromJson(wholeFileData);
          if (jsonDoc.isNull())
