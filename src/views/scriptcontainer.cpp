@@ -147,7 +147,7 @@ void ScriptContainer::updateValuesTable(QTableWidget *widget)
 {
     QString value;
 
-    for (QString paramName : scriptParams)
+    for (const QString& paramName : scriptParams)
     {
         value = scriptEngine->globalObject().property(paramName).toString();
         qDebug() << paramName << " - " << value;
@@ -219,7 +219,7 @@ void CANScriptHelper::setFilter(QJSValue id, QJSValue mask, QJSValue bus)
 void CANScriptHelper::clearFilters()
 {
     qDebug() << "Called clear filters";
-    for (CANFilter filter : filters)
+    for (const CANFilter& filter : filters)
     {
         CANConManager::getInstance()->removeTargettedFrame(filter.bus, filter.ID, filter.mask, this);
     }

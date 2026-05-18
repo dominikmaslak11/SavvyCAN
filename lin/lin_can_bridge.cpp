@@ -109,7 +109,11 @@ void LinCanBridge::onLinFramesReceived(int bus, QVector<LINFrame> frames)
     for (const auto &lin : frames) {
         CANFrame can = linFrameToCanFrame(lin);
         can.bus = bus;
-        mQueue.enqueue(can);
+        CANFrame* frame_p = getQueue().get();
+        if (frame_p) {
+            *frame_p = can;
+            getQueue().queue();
+        }
         checkTargettedFrame(can);
     }
 }

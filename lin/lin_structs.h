@@ -212,7 +212,7 @@ struct LDFDatabase {
     uint32_t    baudRate        = 19200;
     QString     channelName;
     QVector<LDFNode> nodes;
-    QVector<LINSignal> signals;
+    QVector<LINSignal> signalList;
     QVector<LINScheduleEntry> schedule;
     QMap<uint8_t, QString> frameNames;  // ID -> name mapping
 

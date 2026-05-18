@@ -82,6 +82,7 @@ protected:
     const LINCon::type mType;
     int               mBaudRate;
     bool              mConsoleOutput = false;
+    QElapsedTimer      mTimer;
 
 private:
     QAtomicInt        mStatus;
@@ -116,7 +117,7 @@ protected:
 
 private slots:
     void onReadyRead();
-    void onError(QSerialPort::SerialPortError error);
+    void onError(QSerialPort::SerialPortError err);
 
 private:
     void processBuffer();

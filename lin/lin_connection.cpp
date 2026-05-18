@@ -12,12 +12,12 @@ LINConnection::LINConnection(QString port,
                              int numBuses,
                              int queueLen)
     : mNumBuses(numBuses)
-    , mQueue(queueLen)
     , mPort(port)
     , mType(type)
     , mBaudRate(baudRate)
     , mStatus(LINCon::NOT_CONNECTED)
 {
+    mQueue.setSize(queueLen);
 }
 
 LINConnection::~LINConnection()
@@ -116,7 +116,7 @@ void LINSerialConnection::piStarted()
     mSerial->setFlowControl(QSerialPort::NoFlowControl);
 
     if (!mSerial->open(QIODevice::ReadWrite)) {
-        emit error(QString("Cannot open serial port: %1 — %2")
+        LINConnection::error(QString("Cannot open serial port: %1 — %2")
                        .arg(mPort)
                        .arg(mSerial->errorString()));
         return;
@@ -195,7 +195,7 @@ void LINSerialConnection::onError(QSerialPort::SerialPortError error)
 {
     if (error == QSerialPort::NoError) return;
     qWarning() << "[LIN] Serial error:" << error << mSerial->errorString();
-    emit error(QString("Serial error: %1").arg(mSerial->errorString()));
+    LINConnection::error(QString("Serial error: %1").arg(mSerial->errorString()));
 }
 
 void LINSerialConnection::processBuffer()
@@ -227,7 +227,7 @@ void LINSerialConnection::processBuffer()
                 if (LINHelpers::decodeRawFrame(candidate, frame)) {
                     // Found a valid frame — accept it
                     frame.timestamp = mTimer.nsecsElapsed() / 1000; // microseconds
-                    mQueue.enqueue(frame);
+                      LINFrame* p = mQueue.get(); if (p) { *p = frame; mQueue.queue(); }
 
                     QVector<LINFrame> batch;
                     batch.append(frame);
@@ -283,14 +283,14 @@ void LINSocketCANConnection::piStarted()
 {
     mSocketFd = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (mSocketFd < 0) {
-        emit error("Cannot create CAN socket");
+        LINConnection::error("Cannot create CAN socket");
         return;
     }
 
     struct ifreq ifr;
     strncpy(ifr.ifr_name, mInterfaceName.toUtf8().constData(), IFNAMSIZ - 1);
     if (ioctl(mSocketFd, SIOCGIFINDEX, &ifr) < 0) {
-        emit error(QString("Cannot find interface: %1").arg(mInterfaceName));
+        LINConnection::error(QString("Cannot find interface: %1").arg(mInterfaceName));
         close(mSocketFd);
         mSocketFd = -1;
         return;
@@ -301,7 +301,7 @@ void LINSocketCANConnection::piStarted()
     addr.can_ifindex = ifr.ifr_ifindex;
 
     if (bind(mSocketFd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
-        emit error("Cannot bind CAN socket");
+        LINConnection::error("Cannot bind CAN socket");
         close(mSocketFd);
         mSocketFd = -1;
         return;
@@ -309,7 +309,9 @@ void LINSocketCANConnection::piStarted()
 
     // Enable CAN FD to capture LIN-wrapped frames if present
     int can_fd = 1;
+    #ifdef CAN_RAW_FD_FRAMES
     setsockopt(mSocketFd, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &can_fd, sizeof(can_fd));
+#endif
 
     // Set non-blocking
     int flags = fcntl(mSocketFd, F_GETFL, 0);

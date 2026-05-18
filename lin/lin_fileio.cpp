@@ -139,7 +139,7 @@ bool LINFileIO::loadLDF(QString filename, LDFDatabase &db)
                             sig.subscribers.append(subscriber);
                         }
                     }
-                    db.signals.append(sig);
+                    db.signalList.append(sig);
                 }
                 break;
             }
@@ -220,7 +220,7 @@ bool LINFileIO::saveLDF(QString filename, const LDFDatabase &db)
     out << "}" << Qt::endl << Qt::endl;
 
     out << "Signals {" << Qt::endl;
-    for (const auto &sig : db.signals) {
+    for (const auto &sig : db.signalList) {
         out << "    " << sig.name << ": " << sig.length << ", " << sig.startBit
             << ", " << sig.publisher;
         for (const auto &sub : sig.subscribers)
@@ -233,7 +233,7 @@ bool LINFileIO::saveLDF(QString filename, const LDFDatabase &db)
     for (auto it = db.frameNames.begin(); it != db.frameNames.end(); ++it) {
         // Determine length from signals
         int maxLen = 1;
-        for (const auto &sig : db.signals) {
+        for (const auto &sig : db.signalList) {
             if (sig.frameId == it.key()) {
                 int endBit = sig.startBit + sig.length;
                 int endByte = (endBit + 7) / 8;
@@ -358,7 +358,7 @@ bool LINFileIO::saveLINLogNative(QString filename, const QVector<LINFrame> &fram
     out << (uint32_t)frames.size();
 
     for (const auto &frame : frames) {
-        out << frame.timestamp;
+        out << (quint64)frame.timestamp;
         out << frame.pid;
         out << frame.dataLen;
         out.writeRawData((const char*)frame.data, frame.dataLen);

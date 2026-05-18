@@ -38,8 +38,8 @@ DBCSignalEditor::DBCSignalEditor(QWidget *parent) :
 
     ui->bitfield->setMode(GridMode::SIGNAL_VIEW);
 
-    connect(ui->bitfield, &CANDatagrid::gridClicked, this, &DBCSignalEditor::bitfieldLeftClicked);
-    connect(ui->bitfield, &CANDatagrid::gridRightClicked, this, &DBCSignalEditor::bitfieldRightClicked);
+    connect(ui->bitfield, &CANDataGrid::gridClicked, this, &DBCSignalEditor::bitfieldLeftClicked);
+    connect(ui->bitfield, &CANDataGrid::gridRightClicked, this, &DBCSignalEditor::bitfieldRightClicked);
 
     connect(ui->valuesTable, &QTableWidget::customContextMenuRequested, this, &DBCSignalEditor::onCustomMenuValues);
     ui->valuesTable->setContextMenuPolicy(Qt::CustomContextMenu);

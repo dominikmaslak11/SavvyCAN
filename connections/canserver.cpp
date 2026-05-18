@@ -12,6 +12,7 @@
 #include <QStringBuilder>
 #include <QUdpSocket>
 #include <QHostAddress>
+#include <QNetworkDatagram>
 
 #include "utility.h"
 #include "canserver.h"

@@ -97,7 +97,7 @@ FlowViewWindow::FlowViewWindow(const QVector<CANFrame> *frames, QWidget *parent)
     connect(ui->spinPlayback, QOverload<int>::of(&QSpinBox::valueChanged), this, &FlowViewWindow::changePlaybackSpeed);
     connect(ui->cbLoopPlayback, &QCheckBox::clicked, this, &FlowViewWindow::changeLooping);
     connect(playbackTimer, &QTimer::timeout, this, &FlowViewWindow::timerTriggered);
-    connect(ui->graphView, QOverload<QCPAbstractPlottable*,QMouseEvent*>::of(&QCustomPlot::plottableDoubleClick), this, &FlowViewWindow::plottableDoubleClick);
+    connect(ui->graphView, &QCustomPlot::plottableDoubleClick, this, [this](QCPAbstractPlottable* p, int, QMouseEvent* e) { plottableDoubleClick(p, e); });
     connect(ui->txtTrigger0, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
     connect(ui->txtTrigger1, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
     connect(ui->txtTrigger2, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);

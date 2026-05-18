@@ -33,6 +33,8 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QFontMetrics>
+#include <QTextBlock>
+#include <QSyntaxHighlighter>
 
 class JSBlockData: public QTextBlockUserData
 {

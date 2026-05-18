@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>426</width>
-    <height>540</height>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -82,6 +82,20 @@
        <widget class="QRadioButton" name="rbCanlogserver">
         <property name="text">
          <string>CANlogserver</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QRadioButton" name="rbLINSerial">
+        <property name="text">
+         <string>LIN Bus (serial adapter)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QRadioButton" name="rbLINSocketCAN">
+        <property name="text">
+         <string>LIN Bus (SocketCAN)</string>
         </property>
        </widget>
       </item>

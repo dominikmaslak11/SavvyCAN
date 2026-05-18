@@ -5,6 +5,7 @@
 #include <QStringBuilder>
 #include <QHostAddress>
 #include <QHostInfo>
+#include <QRandomGenerator>
 
 #include "utility.h"
 #include "mqtt_bus.h"

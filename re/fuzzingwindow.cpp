@@ -29,7 +29,7 @@ FuzzingWindow::FuzzingWindow(const QVector<CANFrame> *frames, QWidget *parent) :
     connect(ui->spinTiming, QOverload<int>::of(&QSpinBox::valueChanged), this, &FuzzingWindow::changePlaybackSpeed);
     connect(ui->listID, &QListWidget::itemChanged, this, &FuzzingWindow::idListChanged);
     connect(ui->spinBytes, QOverload<int>::of(&QSpinBox::valueChanged), this, &FuzzingWindow::changedNumDataBytes);
-    connect(ui->bitfield, &CANDatagrid::gridClicked, this, &FuzzingWindow::bitfieldClicked);
+    connect(ui->bitfield, &CANDataGrid::gridClicked, this, &FuzzingWindow::bitfieldClicked);
     connect(ui->txtByte0, &QLineEdit::returnPressed, this, [=](){changedDataByteText(0, ui->txtByte0->text());});
     connect(ui->txtByte1, &QLineEdit::returnPressed, this, [=](){changedDataByteText(1, ui->txtByte1->text());});
     connect(ui->txtByte2, &QLineEdit::returnPressed, this, [=](){changedDataByteText(2, ui->txtByte2->text());});

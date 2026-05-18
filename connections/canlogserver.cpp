@@ -4,6 +4,8 @@
 #include <QSettings>
 #include <QStringBuilder>
 #include <QTcpSocket>
+#include <QUrl>
+#include <QNetworkProxy>
 
 #include "utility.h"
 #include "canlogserver.h"

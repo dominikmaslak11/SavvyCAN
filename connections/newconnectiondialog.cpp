@@ -30,6 +30,8 @@ NewConnectionDialog::NewConnectionDialog(QVector<QString>* gvretips, QVector<QSt
     connect(ui->rbLawicel, &QAbstractButton::clicked, this, &NewConnectionDialog::handleConnTypeChanged);
     connect(ui->rbCANserver, &QAbstractButton::clicked, this, &NewConnectionDialog::handleConnTypeChanged);
     connect(ui->rbCanlogserver, &QAbstractButton::clicked, this, &NewConnectionDialog::handleConnTypeChanged);
+    connect(ui->rbLINSerial, &QAbstractButton::clicked, this, &NewConnectionDialog::handleConnTypeChanged);
+    connect(ui->rbLINSocketCAN, &QAbstractButton::clicked, this, &NewConnectionDialog::handleConnTypeChanged);
 
     connect(ui->cbDeviceType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &NewConnectionDialog::handleDeviceTypeChanged);
     connect(ui->btnOK, &QPushButton::clicked, this, &NewConnectionDialog::handleCreateButton);
@@ -70,6 +72,8 @@ void NewConnectionDialog::handleConnTypeChanged()
     if (ui->rbMQTT->isChecked()) selectMQTT();
     if (ui->rbCANserver->isChecked()) selectCANserver();
     if (ui->rbCanlogserver->isChecked()) selectCANlogserver();
+    if (ui->rbLINSerial->isChecked()) selectLINSerial();
+    if (ui->rbLINSocketCAN->isChecked()) selectLINSocketCAN();
 }
 
 void NewConnectionDialog::handleDeviceTypeChanged()
@@ -296,6 +300,12 @@ void NewConnectionDialog::setPortName(CANCon::type pType, QString pPortName, QSt
         case CANCon::CANSERVER:
           ui->rbCANserver->setChecked(true);
           break;
+        case CANCon::LIN_SERIAL:
+          ui->rbLINSerial->setChecked(true);
+          break;
+        case CANCon::LIN_SOCKETCAN:
+          ui->rbLINSocketCAN->setChecked(true);
+          break;
         case CANCon::CANLOGSERVER:
           ui->rbCanlogserver->setChecked(true);
           break;
@@ -343,6 +353,12 @@ void NewConnectionDialog::setPortName(CANCon::type pType, QString pPortName, QSt
             ui->cbPort->setCurrentText(pPortName);
             break;
         case CANCon::CANSERVER:
+        case CANCon::LIN_SERIAL:
+          ui->rbLINSerial->setChecked(true);
+          break;
+        case CANCon::LIN_SOCKETCAN:
+          ui->rbLINSocketCAN->setChecked(true);
+          break;
         case CANCon::CANLOGSERVER:
         {
             ui->cbPort->setCurrentText(pPortName);
@@ -362,6 +378,9 @@ QString NewConnectionDialog::getPortName()
     case CANCon::LAWICEL:
         return ui->cbPort->currentText();
     case CANCon::KAYAK:
+        return ui->cbPort->currentText();
+    case CANCon::LIN_SERIAL:
+    case CANCon::LIN_SOCKETCAN:
         return ui->cbPort->currentText();
     case CANCon::CANSERVER:
     case CANCon::CANLOGSERVER:
@@ -385,7 +404,7 @@ QString NewConnectionDialog::getDriverName()
 
 int NewConnectionDialog::getSerialSpeed()
 {
-    if (getConnectionType() == CANCon::LAWICEL)
+    if (getConnectionType() == CANCon::LAWICEL || getConnectionType() == CANCon::LIN_SERIAL)
     {
         return ui->cbSerialSpeed->currentText().toInt();
     }
@@ -394,7 +413,7 @@ int NewConnectionDialog::getSerialSpeed()
 
 int NewConnectionDialog::getBusSpeed()
 {
-    if (getConnectionType() == CANCon::LAWICEL)
+    if (getConnectionType() == CANCon::LAWICEL || getConnectionType() == CANCon::LIN_SERIAL)
     {
         return ui->cbCANSpeed->currentText().toInt();
     }
@@ -410,6 +429,8 @@ CANCon::type NewConnectionDialog::getConnectionType()
     if (ui->rbMQTT->isChecked()) return CANCon::MQTT;
     if (ui->rbLawicel->isChecked()) return CANCon::LAWICEL;
     if (ui->rbCANserver->isChecked()) return CANCon::CANSERVER;
+    if (ui->rbLINSerial->isChecked()) return CANCon::LIN_SERIAL;
+    if (ui->rbLINSocketCAN->isChecked()) return CANCon::LIN_SOCKETCAN;
     if (ui->rbCanlogserver->isChecked()) return CANCon::CANLOGSERVER;
     qDebug() << "getConnectionType: error";
 
@@ -424,16 +445,77 @@ bool NewConnectionDialog::isSerialBusAvailable()
 
 int NewConnectionDialog::getDataRate()
 {
-    if (getConnectionType() == CANCon::LAWICEL)
+    if (getConnectionType() == CANCon::LAWICEL || getConnectionType() == CANCon::LIN_SERIAL)
     {
         return ui->cbDataRate->currentText().toInt();
     }
     else return 0;
 }
 
+
+
+void NewConnectionDialog::selectLINSerial()
+{
+    ui->lPort->setText("Serial Port:");
+    ui->lblDeviceType->setHidden(true);
+    ui->cbDeviceType->setHidden(true);
+    ui->cbCANSpeed->setHidden(false);
+    ui->cbSerialSpeed->setHidden(false);
+    ui->lblCANSpeed->setHidden(false);
+    ui->lblSerialSpeed->setHidden(false);
+    ui->cbCanFd->setHidden(true);
+    ui->cbDataRate->setHidden(true);
+    ui->lblDataRate->setHidden(true);
+    ui->lblCANSpeed->setText("LIN Bus Speed:");
+    ui->lblSerialSpeed->setText("Serial Port Speed:");
+
+    ui->cbPort->clear();
+    ports = QSerialPortInfo::availablePorts();
+    for (int i = 0; i < ports.count(); i++)
+        ui->cbPort->addItem(ports[i].portName());
+
+    if (ui->cbCANSpeed->count() == 0)
+    {
+        ui->cbCANSpeed->addItem("2400");
+        ui->cbCANSpeed->addItem("9600");
+        ui->cbCANSpeed->addItem("10417");
+        ui->cbCANSpeed->addItem("19200");
+        ui->cbCANSpeed->addItem("20000");
+        ui->cbCANSpeed->setCurrentText("19200");
+    }
+    if (ui->cbSerialSpeed->count() == 0)
+    {
+        ui->cbSerialSpeed->addItem("9600");
+        ui->cbSerialSpeed->addItem("19200");
+        ui->cbSerialSpeed->addItem("38400");
+        ui->cbSerialSpeed->addItem("57600");
+        ui->cbSerialSpeed->addItem("115200");
+        ui->cbSerialSpeed->setCurrentText("115200");
+    }
+}
+
+void NewConnectionDialog::selectLINSocketCAN()
+{
+    ui->lPort->setText("SocketCAN Interface:");
+    ui->lblDeviceType->setHidden(true);
+    ui->cbDeviceType->setHidden(true);
+    ui->cbCANSpeed->setHidden(true);
+    ui->cbSerialSpeed->setHidden(true);
+    ui->lblCANSpeed->setHidden(true);
+    ui->lblSerialSpeed->setHidden(true);
+    ui->cbCanFd->setHidden(true);
+    ui->cbDataRate->setHidden(true);
+    ui->lblDataRate->setHidden(true);
+
+    ui->cbPort->clear();
+    ui->cbPort->addItem("vcan0");
+    ui->cbPort->addItem("can0");
+    ui->cbPort->addItem("slcan0");
+}
+
 bool NewConnectionDialog::isCanFd()
  {
-     if (getConnectionType() == CANCon::LAWICEL)
+     if (getConnectionType() == CANCon::LAWICEL || getConnectionType() == CANCon::LIN_SERIAL)
      {
          return ui->cbCanFd;
      }
