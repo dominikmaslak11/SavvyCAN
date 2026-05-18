@@ -659,41 +659,41 @@ void GraphingWindow::contextMenuRequest(QPoint pos)
 
   if (ui->graphingView->legend->selectTest(pos, false) >= 0) // context menu on legend requested
   {
-    menu->addAction(tr("Move to top left"), this, SLOT(moveLegend()))->setData((int)(Qt::AlignTop|Qt::AlignLeft));
-    menu->addAction(tr("Move to top center"), this, SLOT(moveLegend()))->setData((int)(Qt::AlignTop|Qt::AlignHCenter));
-    menu->addAction(tr("Move to top right"), this, SLOT(moveLegend()))->setData((int)(Qt::AlignTop|Qt::AlignRight));
-    menu->addAction(tr("Move to bottom right"), this, SLOT(moveLegend()))->setData((int)(Qt::AlignBottom|Qt::AlignRight));
-    menu->addAction(tr("Move to bottom left"), this, SLOT(moveLegend()))->setData((int)(Qt::AlignBottom|Qt::AlignLeft));
+    menu->addAction(tr("Move to top left"), this, &GraphingWindow::moveLegend)->setData(static_cast<int>(Qt::AlignTop|Qt::AlignLeft));
+    menu->addAction(tr("Move to top center"), this, &GraphingWindow::moveLegend)->setData(static_cast<int>(Qt::AlignTop|Qt::AlignHCenter));
+    menu->addAction(tr("Move to top right"), this, &GraphingWindow::moveLegend)->setData(static_cast<int>(Qt::AlignTop|Qt::AlignRight));
+    menu->addAction(tr("Move to bottom right"), this, &GraphingWindow::moveLegend)->setData(static_cast<int>(Qt::AlignBottom|Qt::AlignRight));
+    menu->addAction(tr("Move to bottom left"), this, &GraphingWindow::moveLegend)->setData(static_cast<int>(Qt::AlignBottom|Qt::AlignLeft));
   }
   else  // general context menu on graphs requested
   {
-    menu->addAction(tr("Save graph image to file"), this, SLOT(saveGraphs()));
-    menu->addAction(tr("Save graph definitions to file"), this, SLOT(saveDefinitions()));
-    menu->addAction(tr("Load graph definitions from file"), this, SLOT(loadDefinitions()));
-    menu->addAction(tr("Save spreadsheet of data"), this, SLOT(saveSpreadsheet()));
-    QAction *act = menu->addAction(tr("Follow end of graph"), this, SLOT(toggleFollowMode()));
+    menu->addAction(tr("Save graph image to file"), this, &GraphingWindow::saveGraphs);
+    menu->addAction(tr("Save graph definitions to file"), this, &GraphingWindow::saveDefinitions);
+    menu->addAction(tr("Load graph definitions from file"), this, &GraphingWindow::loadDefinitions);
+    menu->addAction(tr("Save spreadsheet of data"), this, &GraphingWindow::saveSpreadsheet);
+    QAction *act = menu->addAction(tr("Follow end of graph"), this, &GraphingWindow::toggleFollowMode);
     act->setCheckable(true);
     act->setChecked(followGraphEnd);
-    menu->addAction(tr("Add new graph"), this, SLOT(addNewGraph()));
+    menu->addAction(tr("Add new graph"), this, &GraphingWindow::addNewGraph);
     if (ui->graphingView->selectedGraphs().size() > 0)
     {
         menu->addSeparator();
-        menu->addAction(tr("Edit selected graph"), this, SLOT(editSelectedGraph()));
-        menu->addAction(tr("Remove selected graph"), this, SLOT(removeSelectedGraph()));
+        menu->addAction(tr("Edit selected graph"), this, &GraphingWindow::editSelectedGraph);
+        menu->addAction(tr("Remove selected graph"), this, &GraphingWindow::removeSelectedGraph);
     }
     if (ui->graphingView->graphCount() > 0)
     {
         menu->addSeparator();
-        menu->addAction(tr("Remove all graphs"), this, SLOT(removeAllGraphs()));
+        menu->addAction(tr("Remove all graphs"), this, &GraphingWindow::removeAllGraphs);
     }
     menu->addSeparator();
-    menu->addAction(tr("Reset View"), this, SLOT(resetView()));
+    menu->addAction(tr("Reset View"), this, &GraphingWindow::resetView);
     if (ui->graphingView->graphCount() > 0)
     {
-      menu->addAction(tr("Rescale to data"), this, SLOT(rescaleToData()));
+      menu->addAction(tr("Rescale to data"), this, &GraphingWindow::rescaleToData);
     }
-    menu->addAction(tr("Zoom In"), this, SLOT(zoomIn()));
-    menu->addAction(tr("Zoom Out"), this, SLOT(zoomOut()));
+    menu->addAction(tr("Zoom In"), this, &GraphingWindow::zoomIn);
+    menu->addAction(tr("Zoom Out"), this, &GraphingWindow::zoomOut);
   }
 
   menu->popup(ui->graphingView->mapToGlobal(pos));

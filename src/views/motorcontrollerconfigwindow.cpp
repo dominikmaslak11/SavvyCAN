@@ -36,11 +36,11 @@ MotorControllerConfigWindow::MotorControllerConfigWindow(const QVector<CANFrame>
     ui->tableParams->setHorizontalHeaderLabels(headers);
 
 
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
-    connect(ui->btnRefresh, SIGNAL(clicked(bool)), this, SLOT(refreshData()));
-    connect(ui->btnSave, SIGNAL(clicked(bool)), this, SLOT(saveData()));
-    connect(&timer, SIGNAL(timeout()), this, SLOT(timerTick()));
-    connect(ui->btnLoadFile, SIGNAL(clicked(bool)), this, SLOT(loadFile()));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &MotorControllerConfigWindow::updatedFrames);
+    connect(ui->btnRefresh, &QPushButton::clicked, this, &MotorControllerConfigWindow::refreshData);
+    connect(ui->btnSave, &QPushButton::clicked, this, &MotorControllerConfigWindow::saveData);
+    connect(&timer, &QTimer::timeout, this, &MotorControllerConfigWindow::timerTick);
+    connect(ui->btnLoadFile, &QPushButton::clicked, this, &MotorControllerConfigWindow::loadFile);
 }
 
 MotorControllerConfigWindow::~MotorControllerConfigWindow()

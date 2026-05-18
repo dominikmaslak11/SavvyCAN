@@ -43,7 +43,7 @@ CanLogServer::~CanLogServer()
 
     m_ptcpSocket->close();
     delete m_ptcpSocket;
-    m_ptcpSocket = NULL;
+    m_ptcpSocket = nullptr;
 }
 
 void CanLogServer::readNetworkData()

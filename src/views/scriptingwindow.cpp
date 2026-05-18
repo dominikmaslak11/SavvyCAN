@@ -45,11 +45,11 @@ ScriptingWindow::ScriptingWindow(const QVector<CANFrame> *frames, QWidget *paren
     connect(ui->btnClearLog, &QAbstractButton::pressed, this, &ScriptingWindow::clickedLogClear);
     connect(ui->btnSaveLog, &QAbstractButton::pressed, this, &ScriptingWindow::saveLog);
     connect(ui->listLoadedScripts, &QListWidget::currentRowChanged, this, &ScriptingWindow::changeCurrentScript);
-    connect(ui->tableVariables, SIGNAL(cellChanged(int,int)), this, SLOT(updatedValue(int, int)));
+    connect(ui->tableVariables, &QTableWidget::cellChanged, this, &ScriptingWindow::updatedValue);
 
     connect(CANConManager::getInstance(), &CANConManager::framesReceived, this, &ScriptingWindow::newFrames);
 
-    connect(&valuesTimer, SIGNAL(timeout()), this, SLOT(valuesTimerElapsed()));
+    connect(&valuesTimer, &QTimer::timeout, this, &ScriptingWindow::valuesTimerElapsed);
 
     currentScript = nullptr;
 
@@ -165,16 +165,16 @@ void ScriptingWindow::changeCurrentScript()
 
     if (currentScript) {
         currentScript->scriptText = editor->toPlainText();
-        disconnect(this, SIGNAL(updateValueTable(QTableWidget*)), currentScript, SLOT(updateValuesTable(QTableWidget*)));
-        disconnect(this, SIGNAL(updatedParameter(QString,QString)), currentScript, SLOT(updateParameter(QString,QString)));
+        disconnect(this, &ScriptingWindow::updateValueTable, currentScript, &ScriptContainer::updateValuesTable);
+        disconnect(this, &ScriptingWindow::updatedParameter, currentScript, &ScriptContainer::updateParameter);
     }
 
     ScriptContainer *container = scripts.at(sel);
     currentScript = container;
     editor->setPlainText(container->scriptText);
     editor->setEnabled(true);
-    connect(this, SIGNAL(updateValueTable(QTableWidget*)), currentScript, SLOT(updateValuesTable(QTableWidget*)));
-    connect(this, SIGNAL(updatedParameter(QString,QString)), currentScript, SLOT(updateParameter(QString,QString)));
+    connect(this, &ScriptingWindow::updateValueTable, currentScript, &ScriptContainer::updateValuesTable);
+    connect(this, &ScriptingWindow::updatedParameter, currentScript, &ScriptContainer::updateParameter);
 }
 
 void ScriptingWindow::valuesTimerElapsed()

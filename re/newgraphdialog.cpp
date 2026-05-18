@@ -13,9 +13,9 @@ NewGraphDialog::NewGraphDialog(DBCHandler *handler, QWidget *parent) :
 
     dbcHandler = handler;
 
-    connect(ui->colorSwatch, SIGNAL(clicked(bool)), this, SLOT(colorSwatchClick()));
-    connect(ui->fillSwatch, SIGNAL(clicked(bool)), this, SLOT(fillSwatchClick()));
-    connect(ui->btnAddGraph, SIGNAL(clicked(bool)), this, SLOT(addButtonClicked()));
+    connect(ui->colorSwatch, &QPushButton::clicked, this, &NewGraphDialog::colorSwatchClick);
+    connect(ui->fillSwatch, &QPushButton::clicked, this, &NewGraphDialog::fillSwatchClick);
+    connect(ui->btnAddGraph, &QPushButton::clicked, this, &NewGraphDialog::addButtonClicked);
 
     QPalette p = ui->colorSwatch->palette();
     //using 160 instead of 255 so that colors are always at least a little dark
@@ -43,13 +43,13 @@ NewGraphDialog::NewGraphDialog(DBCHandler *handler, QWidget *parent) :
     ui->coPointStyle->addItem("Plus Inside Circle");
     ui->coPointStyle->addItem("Peace Sign");
 
-    connect(ui->cbNodes, SIGNAL(currentIndexChanged(int)), this, SLOT(loadMessages(int)));
-    connect(ui->cbMessages, SIGNAL(currentIndexChanged(int)), this, SLOT(loadSignals(int)));
-    connect(ui->gridData, SIGNAL(gridClicked(int)), this, SLOT(bitfieldClicked(int)));
-    connect(ui->txtDataLen, SIGNAL(textChanged(QString)), this, SLOT(handleDataLenUpdate()));
-    connect(ui->cbIntel, SIGNAL(toggled(bool)), this, SLOT(drawBitfield()));
-    connect(ui->btnCopySignal, SIGNAL(clicked(bool)), this, SLOT(copySignalToParamsUI()));
-    connect(ui->cbSignals, SIGNAL(currentIndexChanged(int)), this, SLOT(drawBitfield()));
+    connect(ui->cbNodes, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &NewGraphDialog::loadMessages);
+    connect(ui->cbMessages, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &NewGraphDialog::loadSignals);
+    connect(ui->gridData, &CANDataGrid::gridClicked, this, &NewGraphDialog::bitfieldClicked);
+    connect(ui->txtDataLen, &QLineEdit::textChanged, this, &NewGraphDialog::handleDataLenUpdate);
+    connect(ui->cbIntel, &QCheckBox::toggled, this, &NewGraphDialog::drawBitfield);
+    connect(ui->btnCopySignal, &QPushButton::clicked, this, &NewGraphDialog::copySignalToParamsUI);
+    connect(ui->cbSignals, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &NewGraphDialog::drawBitfield);
 
     startBit = 0;
     dataLen = 1;

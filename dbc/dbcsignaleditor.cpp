@@ -537,7 +537,7 @@ void DBCSignalEditor::onCustomMenuValues(QPoint point)
     QMenu *menu = new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
-    menu->addAction(tr("Delete currently selected value"), this, SLOT(deleteCurrentValue()));
+    menu->addAction(tr("Delete currently selected value"), this, &DBCSignalEditor::deleteCurrentValue);
 
     menu->popup(ui->valuesTable->mapToGlobal(point));
 }

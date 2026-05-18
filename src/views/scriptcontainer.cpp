@@ -11,14 +11,14 @@ ScriptContainer::ScriptContainer()
     canHelper = new CANScriptHelper(scriptEngine);
     isoHelper = new ISOTPScriptHelper(scriptEngine);
     udsHelper = new UDSScriptHelper(scriptEngine);
-    connect(&timer, SIGNAL(timeout()), this, SLOT(tick()));
+    connect(&timer, &QTimer::timeout, this, &ScriptContainer::tick);
 }
 
 ScriptContainer::~ScriptContainer()
 {
     qDebug() << "Script Container Destructor " << (uint64_t)this << "c: " << (uint64_t)canHelper;
     timer.stop();
-    disconnect(&timer, SIGNAL(timeout()), this, SLOT(tick()));
+    disconnect(&timer, &QTimer::timeout, this, &ScriptContainer::tick);
     if (scriptEngine)
     {
         scriptText = "";
@@ -282,7 +282,7 @@ ISOTPScriptHelper::ISOTPScriptHelper(QJSEngine *engine)
 {
     scriptEngine = engine;
     handler = new ISOTP_HANDLER;
-    connect(handler, SIGNAL(newISOMessage(ISOTP_MESSAGE)), this, SLOT(newISOMessage(ISOTP_MESSAGE)));
+    connect(handler, &ISOTP_HANDLER::newISOMessage, this, &ISOTPScriptHelper::newISOMessage);
     handler->setReception(true);
     handler->setFlowCtrl(true);
 }
@@ -357,7 +357,7 @@ UDSScriptHelper::UDSScriptHelper(QJSEngine *engine)
 {
     scriptEngine = engine;
     handler = new UDS_HANDLER;
-    connect(handler, SIGNAL(newUDSMessage(UDS_MESSAGE)), this, SLOT(newUDSMessage(UDS_MESSAGE)));
+    connect(handler, &UDS_HANDLER::newUDSMessage, this, &UDSScriptHelper::newUDSMessage);
     handler->setReception(true);
     handler->setFlowCtrl(true); //uds potentially requires flow control so turn it on
 }

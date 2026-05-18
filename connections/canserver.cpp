@@ -50,8 +50,8 @@ CANserver::~CANserver()
     
     stop();
     
-    delete _heartbeatTimer; _heartbeatTimer = NULL;
-    delete _udpClient; _udpClient = NULL;
+    delete _heartbeatTimer; _heartbeatTimer = nullptr;
+    delete _udpClient; _udpClient = nullptr;
 }
 
 void CANserver::piStarted()

@@ -43,13 +43,13 @@ TemporalGraphWindow::TemporalGraphWindow(const QVector<CANFrame> *frames, QWidge
     ui->graphingView->yAxis->setTicker(sharedTicker);
 
     // connect slot that ties some axis selections together (especially opposite axes):
-    connect(ui->graphingView, SIGNAL(selectionChangedByUser()), this, SLOT(selectionChanged()));
-    connect(ui->graphingView, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePress()));
-    connect(ui->graphingView, SIGNAL(mouseWheel(QWheelEvent*)), this, SLOT(mouseWheel()));
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(ui->graphingView, &QCustomPlot::selectionChangedByUser, this, &TemporalGraphWindow::selectionChanged);
+    connect(ui->graphingView, &QCustomPlot::mousePress, this, &TemporalGraphWindow::mousePress);
+    connect(ui->graphingView, &QCustomPlot::mouseWheel, this, &TemporalGraphWindow::mouseWheel);
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &TemporalGraphWindow::updatedFrames);
     // make bottom and left axes transfer their ranges to top and right axes:
-    connect(ui->graphingView->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->graphingView->xAxis2, SLOT(setRange(QCPRange)));
-    connect(ui->graphingView->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->graphingView->yAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->graphingView->xAxis, QOverload<const QCPRange&>::of(&QCPAxis::rangeChanged), ui->graphingView->xAxis2, QOverload<const QCPRange&>::of(&QCPAxis::setRange));
+    connect(ui->graphingView->yAxis, QOverload<const QCPRange&>::of(&QCPAxis::rangeChanged), ui->graphingView->yAxis2, QOverload<const QCPRange&>::of(&QCPAxis::setRange));
 
     if (useOpenGL)
     {

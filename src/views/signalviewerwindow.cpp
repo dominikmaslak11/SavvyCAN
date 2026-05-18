@@ -43,15 +43,15 @@ SignalViewerWindow::SignalViewerWindow(const QVector<CANFrame> *frames, QWidget 
     dbcHandler = DBCHandler::getReference();
     currentlySelectedMsg = nullptr;
 
-    connect(ui->cbNodes, SIGNAL(currentIndexChanged(int)), this, SLOT(loadMessages(int)));
-    connect(ui->cbMessages, SIGNAL(currentIndexChanged(int)), this, SLOT(loadSignals(int)));
-    connect(ui->btnAdd, SIGNAL(clicked(bool)), this, SLOT(addSignal()));
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
-    connect(ui->btnRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedSignal()));
-    connect(ui->btnSave, SIGNAL(clicked(bool)), this, SLOT(saveSignalsFile()));
-    connect(ui->btnLoad, SIGNAL(clicked(bool)), this, SLOT(loadSignalsFile()));
-    connect(ui->btnAppend, SIGNAL(clicked(bool)), this, SLOT(appendSignalsFile()));
-    connect(ui->btnClear, SIGNAL(clicked(bool)), this, SLOT(clearSignalsTable()));
+    connect(ui->cbNodes, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &SignalViewerWindow::loadMessages);
+    connect(ui->cbMessages, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &SignalViewerWindow::loadSignals);
+    connect(ui->btnAdd, &QPushButton::clicked, this, QOverload<>::of(&SignalViewerWindow::addSignal));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &SignalViewerWindow::updatedFrames);
+    connect(ui->btnRemove, &QPushButton::clicked, this, &SignalViewerWindow::removeSelectedSignal);
+    connect(ui->btnSave, &QPushButton::clicked, this, &SignalViewerWindow::saveSignalsFile);
+    connect(ui->btnLoad, &QPushButton::clicked, this, &SignalViewerWindow::loadSignalsFile);
+    connect(ui->btnAppend, &QPushButton::clicked, this, &SignalViewerWindow::appendSignalsFile);
+    connect(ui->btnClear, &QPushButton::clicked, this, QOverload<>::of(&SignalViewerWindow::clearSignalsTable));
 
     loadNodes();
 }

@@ -48,7 +48,7 @@ UDSScanWindow::UDSScanWindow(const QVector<CANFrame> *frames, QWidget *parent) :
     ui->cbSessType->addItem("Extended Diag");
     ui->cbSessType->addItem("Safety Sys Diag");
 
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &UDSScanWindow::updatedFrames);
     connect(udsHandler, &UDS_HANDLER::newUDSMessage, this, &UDSScanWindow::gotUDSReply);
     connect(ui->btnScanAll, &QPushButton::clicked, this, &UDSScanWindow::scanAll);
     connect(ui->btnScanSelected, &QPushButton::clicked, this, &UDSScanWindow::scanSelected);
@@ -56,22 +56,22 @@ UDSScanWindow::UDSScanWindow(const QVector<CANFrame> *frames, QWidget *parent) :
     connect(ui->btnSaveResults, &QPushButton::clicked, this, &UDSScanWindow::saveResults);
     connect(ui->cbScanType, &QComboBox::currentTextChanged, this, &UDSScanWindow::changedScanType);
     connect(ui->cbAllowAdaptiveOffset, &QCheckBox::toggled, this, &UDSScanWindow::adaptiveToggled);
-    connect(ui->spinNumBytes, SIGNAL(valueChanged(int)), this, SLOT(numBytesChanged()));
-    connect(ui->spinLowerService, SIGNAL(valueChanged(int)), this, SLOT(checkServiceRange()));
-    connect(ui->spinUpperService, SIGNAL(valueChanged(int)), this, SLOT(checkServiceRange()));
-    connect(ui->spinLowerSubfunc, SIGNAL(valueChanged(int)), this, SLOT(checkSubFuncRange()));
-    connect(ui->spinUpperSubfunc, SIGNAL(valueChanged(int)), this, SLOT(checkSubFuncRange()));
-    connect(ui->spinStartID, SIGNAL(valueChanged(int)), this, SLOT(checkIDRange()));
-    connect(ui->spinEndID, SIGNAL(valueChanged(int)), this, SLOT(checkIDRange()));
+    connect(ui->spinNumBytes, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::numBytesChanged);
+    connect(ui->spinLowerService, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::checkServiceRange);
+    connect(ui->spinUpperService, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::checkServiceRange);
+    connect(ui->spinLowerSubfunc, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::checkSubFuncRange);
+    connect(ui->spinUpperSubfunc, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::checkSubFuncRange);
+    connect(ui->spinStartID, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::checkIDRange);
+    connect(ui->spinEndID, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::checkIDRange);
     connect(ui->btnAdd, &QPushButton::clicked, this, &UDSScanWindow::addNewScan);
     connect(ui->btnDelete, &QPushButton::clicked, this, &UDSScanWindow::deleteSelectedScan);
     connect(ui->btnSave, &QPushButton::clicked, this, &UDSScanWindow::saveScans);
     connect(ui->btnLoad, &QPushButton::clicked, this, &UDSScanWindow::loadScans);
     connect(ui->listScansToRun, &QListWidget::currentRowChanged, this, &UDSScanWindow::displayScanEntry);
     connect(ui->ckShowNoReply, &QCheckBox::toggled, this, &UDSScanWindow::setNoReplyVal);
-    connect(ui->spinDelay, SIGNAL(valueChanged(int)), this, SLOT(setMaxDelayVal()));
-    connect(ui->spinIncrement, SIGNAL(valueChanged(int)), this, SLOT(setIncrementVal()));
-    connect(ui->spinReplyOffset, SIGNAL(valueChanged(int)), this, SLOT(setReplyOffset()));
+    connect(ui->spinDelay, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::setMaxDelayVal);
+    connect(ui->spinIncrement, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::setIncrementVal);
+    connect(ui->spinReplyOffset, QOverload<int>::of(&QSpinBox::valueChanged), this, &UDSScanWindow::setReplyOffset);
     connect(ui->cbSessType, &QComboBox::currentTextChanged, this, &UDSScanWindow::setSessType);
 
 //not handling show no reply, max reply delay, reply offset, increment

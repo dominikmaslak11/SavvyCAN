@@ -75,7 +75,7 @@ RangeStateWindow::RangeStateWindow(const QVector<CANFrame> *frames, QWidget *par
             });
 
     connect(ui->btnRecalc, &QAbstractButton::clicked, this, &RangeStateWindow::recalcButton);
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &RangeStateWindow::updatedFrames);
     connect(ui->listCandidates, &QListWidget::currentRowChanged, this, &RangeStateWindow::clickedSignalList);
 }
 

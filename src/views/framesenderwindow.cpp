@@ -40,9 +40,9 @@ FrameSenderWindow::FrameSenderWindow(const QVector<CANFrame> *frames, QWidget *p
     connect(ui->btnClearGrid, &QPushButton::clicked, this, &FrameSenderWindow::clearGrid);
     connect(ui->btnDisableAll, &QPushButton::clicked, this, &FrameSenderWindow::disableAll);
     connect(ui->btnEnableAll, &QPushButton::clicked, this, &FrameSenderWindow::enableAll);
-    connect(ui->btnLoadGrid, SIGNAL(clicked(bool)), this, SLOT(loadGrid()));
-    connect(ui->btnSaveGrid, SIGNAL(clicked(bool)), this, SLOT(saveGrid()));
-    bool connected = connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(ui->btnLoadGrid, &QPushButton::clicked, this, &FrameSenderWindow::loadGrid);
+    connect(ui->btnSaveGrid, &QPushButton::clicked, this, &FrameSenderWindow::saveGrid);
+    bool connected = connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &FrameSenderWindow::updatedFrames);
     fprintf(stderr, "DEBUG: FrameSenderWindow signal connection: %s\n", connected ? "SUCCESS" : "FAILED");
     fflush(stderr);
 
