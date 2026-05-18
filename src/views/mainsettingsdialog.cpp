@@ -4,6 +4,7 @@
 #include "futuristic_theme.h"
 #include <qevent.h>
 #include <QDebug>
+#include <QMessageBox>
 #include <QDir>
 #include <QRegularExpression>
 #include <QCoreApplication>
@@ -168,7 +169,11 @@ MainSettingsDialog::MainSettingsDialog(QWidget *parent) :
     ui->spinBytesPerLine->setValue(settings.value("Main/BytesPerLine", 8).toInt());
 
     //just for simplicity they all call the same function and that function updates all settings at once
-    connect(ui->comboLanguage, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->comboLanguage, &QComboBox::currentIndexChanged, this, [this](int) {
+        updateSettings();
+        QMessageBox::information(this, tr("Language Changed"),
+            tr("The language change will take effect after restarting SavvyCAN."));
+    });
     connect(ui->comboTheme, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSettings()));
     connect(ui->cbDisplayHex, SIGNAL(toggled(bool)), this, SLOT(updateSettings()));
     connect(ui->cbFlowAutoRef, SIGNAL(toggled(bool)), this, SLOT(updateSettings()));
