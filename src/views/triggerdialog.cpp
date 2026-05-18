@@ -92,7 +92,7 @@ void TriggerDialog::regenerateList()
     ui->listTriggers->clear();
     //iterate over the QList of triggers, show them in the list,
     //load the first item in the list, and display it broken down on the right.
-    foreach(Trigger trig, triggers)
+    for (Trigger trig : triggers)
     {
         ui->listTriggers->addItem(buildEntry(trig));
     }

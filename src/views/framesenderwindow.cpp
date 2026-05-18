@@ -499,7 +499,7 @@ void FrameSenderWindow::onCellDoubleTap(int row, int column)
             sendData->triggers.append(td->getUpdatedTriggers());
             //now have to generate the actual trigger text
             QString output;
-            foreach (Trigger trig, sendData->triggers)
+            for (Trigger trig : sendData->triggers)
             {
                 output += td->buildEntry(trig) + ",";
             }

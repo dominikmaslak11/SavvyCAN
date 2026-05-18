@@ -54,3 +54,8 @@ SavvyCAN.pro.qtds
 .xcode
 SavvyCAN.xcodeproj
 .vscode
+build/
+build_dbg/
+debug/
+release/
+.qmake.stash
