@@ -22,7 +22,7 @@ public:
 private:
     void readSettings();
     void writeSettings();
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
 
     Ui::HelpWindow *ui;
     static HelpWindow *self;

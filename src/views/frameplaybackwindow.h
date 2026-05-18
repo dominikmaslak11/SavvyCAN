@@ -65,7 +65,7 @@ private:
     void updateFrameLabel();
     void fillIDHash(SequenceItem &item);
     void showEvent(QShowEvent *);
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
     void readSettings();
     void writeSettings();
     void calculateWhichBus();

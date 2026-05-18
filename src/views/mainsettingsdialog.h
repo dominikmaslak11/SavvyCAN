@@ -26,7 +26,7 @@ private:
     Ui::MainSettingsDialog *ui;
 
     void populateLanguageCombo();
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
     bool eventFilter(QObject *obj, QEvent *event);
 };
 

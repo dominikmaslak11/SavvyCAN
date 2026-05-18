@@ -15,7 +15,7 @@ class CANBridgeWindow : public QDialog
 public:
     explicit CANBridgeWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~CANBridgeWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 
 private slots:
