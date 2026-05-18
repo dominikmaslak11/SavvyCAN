@@ -110,6 +110,9 @@ private slots:
     void showTemporalGraphWindow();
     void showDBCComparisonWindow();
     void showCANBridgeWindow();
+    void showLINSniffer();
+    void showLINScheduleEditor();
+    void loadLDFFile();
     void onSidebarTool(const QString &toolId);
     void toggleCommandPalette();
     void toggleRestApi();

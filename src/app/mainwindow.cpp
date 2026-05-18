@@ -10,6 +10,10 @@
 #include "utility.h"
 #include "filterutility.h"
 #include "futuristic_theme.h"
+#include "lin/lin_structs.h"
+#include "lin/lin_sniffer/lin_sniffer_window.h"
+#include "lin/lin_schedule/lin_schedule_view.h"
+#include "lin/lin_fileio.h"
 
 #include <QClipboard>
 #include <QShortcut>
@@ -182,6 +186,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave_Continuous_Logfile, &QAction::triggered, this, &MainWindow::handleContinousLogging);
     connect(ui->actionTemporal_Graph, &QAction::triggered, this, &MainWindow::showTemporalGraphWindow);
     connect(ui->actionCAN_Bridge, &QAction::triggered, this, &MainWindow::showCANBridgeWindow);
+    connect(ui->actionLIN_Sniffer, &QAction::triggered, this, &MainWindow::showLINSniffer);
+    connect(ui->actionLIN_Schedule, &QAction::triggered, this, &MainWindow::showLINScheduleEditor);
+    connect(ui->actionLIN_LoadLDF, &QAction::triggered, this, &MainWindow::loadLDFFile);
 
     //handlers fror interactions with the main can frame view table
     connect(ui->canFramesView, &QAbstractItemView::clicked, this, &MainWindow::gridClicked);
@@ -1867,6 +1874,8 @@ void MainWindow::onSidebarTool(const QString &toolId)
     else if (toolId == "udsfirmware")   showUDSFirmwareUploaderWindow();
     else if (toolId == "motorctrl")     showMCConfigWindow();
     else if (toolId == "canbridge")     showCANBridgeWindow();
+    else if (toolId == "linsniffer")     showLINSniffer();
+    else if (toolId == "linschedule")    showLINScheduleEditor();
     else if (toolId == "dbcfile")       showDBCFileWindow();
     else if (toolId == "connection")    showConnectionSettingsWindow();
     else if (toolId == "settings")      showSettingsDialog();
@@ -1890,4 +1899,43 @@ void MainWindow::toggleRestApi()
 void MainWindow::toggleCommandPalette()
 {
     mSidebar->toggleCommandPalette();
+}
+
+void MainWindow::showLINSniffer()
+{
+    auto *sniffer = new LINSnifferWindow(this);
+    sniffer->setAttribute(Qt::WA_DeleteOnClose);
+    sniffer->show();
+}
+
+void MainWindow::showLINScheduleEditor()
+{
+    auto *editor = new LINScheduleView(this);
+    editor->setAttribute(Qt::WA_DeleteOnClose);
+    editor->show();
+}
+
+void MainWindow::loadLDFFile()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Load LDF File"), "",
+                                                     tr("LIN Description Files (*.ldf);;All Files (*)"));
+    if (filename.isEmpty()) return;
+
+    LDFDatabase db;
+    if (LINFileIO::loadLDF(filename, db)) {
+        auto *editor = new LINScheduleView(this);
+        editor->setAttribute(Qt::WA_DeleteOnClose);
+        editor->setLDFDatabase(&db);
+        editor->setSchedule(db.schedule);
+        editor->show();
+
+        QMessageBox::information(this, tr("LDF Loaded"),
+            tr("Loaded LDF file: %1\nNodes: %2, Signals: %3, Frames: %4")
+                .arg(filename)
+                .arg(db.nodes.size())
+                .arg(db.signalList.size())
+                .arg(db.schedule.size()));
+    } else {
+        QMessageBox::warning(this, tr("Error"), db.errorString);
+    }
 }
