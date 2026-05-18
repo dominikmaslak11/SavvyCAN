@@ -7,6 +7,8 @@
 #include "lawicel_serial.h"
 #include "canserver.h"
 #include "canlogserver.h"
+#include "lin/lin_connection.h"
+#include "lin/lin_can_bridge.h"
 
 using namespace CANCon;
 
@@ -32,6 +34,21 @@ CANConnection* CanConFactory::create(type pType, QString pPortName, QString pDri
         return new CANserver(pPortName);
     case CANLOGSERVER:
         return new CanLogServer(pPortName);
+    case LIN_SERIAL: {
+        auto *linConn = new LINSerialConnection(pPortName, pBusSpeed);
+        auto *bridge = new LinCanBridge(linConn, pPortName, pBusSpeed, 1);
+        return bridge;
+    }
+    case LIN_SOCKETCAN: {
+#ifdef Q_OS_LINUX
+        auto *linConn = new LINSocketCANConnection(pPortName);
+        auto *bridge = new LinCanBridge(linConn, pPortName, LIN::BAUD_19200, 1);
+        return bridge;
+#else
+        Q_UNUSED(pBusSpeed)
+        return nullptr;
+#endif
+    }
     default: {}
     }
 

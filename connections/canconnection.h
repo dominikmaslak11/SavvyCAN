@@ -81,7 +81,7 @@ public:
      * @brief getType
      * @return the @ref CANCon::type of the device
      */
-    CANCon::type getType() const noexcept;
+    virtual CANCon::type getType() const noexcept;
 
     /**
      * @brief getStatus

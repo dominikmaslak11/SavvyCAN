@@ -140,6 +140,13 @@ set(SOURCES
     re/sniffer/sniffermodel.cpp
     re/sniffer/snifferwindow.cpp
     re/sniffer/SnifferDelegate.cpp
+
+    lin/lin_connection.cpp
+    lin/lin_can_bridge.cpp
+    lin/lin_fileio.cpp
+    lin/lin_sniffer/lin_sniffer_window.cpp
+    lin/lin_schedule/lin_schedule_view.cpp
+    lin/lin_diag/lin_diag_handler.cpp
 )
 
 set(HEADERS
@@ -259,6 +266,14 @@ set(HEADERS
     re/sniffer/snifferwindow.h
 
     utils/lfqueue.h
+
+    lin/lin_structs.h
+    lin/lin_connection.h
+    lin/lin_can_bridge.h
+    lin/lin_fileio.h
+    lin/lin_sniffer/lin_sniffer_window.h
+    lin/lin_schedule/lin_schedule_view.h
+    lin/lin_diag/lin_diag_handler.h
 )
 
 set(FORMS
@@ -329,6 +344,10 @@ target_include_directories(SavvyCAN PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/re
     ${CMAKE_CURRENT_SOURCE_DIR}/re/sniffer
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/lin
+    ${CMAKE_CURRENT_SOURCE_DIR}/lin/lin_sniffer
+    ${CMAKE_CURRENT_SOURCE_DIR}/lin/lin_schedule
+    ${CMAKE_CURRENT_SOURCE_DIR}/lin/lin_diag
 )
 
 # ── Platform-specific ─────────────────────────────────────────────────────

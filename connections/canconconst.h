@@ -23,6 +23,8 @@ namespace CANCon {
         LAWICEL,
         CANSERVER,
         CANLOGSERVER,
+        LIN_SERIAL,
+        LIN_SOCKETCAN,
         NONE
     };
 }
