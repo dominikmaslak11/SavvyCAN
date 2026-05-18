@@ -42,7 +42,7 @@ public:
         mWIdx.storeRelease(0);
     }
 
-    T* get() {
+    [[nodiscard]] T* get() {
         if(IS_FULL())
             return nullptr;
 
@@ -61,7 +61,7 @@ public:
     }
 
 
-    T* peek() {
+    [[nodiscard]] T* peek() {
         if(IS_EMPTY())
             return nullptr;
 
