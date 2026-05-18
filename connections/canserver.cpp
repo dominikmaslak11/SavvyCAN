@@ -10,7 +10,8 @@
 #include <QCanBusFrame>
 #include <QSettings>
 #include <QStringBuilder>
-#include <QtNetwork>
+#include <QUdpSocket>
+#include <QHostAddress>
 
 #include "utility.h"
 #include "canserver.h"

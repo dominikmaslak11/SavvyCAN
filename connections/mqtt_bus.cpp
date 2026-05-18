@@ -3,7 +3,8 @@
 #include <QCanBusFrame>
 #include <QSettings>
 #include <QStringBuilder>
-#include <QtNetwork>
+#include <QHostAddress>
+#include <QHostInfo>
 
 #include "utility.h"
 #include "mqtt_bus.h"

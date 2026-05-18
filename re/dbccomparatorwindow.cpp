@@ -12,9 +12,9 @@ DBCComparatorWindow::DBCComparatorWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
 
-    connect(ui->btnDBCFile1, SIGNAL(clicked(bool)), this, SLOT(loadFirstFile()));
-    connect(ui->btnDBCFile2, SIGNAL(clicked(bool)), this, SLOT(loadSecondFile()));
-    connect(ui->btnSaveDetails, SIGNAL(clicked(bool)), this, SLOT(saveDetails()));
+    connect(ui->btnDBCFile1, &QPushButton::clicked, this, &DBCComparatorWindow::loadFirstFile);
+    connect(ui->btnDBCFile2, &QPushButton::clicked, this, &DBCComparatorWindow::loadSecondFile);
+    connect(ui->btnSaveDetails, &QPushButton::clicked, this, &DBCComparatorWindow::saveDetails);
 
     ui->lblFirstFile->setText("");
     ui->lblSecondFile->setText("");

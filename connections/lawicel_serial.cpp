@@ -4,7 +4,7 @@
 #include <QSerialPortInfo>
 #include <QSettings>
 #include <QStringBuilder>
-#include <QtNetwork>
+
 
 #include "lawicel_serial.h"
 #include "utility.h"

@@ -19,11 +19,11 @@ DiscreteStateWindow::DiscreteStateWindow(const QVector<CANFrame> *frames, QWidge
     isRealtime = ui->rbRealtime->isChecked();
     typeChanged();
 
-    connect(ui->btnStart, SIGNAL(clicked(bool)), this, SLOT(handleStartButton()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(handleTick()));
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
-    connect(ui->rbLogged, SIGNAL(clicked(bool)), this, SLOT(typeChanged()));
-    connect(ui->rbRealtime, SIGNAL(clicked(bool)), this, SLOT(typeChanged()));
+    connect(ui->btnStart, &QPushButton::clicked, this, &DiscreteStateWindow::handleStartButton);
+    connect(timer, &QTimer::timeout, this, &DiscreteStateWindow::handleTick);
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &DiscreteStateWindow::updatedFrames);
+    connect(ui->rbLogged, &QRadioButton::clicked, this, &DiscreteStateWindow::typeChanged);
+    connect(ui->rbRealtime, &QRadioButton::clicked, this, &DiscreteStateWindow::typeChanged);
 
     connect(ui->btnAll, &QAbstractButton::clicked,
             [=]()

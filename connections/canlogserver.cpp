@@ -3,7 +3,7 @@
 #include <QCanBusFrame>
 #include <QSettings>
 #include <QStringBuilder>
-#include <QtNetwork>
+#include <QTcpSocket>
 
 #include "utility.h"
 #include "canlogserver.h"

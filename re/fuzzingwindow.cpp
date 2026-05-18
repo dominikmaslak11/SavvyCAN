@@ -26,10 +26,10 @@ FuzzingWindow::FuzzingWindow(const QVector<CANFrame> *frames, QWidget *parent) :
     connect(ui->btnAllFilters, &QPushButton::clicked, this, &FuzzingWindow::setAllFilters);
     connect(ui->btnNoFilters, &QPushButton::clicked, this, &FuzzingWindow::clearAllFilters);
     connect(fuzzTimer, &QTimer::timeout, this, &FuzzingWindow::timerTriggered);
-    connect(ui->spinTiming, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
+    connect(ui->spinTiming, QOverload<int>::of(&QSpinBox::valueChanged), this, &FuzzingWindow::changePlaybackSpeed);
     connect(ui->listID, &QListWidget::itemChanged, this, &FuzzingWindow::idListChanged);
-    connect(ui->spinBytes, SIGNAL(valueChanged(int)), this, SLOT(changedNumDataBytes(int)));
-    connect(ui->bitfield, SIGNAL(gridClicked(int)), this, SLOT(bitfieldClicked(int)));
+    connect(ui->spinBytes, QOverload<int>::of(&QSpinBox::valueChanged), this, &FuzzingWindow::changedNumDataBytes);
+    connect(ui->bitfield, &CANDatagrid::gridClicked, this, &FuzzingWindow::bitfieldClicked);
     connect(ui->txtByte0, &QLineEdit::returnPressed, this, [=](){changedDataByteText(0, ui->txtByte0->text());});
     connect(ui->txtByte1, &QLineEdit::returnPressed, this, [=](){changedDataByteText(1, ui->txtByte1->text());});
     connect(ui->txtByte2, &QLineEdit::returnPressed, this, [=](){changedDataByteText(2, ui->txtByte2->text());});
@@ -40,7 +40,7 @@ FuzzingWindow::FuzzingWindow(const QVector<CANFrame> *frames, QWidget *parent) :
     connect(ui->txtByte7, &QLineEdit::returnPressed, this, [=](){changedDataByteText(7, ui->txtByte7->text());});
 
 
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &FuzzingWindow::updatedFrames);
 
     refreshIDList();
 

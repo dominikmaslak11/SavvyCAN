@@ -4,7 +4,8 @@
 #include <QSerialPortInfo>
 #include <QSettings>
 #include <QStringBuilder>
-#include <QtNetwork>
+#include <QTcpSocket>
+#include <QUdpSocket>
 
 #include "gvretserial.h"
 

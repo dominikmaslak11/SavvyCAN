@@ -88,24 +88,24 @@ FlowViewWindow::FlowViewWindow(const QVector<CANFrame> *frames, QWidget *parent)
 
     ui->graphView->setBufferDevicePixelRatio(1);
 
-    connect(ui->btnBackOne, SIGNAL(clicked(bool)), this, SLOT(btnBackOneClick()));
-    connect(ui->btnPause, SIGNAL(clicked(bool)), this, SLOT(btnPauseClick()));
-    connect(ui->btnReverse, SIGNAL(clicked(bool)), this, SLOT(btnReverseClick()));
-    connect(ui->btnStop, SIGNAL(clicked(bool)), this, SLOT(btnStopClick()));
-    connect(ui->btnPlay, SIGNAL(clicked(bool)), this, SLOT(btnPlayClick()));
-    connect(ui->btnForwardOne, SIGNAL(clicked(bool)), this, SLOT(btnFwdOneClick()));
-    connect(ui->spinPlayback, SIGNAL(valueChanged(int)), this, SLOT(changePlaybackSpeed(int)));
-    connect(ui->cbLoopPlayback, SIGNAL(clicked(bool)), this, SLOT(changeLooping(bool)));
-    connect(playbackTimer, SIGNAL(timeout()), this, SLOT(timerTriggered()));
-    connect(ui->graphView, SIGNAL(plottableDoubleClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(plottableDoubleClick(QCPAbstractPlottable*,QMouseEvent*)));
-    connect(ui->txtTrigger0, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
-    connect(ui->txtTrigger1, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
-    connect(ui->txtTrigger2, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
-    connect(ui->txtTrigger3, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
-    connect(ui->txtTrigger4, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
-    connect(ui->txtTrigger5, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
-    connect(ui->txtTrigger6, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
-    connect(ui->txtTrigger7, SIGNAL(textEdited(QString)), this, SLOT(updateTriggerValues()));
+    connect(ui->btnBackOne, &QPushButton::clicked, this, &FlowViewWindow::btnBackOneClick);
+    connect(ui->btnPause, &QPushButton::clicked, this, &FlowViewWindow::btnPauseClick);
+    connect(ui->btnReverse, &QPushButton::clicked, this, &FlowViewWindow::btnReverseClick);
+    connect(ui->btnStop, &QPushButton::clicked, this, &FlowViewWindow::btnStopClick);
+    connect(ui->btnPlay, &QPushButton::clicked, this, &FlowViewWindow::btnPlayClick);
+    connect(ui->btnForwardOne, &QPushButton::clicked, this, &FlowViewWindow::btnFwdOneClick);
+    connect(ui->spinPlayback, QOverload<int>::of(&QSpinBox::valueChanged), this, &FlowViewWindow::changePlaybackSpeed);
+    connect(ui->cbLoopPlayback, &QCheckBox::clicked, this, &FlowViewWindow::changeLooping);
+    connect(playbackTimer, &QTimer::timeout, this, &FlowViewWindow::timerTriggered);
+    connect(ui->graphView, QOverload<QCPAbstractPlottable*,QMouseEvent*>::of(&QCustomPlot::plottableDoubleClick), this, &FlowViewWindow::plottableDoubleClick);
+    connect(ui->txtTrigger0, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
+    connect(ui->txtTrigger1, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
+    connect(ui->txtTrigger2, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
+    connect(ui->txtTrigger3, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
+    connect(ui->txtTrigger4, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
+    connect(ui->txtTrigger5, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
+    connect(ui->txtTrigger6, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
+    connect(ui->txtTrigger7, &QLineEdit::textEdited, this, &FlowViewWindow::updateTriggerValues);
     connect(ui->graphRangeSlider, &QSlider::valueChanged, this, &FlowViewWindow::graphRangeChanged);
     connect(ui->check_0, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
     connect(ui->check_1, &QCheckBox::checkStateChanged, this, &FlowViewWindow::changeGraphVisibility);
@@ -127,13 +127,13 @@ FlowViewWindow::FlowViewWindow(const QVector<CANFrame> *frames, QWidget *parent)
             changeID(FilterUtility::getId(itemText));
             } );
 
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &FlowViewWindow::updatedFrames);
 
     ui->graphView->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->graphView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequestGraph(QPoint)));
+    connect(ui->graphView, &QWidget::customContextMenuRequested, this, &FlowViewWindow::contextMenuRequestGraph);
     ui->flowView->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->flowView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequestFlow(QPoint)));
-    connect(ui->flowView, SIGNAL(gridClicked(int)), this, SLOT(gotCellClick(int)));
+    connect(ui->flowView, &QWidget::customContextMenuRequested, this, &FlowViewWindow::contextMenuRequestFlow);
+    connect(ui->flowView, &CANDataGrid::gridClicked, this, &FlowViewWindow::gotCellClick);
 
     // Prevent annoying accidental horizontal scrolling when filter list is populated with long interpreted message names
     ui->listFrameID->horizontalScrollBar()->setEnabled(false);
@@ -352,7 +352,7 @@ void FlowViewWindow::contextMenuRequestFlow(QPoint pos)
   QMenu *menu = new QMenu(this);
   menu->setAttribute(Qt::WA_DeleteOnClose);
 
-  menu->addAction(tr("Save image to file"), this, SLOT(saveFileFlow()));
+  menu->addAction(tr("Save image to file"), this, &FlowViewWindow::saveFileFlow);
 
   menu->popup(ui->flowView->mapToGlobal(pos));
 }
@@ -362,7 +362,7 @@ void FlowViewWindow::contextMenuRequestGraph(QPoint pos)
   QMenu *menu = new QMenu(this);
   menu->setAttribute(Qt::WA_DeleteOnClose);
 
-  menu->addAction(tr("Save image to file"), this, SLOT(saveFileGraph()));
+  menu->addAction(tr("Save image to file"), this, &FlowViewWindow::saveFileGraph);
 
   menu->popup(ui->graphView->mapToGlobal(pos));
 }
@@ -912,4 +912,3 @@ void FlowViewWindow::updateGraphLocation()
 
     ui->graphView->replot();
 }
-

@@ -12,10 +12,10 @@ FileComparatorWindow::FileComparatorWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::Window);
 
-    connect(ui->btnInterestedFile, SIGNAL(clicked(bool)), this, SLOT(loadInterestedFile()));
-    connect(ui->btnLoadRefFile, SIGNAL(clicked(bool)), this, SLOT(loadReferenceFile()));
-    connect(ui->btnSaveDetails, SIGNAL(clicked(bool)), this, SLOT(saveDetails()));
-    connect(ui->btnClear, SIGNAL(clicked(bool)), this, SLOT(clearReference()));
+    connect(ui->btnInterestedFile, &QPushButton::clicked, this, &FileComparatorWindow::loadInterestedFile);
+    connect(ui->btnLoadRefFile, &QPushButton::clicked, this, &FileComparatorWindow::loadReferenceFile);
+    connect(ui->btnSaveDetails, &QPushButton::clicked, this, &FileComparatorWindow::saveDetails);
+    connect(ui->btnClear, &QPushButton::clicked, this, &FileComparatorWindow::clearReference);
 
     ui->lblFirstFile->setText("");
     ui->lblRefFrames->setText("Loaded frames: 0");

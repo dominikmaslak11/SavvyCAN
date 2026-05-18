@@ -32,7 +32,7 @@ ISOTP_InterpreterWindow::ISOTP_InterpreterWindow(const QVector<CANFrame> *frames
     connect(ui->tableIsoFrames, &QTableWidget::itemSelectionChanged, this, &ISOTP_InterpreterWindow::showDetailView);
     connect(ui->btnClearList, &QPushButton::clicked, this, &ISOTP_InterpreterWindow::clearList);
     connect(ui->btnSaveList, &QPushButton::clicked, this, &ISOTP_InterpreterWindow::saveList);
-    connect(ui->cbUseExtendedAddressing, SIGNAL(toggled(bool)), this, SLOT(useExtendedAddressing(bool)));
+    connect(ui->cbUseExtendedAddressing, &QCheckBox::toggled, this, &ISOTP_InterpreterWindow::useExtendedAddressing);
 
     QStringList headers;
     headers << "Timestamp" << "ID" << "Bus" << "Dir" << "Length" << "Data";
@@ -46,7 +46,7 @@ ISOTP_InterpreterWindow::ISOTP_InterpreterWindow(const QVector<CANFrame> *frames
     ui->tableIsoFrames->setHorizontalHeaderLabels(headers);
     QHeaderView *HorzHdr = ui->tableIsoFrames->horizontalHeader();
     HorzHdr->setStretchLastSection(true);
-    connect(HorzHdr, SIGNAL(sectionClicked(int)), this, SLOT(headerClicked(int)));
+    connect(HorzHdr, &QHeaderView::sectionClicked, this, &ISOTP_InterpreterWindow::headerClicked);
 
     decoder->setReception(true);
     decoder->setFlowCtrl(false);

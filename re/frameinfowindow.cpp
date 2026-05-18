@@ -121,10 +121,10 @@ FrameInfoWindow::FrameInfoWindow(const QVector<CANFrame> *frames, QWidget *paren
         bytePens[i].setWidth(1);
     }
 
-    connect(graphHistogram, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePress()));
-    connect(graphHistogram, SIGNAL(mouseWheel(QWheelEvent*)), this, SLOT(mouseWheel()));
-    connect(ui->timeHistogram, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePress()));
-    connect(ui->timeHistogram, SIGNAL(mouseWheel(QWheelEvent*)), this, SLOT(mouseWheel()));
+    connect(graphHistogram, &QCustomPlot::mousePress, this, &FrameInfoWindow::mousePress);
+    connect(graphHistogram, &QCustomPlot::mouseWheel, this, &FrameInfoWindow::mouseWheel);
+    connect(ui->timeHistogram, &QCustomPlot::mousePress, this, &FrameInfoWindow::mousePress);
+    connect(ui->timeHistogram, &QCustomPlot::mouseWheel, this, &FrameInfoWindow::mouseWheel);
 
     dbcHandler = DBCHandler::getReference();
 }
@@ -162,8 +162,8 @@ void FrameInfoWindow::setupByteGraph(QCustomPlot *plot, int num)
         plot->setAntialiasedElements(QCP::aeNone);
     }
 
-    connect(plot, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePress()));
-    connect(plot, SIGNAL(mouseWheel(QWheelEvent*)), this, SLOT(mouseWheel()));
+    connect(plot, &QCustomPlot::mousePress, this, &FrameInfoWindow::mousePress);
+    connect(plot, &QCustomPlot::mouseWheel, this, &FrameInfoWindow::mouseWheel);
     connect(plot, &QCustomPlot::mouseDoubleClick, this, &FrameInfoWindow::mouseDoubleClick);
 }
 

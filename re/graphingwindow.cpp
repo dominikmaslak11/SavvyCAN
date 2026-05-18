@@ -67,27 +67,27 @@ GraphingWindow::GraphingWindow(const QVector<CANFrame> *frames, QWidget *parent)
     itemTracer->setSize(20);
 
     // connect slot that ties some axis selections together (especially opposite axes):
-    connect(ui->graphingView, SIGNAL(selectionChangedByUser()), this, SLOT(selectionChanged()));
+    connect(ui->graphingView, &QCustomPlot::selectionChangedByUser, this, &GraphingWindow::selectionChanged);
     //connect up the mouse controls
-    connect(ui->graphingView, SIGNAL(plottableDoubleClick(QCPAbstractPlottable*,int,QMouseEvent*)), this, SLOT(plottableDoubleClick(QCPAbstractPlottable*,int,QMouseEvent*)));
-    connect(ui->graphingView, SIGNAL(plottableClick(QCPAbstractPlottable*,int,QMouseEvent*)), this, SLOT(plottableClick(QCPAbstractPlottable*,int,QMouseEvent*)));
-    connect(ui->graphingView, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePress()));
-    connect(ui->graphingView, SIGNAL(mouseWheel(QWheelEvent*)), this, SLOT(mouseWheel()));
+    connect(ui->graphingView, QOverload<QCPAbstractPlottable*,int,QMouseEvent*>::of(&QCustomPlot::plottableDoubleClick), this, &GraphingWindow::plottableDoubleClick);
+    connect(ui->graphingView, QOverload<QCPAbstractPlottable*,int,QMouseEvent*>::of(&QCustomPlot::plottableClick), this, &GraphingWindow::plottableClick);
+    connect(ui->graphingView, &QCustomPlot::mousePress, this, &GraphingWindow::mousePress);
+    connect(ui->graphingView, &QCustomPlot::mouseWheel, this, &GraphingWindow::mouseWheel);
 
     // make bottom and left axes transfer their ranges to top and right axes:
-    connect(ui->graphingView->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->graphingView->xAxis2, SLOT(setRange(QCPRange)));
-    connect(ui->graphingView->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->graphingView->yAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->graphingView->xAxis, QOverload<const QCPRange&>::of(&QCPAxis::rangeChanged), ui->graphingView->xAxis2, QOverload<const QCPRange&>::of(&QCPAxis::setRange));
+    connect(ui->graphingView->yAxis, QOverload<const QCPRange&>::of(&QCPAxis::rangeChanged), ui->graphingView->yAxis2, QOverload<const QCPRange&>::of(&QCPAxis::setRange));
 
     //connect(ui->graphingView, SIGNAL(titleDoubleClick(QMouseEvent*,QCPTextElement*)), this, SLOT(titleDoubleClick(QMouseEvent*,QCPTextElement*)));
-    connect(ui->graphingView, SIGNAL(axisDoubleClick(QCPAxis*,QCPAxis::SelectablePart,QMouseEvent*)), this, SLOT(axisDoubleClick(QCPAxis*,QCPAxis::SelectablePart)));
-    connect(ui->graphingView, SIGNAL(legendDoubleClick(QCPLegend*,QCPAbstractLegendItem*,QMouseEvent*)), this, SLOT(legendDoubleClick(QCPLegend*,QCPAbstractLegendItem*)));
-    connect(ui->graphingView, SIGNAL(legendClick(QCPLegend*,QCPAbstractLegendItem*,QMouseEvent*)), this, SLOT(legendSingleClick(QCPLegend*,QCPAbstractLegendItem*)));
+    connect(ui->graphingView, QOverload<QCPAxis*,QCPAxis::SelectablePart,QMouseEvent*>::of(&QCustomPlot::axisDoubleClick), this, &GraphingWindow::axisDoubleClick);
+    connect(ui->graphingView, QOverload<QCPLegend*,QCPAbstractLegendItem*,QMouseEvent*>::of(&QCustomPlot::legendDoubleClick), this, &GraphingWindow::legendDoubleClick);
+    connect(ui->graphingView, QOverload<QCPLegend*,QCPAbstractLegendItem*,QMouseEvent*>::of(&QCustomPlot::legendClick), this, &GraphingWindow::legendSingleClick);
 
-    connect(MainWindow::getReference(), SIGNAL(framesUpdated(int)), this, SLOT(updatedFrames(int)));
+    connect(MainWindow::getReference(), &MainWindow::framesUpdated, this, &GraphingWindow::updatedFrames);
 
     // setup policy and connect slot for context menu popup:
     ui->graphingView->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->graphingView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
+    connect(ui->graphingView, &QWidget::customContextMenuRequested, this, &GraphingWindow::contextMenuRequest);
 
     selectedPen.setWidth(3);
     selectedPen.setStyle(Qt::DashLine);

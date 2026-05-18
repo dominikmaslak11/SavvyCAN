@@ -38,12 +38,12 @@ DBCSignalEditor::DBCSignalEditor(QWidget *parent) :
 
     ui->bitfield->setMode(GridMode::SIGNAL_VIEW);
 
-    connect(ui->bitfield, SIGNAL(gridClicked(int)), this, SLOT(bitfieldLeftClicked(int)));
-    connect(ui->bitfield, SIGNAL(gridRightClicked(int)), this, SLOT(bitfieldRightClicked(int)));
+    connect(ui->bitfield, &CANDatagrid::gridClicked, this, &DBCSignalEditor::bitfieldLeftClicked);
+    connect(ui->bitfield, &CANDatagrid::gridRightClicked, this, &DBCSignalEditor::bitfieldRightClicked);
 
-    connect(ui->valuesTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onCustomMenuValues(QPoint)));
+    connect(ui->valuesTable, &QTableWidget::customContextMenuRequested, this, &DBCSignalEditor::onCustomMenuValues);
     ui->valuesTable->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->valuesTable, SIGNAL(cellChanged(int,int)), this, SLOT(onValuesCellChanged(int,int)));
+    connect(ui->valuesTable, &QTableWidget::cellChanged, this, &DBCSignalEditor::onValuesCellChanged);
 
     //now with 100% more lambda expressions just to make it interesting (and shorter, and easier...)
     connect(ui->cbIntelFormat, &QCheckBox::toggled,
