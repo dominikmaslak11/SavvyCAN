@@ -645,7 +645,7 @@ bool CANFrameModel::any_filters_are_configured(void)
 {
     for (auto const &val : filters)
     {
-        if (val == true)
+        if (val)
             continue;
         else
             return true;
@@ -657,7 +657,7 @@ bool CANFrameModel::any_busfilters_are_configured(void)
 {
     for (auto const &val : busFilters)
     {
-        if (val == true)
+        if (val)
             continue;
         else
             return true;
@@ -874,7 +874,7 @@ void CANFrameModel::clearFrames()
     this->beginResetModel();
     frames.clear();
     filteredFrames.clear();
-    if(filtersPersistDuringClear == false)
+    if (!filtersPersistDuringClear)
     {
         filters.clear();
         busFilters.clear();
