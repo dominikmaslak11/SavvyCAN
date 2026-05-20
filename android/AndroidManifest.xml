@@ -20,7 +20,7 @@
     <application
         android:name="org.qtproject.qt.android.bindings.QtApplication"
         android:label="SavvyCAN"
-        android:icon="@drawable/icon"
+        android:icon="@mipmap/icon"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
 
@@ -29,7 +29,8 @@
             android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
             android:label="SavvyCAN"
             android:launchMode="singleTop"
-            android:screenOrientation="unspecified">
+            android:screenOrientation="unspecified"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

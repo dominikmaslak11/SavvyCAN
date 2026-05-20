@@ -482,6 +482,24 @@ QVariant CANFrameModel::data(const QModelIndex &index, int role) const
         }
     }
 
+    if (role == FrameIdRole) {
+        return thisFrame.frameId();
+    }
+    if (role == FrameDataRole) {
+        QString outString;
+        for (int i = 0; i < dataLen; i++) {
+            outString.append(QString::number(data[i], 16).toUpper().rightJustified(2, '0'));
+            outString.append(" ");
+        }
+        return outString.trimmed();
+    }
+    if (role == DlcRole) {
+        return dataLen;
+    }
+    if (role == TimeStampRole) {
+        return thisFrame.timeStamp().microSeconds();
+    }
+
     if (role == Qt::DisplayRole) {
         switch (Column(index.column()))
         {
@@ -1025,4 +1043,14 @@ const QMap<int, bool>* CANFrameModel::getFiltersReference() const
 const QMap<int, bool>* CANFrameModel::getBusFiltersReference() const
 {
     return &busFilters;
+}
+
+QHash<int, QByteArray> CANFrameModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = QAbstractTableModel::roleNames();
+    roles[FrameIdRole] = "frameId";
+    roles[FrameDataRole] = "frameData";
+    roles[DlcRole] = "dlc";
+    roles[TimeStampRole] = "timestamp";
+    return roles;
 }

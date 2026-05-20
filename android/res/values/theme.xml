@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="@android:style/Theme.Material.Dark.NoActionBar">
+    <style name="AppTheme" parent="android:Theme.DeviceDefault.NoActionBar">
         <item name="android:colorPrimary">#00e5ff</item>
         <item name="android:colorPrimaryDark">#0a0a1a</item>
         <item name="android:colorAccent">#00e5ff</item>

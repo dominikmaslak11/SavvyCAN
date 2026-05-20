@@ -1,5 +1,20 @@
 <RCC>
     <qresource prefix="/android">
         <file>qml/MainView.qml</file>
+        <file>qml/ConnectionPage.qml</file>
+        <file>qml/FrameListPage.qml</file>
+        <file>qml/FileIOPage.qml</file>
+        <file>qml/GraphPage.qml</file>
+        <file>qml/SnifferPage.qml</file>
+        <file>qml/SignalViewerPage.qml</file>
+        <file>qml/UDSScannerPage.qml</file>
+        <file>qml/ISOTPPage.qml</file>
+        <file>qml/FuzzingPage.qml</file>
+        <file>qml/FrameSenderPage.qml</file>
+        <file>qml/PlaybackPage.qml</file>
+        <file>qml/CANBridgePage.qml</file>
+        <file>qml/DBCEditorPage.qml</file>
+        <file>qml/FileComparePage.qml</file>
+        <file>qml/SettingsPage.qml</file>
     </qresource>
 </RCC>

@@ -2,77 +2,60 @@
 #define BLUETOOTHMANAGER_H
 
 #include <QObject>
-#include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothSocket>
-#include <QBluetoothDeviceInfo>
-#include <QVector>
+#include <QJniObject>
+#include <QJniEnvironment>
+#include <QTimer>
+#include <QByteArray>
+#include "framestore.h"
 
-class FrameStore;
-
-/// BluetoothManager handles Bluetooth connections to CAN adapters:
-///   - ELM327 (OBD2 over Bluetooth SPP)
-///   - ESP32 with CAN bus shield (custom GATT service)
-///   - Generic Bluetooth SPP adapters
+/// BluetoothManager handles Bluetooth Classic (SPP) CAN bridge connections on Android.
 ///
-/// Connection flow:
-///   1. Scan for devices
-///   2. Select device
-///   3. Connect via RFCOMM (SPP)
-///   4. Start CAN frame exchange
+/// Uses JNI to call Android's BluetoothAdapter / BluetoothSocket APIs.
+/// Connects to ESP32 CAN bridges, ELM327 adapters, and other SPP-based CAN devices.
 class BluetoothManager : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool connected READ isConnected NOTIFY connectedChanged)
+    Q_PROPERTY(bool scanning READ isScanning NOTIFY scanningChanged)
 
 public:
     explicit BluetoothManager(FrameStore *store, QObject *parent = nullptr);
     ~BluetoothManager();
 
-    /// Start scanning for Bluetooth devices.
-    void startScan();
-
-    /// Stop scanning.
-    void stopScan();
-
-    /// Connect to a specific device by address.
-    void connectToDevice(const QString &address);
-
-    /// Disconnect from the current device.
-    void disconnectDevice();
-
-    /// Whether currently connected.
-    bool isConnected() const;
-
-    /// List of discovered devices.
-    QVector<QBluetoothDeviceInfo> discoveredDevices() const;
-
-    /// Send a CAN frame over Bluetooth.
-    void sendFrame(uint32_t id, const QByteArray &data, bool extended = false);
+    Q_INVOKABLE void startScan();
+    Q_INVOKABLE void stopScan();
+    Q_INVOKABLE void connectToDevice(const QString &address);
+    Q_INVOKABLE void disconnectDevice();
+    Q_INVOKABLE bool isConnected() const;
+    Q_INVOKABLE bool isScanning() const;
+    Q_INVOKABLE void sendFrame(uint32_t id, const QByteArray &data, bool extended);
 
 signals:
-    void deviceDiscovered(const QString &name, const QString &address);
+    void deviceFound(const QString &name, const QString &address);
     void scanFinished();
-    void connected();
-    void disconnected();
+    void connectedChanged(bool connected);
+    void scanningChanged(bool scanning);
+    void errorOccurred(const QString &errorMsg);
     void frameReceived(uint32_t id, const QByteArray &data, bool extended);
-    void errorOccurred(const QString &message);
 
 private slots:
-    void onDeviceDiscovered(const QBluetoothDeviceInfo &info);
-    void onSocketConnected();
-    void onSocketDisconnected();
-    void onSocketReadyRead();
-    void onSocketError(QBluetoothSocket::SocketError err);
+    void pollBondedDevices();
+    void onReadTimer();
 
 private:
-    void parseElm327Line(const QByteArray &line);
-    void parseEsp32Frame(const QByteArray &data);
+    bool ensureAdapter();
+    void closeSocket();
 
-    QBluetoothDeviceDiscoveryAgent *mDiscoveryAgent;
-    QBluetoothSocket               *mSocket;
-    FrameStore                      *mStore;
-    QByteArray                       mBuffer;
-    bool                             mElm327Mode = false;
-    bool                             mConnected = false;
+    FrameStore *mStore = nullptr;
+    QJniObject  mBluetoothAdapter;
+    QJniObject  mBluetoothSocket;
+    QJniObject  mInputStream;
+    QJniObject  mOutputStream;
+    QTimer     *mPollTimer = nullptr;
+    QTimer     *mReadTimer = nullptr;
+    QByteArray  mReadBuffer;
+    bool        mConnected = false;
+    bool        mScanning = false;
 };
 
 #endif // BLUETOOTHMANAGER_H

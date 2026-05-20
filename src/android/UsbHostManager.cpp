@@ -1,16 +1,17 @@
 #include "UsbHostManager.h"
 #include "framestore.h"
 #include <QDebug>
-#include <QAndroidJniEnvironment>
+#include <QJniEnvironment>
+#include <QJniObject>
 
 UsbHostManager::UsbHostManager(FrameStore *store, QObject *parent)
     : QObject(parent), mStore(store)
 {
     // Get Android USB Manager service
-    QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod(
+    QJniObject activity = QJniObject::callStaticObjectMethod(
         "org/qtproject/qt/android/QtNative", "activity", "()Landroid/app/Activity;");
 
-    QAndroidJniObject serviceName = QAndroidJniObject::fromString("usb");
+    QJniObject serviceName = QJniObject::fromString("usb");
     mUsbManager = activity.callObjectMethod(
         "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;",
         serviceName.object<jstring>());
@@ -29,7 +30,7 @@ void UsbHostManager::enumerateDevices()
     }
 
     // Call UsbManager.getDeviceList()
-    QAndroidJniObject deviceMap = mUsbManager.callObjectMethod(
+    QJniObject deviceMap = mUsbManager.callObjectMethod(
         "getDeviceList", "()Ljava/util/HashMap;");
 
     if (!deviceMap.isValid()) {
@@ -38,9 +39,9 @@ void UsbHostManager::enumerateDevices()
     }
 
     // Get key set (device names)
-    QAndroidJniObject keySet = deviceMap.callObjectMethod(
+    QJniObject keySet = deviceMap.callObjectMethod(
         "keySet", "()Ljava/util/Set;");
-    QAndroidJniObject iterator = keySet.callObjectMethod(
+    QJniObject iterator = keySet.callObjectMethod(
         "iterator", "()Ljava/util/Iterator;");
 
     // Known PEAK PCAN USB VID/PID pairs
@@ -53,7 +54,7 @@ void UsbHostManager::enumerateDevices()
     };
 
     while (iterator.callMethod<jboolean>("hasNext")) {
-        QAndroidJniObject deviceName = iterator.callObjectMethod("next", "()Ljava/lang/Object;");
+        QJniObject deviceName = iterator.callObjectMethod("next", "()Ljava/lang/Object;");
         QString name = deviceName.toString();
         emit deviceFound(name, 0, 0);
     }
@@ -73,17 +74,17 @@ void UsbHostManager::openDevice(int vendorId, int productId)
     }
 
     // Build USB device filter
-    QAndroidJniObject filter = QAndroidJniObject("android/hardware/usb/UsbDevice",
+    QJniObject filter = QJniObject("android/hardware/usb/UsbDevice",
         "(II)Z", vendorId, productId);
 
     // Request permission via PendingIntent
-    QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod(
+    QJniObject activity = QJniObject::callStaticObjectMethod(
         "org/qtproject/qt/android/QtNative", "activity", "()Landroid/app/Activity;");
 
-    QAndroidJniObject intent("android/content/Intent",
-        "(Ljava/lang/String;)V", QAndroidJniObject::fromString("com.savvycan.USB_PERMISSION").object<jstring>());
+    QJniObject intent("android/content/Intent",
+        "(Ljava/lang/String;)V", QJniObject::fromString("com.savvycan.USB_PERMISSION").object<jstring>());
 
-    QAndroidJniObject pendingIntent = activity.callObjectMethod(
+    QJniObject pendingIntent = activity.callObjectMethod(
         "createPendingResult",
         "(ILandroid/content/Intent;I)Landroid/app/PendingIntent;",
         0, intent.object(), 0);
@@ -93,7 +94,7 @@ void UsbHostManager::openDevice(int vendorId, int productId)
         filter.object(), pendingIntent.object());
 
     // Open device
-    QAndroidJniObject device = mUsbManager.callObjectMethod(
+    QJniObject device = mUsbManager.callObjectMethod(
         "openDevice", "(Landroid/hardware/usb/UsbDevice;)Landroid/hardware/usb/UsbDeviceConnection;",
         filter.object());
 
@@ -127,7 +128,7 @@ bool UsbHostManager::writeBulk(const QByteArray &data)
 {
     if (!mOpen || !mUsbConnection.isValid()) return false;
 
-    QAndroidJniEnvironment env;
+    QJniEnvironment env;
     jbyteArray arr = env->NewByteArray(data.size());
     env->SetByteArrayRegion(arr, 0, data.size(),
         reinterpret_cast<const jbyte *>(data.constData()));
@@ -145,7 +146,7 @@ QByteArray UsbHostManager::readBulk(int maxSize)
 {
     if (!mOpen || !mUsbConnection.isValid()) return {};
 
-    QAndroidJniEnvironment env;
+    QJniEnvironment env;
     jbyteArray arr = env->NewByteArray(maxSize);
 
     jint result = mUsbConnection.callMethod<jint>(

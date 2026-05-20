@@ -1,7 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════
-// SavvyCAN Android Gradle Build (alternative to CMake)
-// Build with: ./gradlew assembleDebug
-// Requires: Android SDK, NDK, Qt for Android installed
+// SavvyCAN Android Gradle Build (used with QT_ANDROID_PACKAGE_SOURCE_DIR)
+// androiddeployqt copies this file and merges resources from the source dir.
 // ═══════════════════════════════════════════════════════════════════════════
 
 buildscript {
@@ -39,16 +38,10 @@ android {
         }
     }
 
-    externalNativeBuild {
-        cmake {
-            path "android/CMakeLists.txt"
-        }
-    }
-
     sourceSets {
         main {
-            manifest.srcFile 'android/AndroidManifest.xml'
-            res.srcDirs = ['android/res']
+            manifest.srcFile 'AndroidManifest.xml'
+            res.srcDirs = ['res']
         }
     }
 }

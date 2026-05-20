@@ -7,7 +7,8 @@
 #include <QMutex>
 #include <QReadWriteLock>
 #include "can_structs.h"
-#include "connections/canconnection.h"
+
+class CANConnection;
 
 /// FrameStore is the single source of truth for all CAN frames in SavvyCAN.
 ///
@@ -31,7 +32,7 @@ public:
     // ── mutation ──────────────────────────────────────────────────────
     void addFrame(const CANFrame &frame);
     void addFrames(const CANConnection *conn, const QVector<CANFrame> &newFrames);
-    void clearFrames();
+    Q_INVOKABLE void clearFrames();
     void normalizeTiming();
     void recalcOverwrite();
 

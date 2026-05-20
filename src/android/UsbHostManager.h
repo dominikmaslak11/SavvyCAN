@@ -2,8 +2,8 @@
 #define USBHOSTMANAGER_H
 
 #include <QObject>
-#include <QAndroidJniObject>
-#include <QAndroidJniEnvironment>
+#include <QJniObject>
+#include <QJniEnvironment>
 #include <QVector>
 
 class FrameStore;
@@ -25,19 +25,19 @@ public:
     ~UsbHostManager();
 
     /// Enumerate connected USB devices.
-    void enumerateDevices();
+    Q_INVOKABLE void enumerateDevices();
 
     /// Request permission and open the device.
-    void openDevice(int vendorId, int productId);
+    Q_INVOKABLE void openDevice(int vendorId, int productId);
 
     /// Close the USB device.
-    void closeDevice();
+    Q_INVOKABLE void closeDevice();
 
     /// Whether a device is currently open.
-    bool isOpen() const;
+    Q_INVOKABLE bool isOpen() const;
 
     /// Send a CAN frame over USB.
-    void sendFrame(uint32_t id, const QByteArray &data, bool extended = false);
+    Q_INVOKABLE void sendFrame(uint32_t id, const QByteArray &data, bool extended = false);
 
 signals:
     void deviceFound(const QString &name, int vendorId, int productId);
@@ -51,11 +51,11 @@ private:
     QByteArray readBulk(int maxSize = 64);
 
     FrameStore *mStore;
-    QAndroidJniObject mUsbManager;
-    QAndroidJniObject mUsbDevice;
-    QAndroidJniObject mUsbConnection;
-    QAndroidJniObject mUsbEndpointIn;
-    QAndroidJniObject mUsbEndpointOut;
+    QJniObject mUsbManager;
+    QJniObject mUsbDevice;
+    QJniObject mUsbConnection;
+    QJniObject mUsbEndpointIn;
+    QJniObject mUsbEndpointOut;
     bool mOpen = false;
 };
 

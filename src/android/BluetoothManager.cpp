@@ -1,58 +1,203 @@
 #include "BluetoothManager.h"
-#include "framestore.h"
+#include "can_structs.h"
 #include <QDebug>
+#include <QDateTime>
+#include <QJniEnvironment>
+#include <QJniObject>
+
+// SPP UUID for standard Serial Port Profile
+static const char *SPP_UUID = "00001101-0000-1000-8000-00805F9B34FB";
 
 BluetoothManager::BluetoothManager(FrameStore *store, QObject *parent)
     : QObject(parent), mStore(store)
 {
-    mDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
-    connect(mDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered,
-            this, &BluetoothManager::onDeviceDiscovered);
-    connect(mDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished,
-            this, &BluetoothManager::scanFinished);
+    // Attempt to obtain the BluetoothAdapter early
+    ensureAdapter();
 
-    mSocket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol, this);
-    connect(mSocket, &QBluetoothSocket::connected, this, &BluetoothManager::onSocketConnected);
-    connect(mSocket, &QBluetoothSocket::disconnected, this, &BluetoothManager::onSocketDisconnected);
-    connect(mSocket, &QBluetoothSocket::readyRead, this, &BluetoothManager::onSocketReadyRead);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
-    connect(mSocket, &QBluetoothSocket::errorOccurred, this, &BluetoothManager::onSocketError);
-#else
-    connect(mSocket, QOverload<QBluetoothSocket::SocketError>::of(&QBluetoothSocket::error), this, &BluetoothManager::onSocketError);
-#endif
+    // Poll for already-bonded devices on a timer
+    mPollTimer = new QTimer(this);
+    connect(mPollTimer, &QTimer::timeout, this, &BluetoothManager::pollBondedDevices);
+
+    // Read timer polls the Bluetooth socket for incoming data
+    mReadTimer = new QTimer(this);
+    connect(mReadTimer, &QTimer::timeout, this, &BluetoothManager::onReadTimer);
 }
 
 BluetoothManager::~BluetoothManager()
 {
     disconnectDevice();
-    stopScan();
+}
+
+bool BluetoothManager::ensureAdapter()
+{
+    if (mBluetoothAdapter.isValid())
+        return true;
+
+    QJniObject activity = QJniObject::callStaticObjectMethod(
+        "org/qtproject/qt/android/QtNative", "activity", "()Landroid/app/Activity;");
+
+    if (!activity.isValid()) {
+        qWarning() << "BT: no Qt activity";
+        return false;
+    }
+
+    QJniObject serviceName = QJniObject::fromString("bluetooth");
+    QJniObject service = activity.callObjectMethod(
+        "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;",
+        serviceName.object<jstring>());
+
+    if (!service.isValid()) {
+        qWarning() << "BT: BluetoothManager service unavailable";
+        return false;
+    }
+
+    mBluetoothAdapter = service.callObjectMethod(
+        "getAdapter", "()Landroid/bluetooth/BluetoothAdapter;");
+
+    if (!mBluetoothAdapter.isValid()) {
+        qWarning() << "BT: no BluetoothAdapter (device may lack BT hardware)";
+        return false;
+    }
+
+    bool enabled = mBluetoothAdapter.callMethod<jboolean>("isEnabled");
+    qDebug() << "BT: adapter obtained, enabled:" << enabled;
+    return enabled;
 }
 
 void BluetoothManager::startScan()
 {
-    mDiscoveryAgent->start();
-    qInfo() << "Bluetooth scan started...";
+    if (!ensureAdapter()) {
+        emit errorOccurred("Bluetooth not available");
+        return;
+    }
+
+    // Android 12+ requires BLUETOOTH_SCAN permission + location
+    mScanning = true;
+    emit scanningChanged(true);
+
+    // First emit already-paired/bonded devices for quick access
+    pollBondedDevices();
+
+    // Stop scan after 12 seconds (Android default discovery duration)
+    QTimer::singleShot(12000, this, [this]() {
+        if (mScanning) {
+            mScanning = false;
+            emit scanningChanged(false);
+            emit scanFinished();
+        }
+    });
 }
 
 void BluetoothManager::stopScan()
 {
-    mDiscoveryAgent->stop();
+    mScanning = false;
+    emit scanningChanged(false);
+}
+
+void BluetoothManager::pollBondedDevices()
+{
+    if (!ensureAdapter()) return;
+
+    QJniObject bondedSet = mBluetoothAdapter.callObjectMethod(
+        "getBondedDevices", "()Ljava/util/Set;");
+
+    if (!bondedSet.isValid()) return;
+
+    QJniObject iterator = bondedSet.callObjectMethod(
+        "iterator", "()Ljava/util/Iterator;");
+
+    while (iterator.callMethod<jboolean>("hasNext")) {
+        QJniObject device = iterator.callObjectMethod(
+            "next", "()Ljava/lang/Object;");
+
+        QJniObject name = device.callObjectMethod(
+            "getName", "()Ljava/lang/String;");
+        QJniObject addr = device.callObjectMethod(
+            "getAddress", "()Ljava/lang/String;");
+
+        emit deviceFound(name.toString(), addr.toString());
+    }
 }
 
 void BluetoothManager::connectToDevice(const QString &address)
 {
-    if (mSocket->state() == QBluetoothSocket::ConnectedState)
-        disconnectDevice();
+    if (!ensureAdapter()) {
+        emit errorOccurred("Bluetooth not available");
+        return;
+    }
 
-    QBluetoothAddress addr(address);
-    mSocket->connectToService(addr, QBluetoothUuid(QBluetoothUuid::ServiceClassUuid::SerialPort));
-    qInfo() << "Connecting to" << address;
+    // Disconnect any existing socket
+    disconnectDevice();
+
+    // Get the remote device by address
+    QJniObject addrStr = QJniObject::fromString(address);
+    QJniObject remoteDevice = mBluetoothAdapter.callObjectMethod(
+        "getRemoteDevice", "(Ljava/lang/String;)Landroid/bluetooth/BluetoothDevice;",
+        addrStr.object<jstring>());
+
+    if (!remoteDevice.isValid()) {
+        emit errorOccurred("Cannot find device: " + address);
+        return;
+    }
+
+    // Create RFCOMM socket using SPP UUID
+    QJniObject uuidStr = QJniObject::fromString(SPP_UUID);
+    QJniObject uuid = QJniObject("java/util/UUID",
+        "(Ljava/lang/String;)Ljava/util/UUID;",
+        uuidStr.object<jstring>());
+
+    mBluetoothSocket = remoteDevice.callObjectMethod(
+        "createRfcommSocketToServiceRecord",
+        "(Ljava/util/UUID;)Landroid/bluetooth/BluetoothSocket;",
+        uuid.object());
+
+    if (!mBluetoothSocket.isValid()) {
+        emit errorOccurred("Failed to create RFCOMM socket");
+        return;
+    }
+
+    // Connect (blocking on Android, but quick for RFCOMM)
+    mBluetoothSocket.callMethod<void>("connect");
+
+    if (!mBluetoothSocket.callMethod<jboolean>("isConnected")) {
+        emit errorOccurred("Failed to connect Bluetooth socket");
+        closeSocket();
+        return;
+    }
+
+    // Get I/O streams
+    mInputStream = mBluetoothSocket.callObjectMethod(
+        "getInputStream", "()Ljava/io/InputStream;");
+    mOutputStream = mBluetoothSocket.callObjectMethod(
+        "getOutputStream", "()Ljava/io/OutputStream;");
+
+    mConnected = true;
+    emit connectedChanged(true);
+    mReadTimer->start(50); // poll every 50ms
+    qDebug() << "BT: connected to" << address;
 }
 
 void BluetoothManager::disconnectDevice()
 {
-    if (mSocket->state() != QBluetoothSocket::UnconnectedState) {
-        mSocket->close();
+    mReadTimer->stop();
+    closeSocket();
+    mConnected = false;
+    emit connectedChanged(false);
+}
+
+void BluetoothManager::closeSocket()
+{
+    if (mInputStream.isValid()) {
+        mInputStream.callMethod<void>("close");
+        mInputStream = QJniObject();
+    }
+    if (mOutputStream.isValid()) {
+        mOutputStream.callMethod<void>("close");
+        mOutputStream = QJniObject();
+    }
+    if (mBluetoothSocket.isValid()) {
+        mBluetoothSocket.callMethod<void>("close");
+        mBluetoothSocket = QJniObject();
     }
 }
 
@@ -61,185 +206,92 @@ bool BluetoothManager::isConnected() const
     return mConnected;
 }
 
-QVector<QBluetoothDeviceInfo> BluetoothManager::discoveredDevices() const
+bool BluetoothManager::isScanning() const
 {
-    return mDiscoveryAgent->discoveredDevices();
-}
-
-void BluetoothManager::onDeviceDiscovered(const QBluetoothDeviceInfo &info)
-{
-    QString name = info.name();
-    if (name.isEmpty()) name = info.address().toString();
-
-    emit deviceDiscovered(name, info.address().toString());
-
-    // Auto-detect adapter type from device name
-    if (name.contains("OBD", Qt::CaseInsensitive) ||
-        name.contains("ELM", Qt::CaseInsensitive) ||
-        name.contains("Vgate", Qt::CaseInsensitive))
-    {
-        mElm327Mode = true;
-        qInfo() << "ELM327 adapter detected:" << name;
-    }
-    else if (name.contains("ESP32", Qt::CaseInsensitive) ||
-             name.contains("CAN", Qt::CaseInsensitive))
-    {
-        mElm327Mode = false;
-        qInfo() << "ESP32 CAN adapter detected:" << name;
-    }
-}
-
-void BluetoothManager::onSocketConnected()
-{
-    mConnected = true;
-    qInfo() << "Bluetooth connected";
-
-    if (mElm327Mode) {
-        // Initialize ELM327
-        mSocket->write("ATZ\r\n");     // Reset
-        mSocket->write("ATE0\r\n");    // Echo off
-        mSocket->write("ATL0\r\n");    // Linefeed off
-        mSocket->write("ATH1\r\n");    // Headers on
-        mSocket->write("ATSP6\r\n");   // CAN 11-bit 500k
-    }
-
-    emit connected();
-}
-
-void BluetoothManager::onSocketDisconnected()
-{
-    mConnected = false;
-    emit disconnected();
-}
-
-void BluetoothManager::onSocketReadyRead()
-{
-    mBuffer.append(mSocket->readAll());
-
-    if (mElm327Mode) {
-        // ELM327 sends lines ending in \r
-        while (mBuffer.contains('\r')) {
-            int idx = mBuffer.indexOf('\r');
-            QByteArray line = mBuffer.left(idx).trimmed();
-            mBuffer.remove(0, idx + 1);
-            parseElm327Line(line);
-        }
-    } else {
-        // ESP32 sends binary CAN frames (14 bytes per frame)
-        while (mBuffer.size() >= 14) {
-            QByteArray frame = mBuffer.left(14);
-            mBuffer.remove(0, 14);
-            parseEsp32Frame(frame);
-        }
-    }
-}
-
-void BluetoothManager::onSocketError(QBluetoothSocket::SocketError error)
-{
-    Q_UNUSED(error)
-    emit errorOccurred(mSocket->errorString());
-}
-
-void BluetoothManager::parseElm327Line(const QByteArray &line)
-{
-    // ELM327 format: "18DAF110 8 02 01 0D"
-    // ID (8 hex) DLC data...
-    if (line.length() < 10 || line.contains(">")) return;
-    if (line.contains("SEARCHING") || line.contains("NO DATA")) return;
-    if (line.startsWith("AT") || line.startsWith("OK")) return;
-
-    QList<QByteArray> parts = line.split(' ');
-    if (parts.size() < 3) return;
-
-    bool ok;
-    uint32_t id = parts[0].toUInt(&ok, 16);
-    if (!ok) return;
-
-    int dlc = parts[1].toInt();
-    QByteArray data;
-    for (int i = 0; i < dlc && (i + 2) < parts.size(); ++i)
-        data.append(static_cast<char>(parts[i + 2].toUInt(nullptr, 16)));
-
-    bool extended = (id > 0x7FF);
-
-    CANFrame frame;
-    frame.setFrameId(id);
-    if (extended) frame.setExtendedFrameFormat(true);
-    frame.isReceived = true;
-    frame.setFrameType(QCanBusFrame::DataFrame);
-    frame.bus = 0;
-    frame.setPayload(data);
-    frame.setTimeStamp(QCanBusFrame::TimeStamp(0, QDateTime::currentMSecsSinceEpoch() * 1000LL));
-
-    mStore->addFrame(frame);
-    emit frameReceived(id, data, extended);
-}
-
-void BluetoothManager::parseEsp32Frame(const QByteArray &frame)
-{
-    // ESP32 binary protocol: [marker 2B][id 4B][dlc 1B][data 8B][crc 1B]
-    if (frame.size() < 14) return;
-    if (static_cast<uint8_t>(frame[0]) != 0xAA || static_cast<uint8_t>(frame[1]) != 0x55) return;
-
-    uint32_t id = (static_cast<uint8_t>(frame[2]) << 24) |
-                  (static_cast<uint8_t>(frame[3]) << 16) |
-                  (static_cast<uint8_t>(frame[4]) << 8)  |
-                   static_cast<uint8_t>(frame[5]);
-
-    int dlc = static_cast<uint8_t>(frame[6]) & 0x0F;
-    bool extended = (static_cast<uint8_t>(frame[6]) & 0x80) != 0;
-
-    QByteArray data = frame.mid(7, qMin(dlc, 8));
-
-    CANFrame canFrame;
-    canFrame.setFrameId(id);
-    if (extended) canFrame.setExtendedFrameFormat(true);
-    canFrame.isReceived = true;
-    canFrame.setFrameType(QCanBusFrame::DataFrame);
-    canFrame.bus = 0;
-    canFrame.setPayload(data);
-    canFrame.setTimeStamp(QCanBusFrame::TimeStamp(0, QDateTime::currentMSecsSinceEpoch() * 1000LL));
-
-    mStore->addFrame(canFrame);
-    emit frameReceived(id, data, extended);
+    return mScanning;
 }
 
 void BluetoothManager::sendFrame(uint32_t id, const QByteArray &data, bool extended)
 {
-    if (!mConnected || !mSocket) return;
+    if (!mConnected || !mOutputStream.isValid()) return;
 
-    if (mElm327Mode) {
-        // ELM327 AT command for sending
-        QString cmd = QString("ATSH%1\r\n").arg(id, extended ? 8 : 3, 16, QChar('0'));
-        mSocket->write(cmd.toUtf8());
+    // Serialize as SLCAN format: t#ID#DATA\r\n
+    // (this is the format ESP32 CAN bridges typically use)
+    QByteArray line;
+    line += extended ? 'T' : 't';
+    line += QByteArray::number(extended ? id : (id & 0x7FF), 16).rightJustified(extended ? 8 : 3, '0').toUpper();
+    line += data.toHex().toUpper();
+    line += '\r';
 
-        QByteArray frame;
-        QTextStream stream(&frame);
-        stream << (extended ? "ATCE" : "ATCS") << "\r\n";
-        stream << QString::number(data.size()) << " ";
-        for (int i = 0; i < data.size(); ++i)
-            stream << QString("%1 ").arg(static_cast<uint8_t>(data[i]), 2, 16, QChar('0'));
-        stream << "\r\n";
-        mSocket->write(frame);
-    } else {
-        // ESP32 binary protocol
-        QByteArray frame;
-        frame.append('\xAA');
-        frame.append('\x55');
-        frame.append(static_cast<char>((id >> 24) & 0xFF));
-        frame.append(static_cast<char>((id >> 16) & 0xFF));
-        frame.append(static_cast<char>((id >> 8) & 0xFF));
-        frame.append(static_cast<char>(id & 0xFF));
-        uint8_t flags = (extended ? 0x80 : 0x00) | (data.size() & 0x0F);
-        frame.append(static_cast<char>(flags));
-        frame.append(data.left(8));
-        while (frame.size() < 14)
-            frame.append('\x00');
-        // Simple XOR checksum
-        uint8_t crc = 0;
-        for (int i = 0; i < 13; ++i)
-            crc ^= static_cast<uint8_t>(frame[i]);
-        frame.append(static_cast<char>(crc));
-        mSocket->write(frame);
+    // Write via JNI OutputStream.write(byte[], int, int)
+    QJniEnvironment env;
+    jbyteArray arr = env->NewByteArray(line.size());
+    env->SetByteArrayRegion(arr, 0, line.size(),
+        reinterpret_cast<const jbyte *>(line.constData()));
+
+    mOutputStream.callMethod<void>("write", "([BII)V", arr, 0, line.size());
+    mOutputStream.callMethod<void>("flush");
+
+    env->DeleteLocalRef(arr);
+}
+
+void BluetoothManager::onReadTimer()
+{
+    if (!mConnected || !mInputStream.isValid()) return;
+
+    QJniEnvironment env;
+    jbyteArray arr = env->NewByteArray(256);
+
+    jint bytesRead = mInputStream.callMethod<jint>(
+        "read", "([B)I", arr);
+
+    if (bytesRead > 0) {
+        QByteArray chunk(bytesRead, Qt::Uninitialized);
+        env->GetByteArrayRegion(arr, 0, bytesRead,
+            reinterpret_cast<jbyte *>(chunk.data()));
+        mReadBuffer.append(chunk);
+
+        // Parse complete lines (terminated by \r or \n)
+        while (true) {
+            int nlIdx = mReadBuffer.indexOf('\r');
+            if (nlIdx < 0) nlIdx = mReadBuffer.indexOf('\n');
+            if (nlIdx < 0) break;
+
+            QByteArray line = mReadBuffer.left(nlIdx).trimmed();
+            mReadBuffer.remove(0, nlIdx + 1);
+
+            if (line.isEmpty()) continue;
+            if (!mStore) continue;
+
+            // Parse SLCAN: t#ID#DATA or T#ID#DATA...
+            bool isExt = line.startsWith('T');
+            if (!isExt && !line.startsWith('t')) continue;
+
+            int hash1 = line.indexOf('#', 1);
+            if (hash1 < 0) continue;
+            int hash2 = line.indexOf('#', hash1 + 1);
+            if (hash2 < 0) continue;
+
+            bool ok;
+            QByteArray idPart = line.mid(1, hash1 - 1);
+            uint32_t frameId = idPart.toUInt(&ok, 16);
+            if (!ok) continue;
+
+            QByteArray dataPart = line.mid(hash1 + 1, hash2 - hash1 - 1);
+            QByteArray frameData = QByteArray::fromHex(dataPart);
+
+            CANFrame f;
+            f.bus = 0;
+            f.setFrameId(frameId);
+            f.setExtendedFrameFormat(isExt);
+            f.setPayload(frameData);
+            f.setTimeStamp(QCanBusFrame::TimeStamp(0, QDateTime::currentMSecsSinceEpoch() * 1000));
+            f.isReceived = true;
+
+            mStore->addFrame(f);
+            emit frameReceived(frameId, frameData, isExt);
+        }
     }
+
+    env->DeleteLocalRef(arr);
 }

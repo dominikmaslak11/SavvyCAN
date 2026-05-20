@@ -8,9 +8,10 @@
 #include <QMutex>
 #include "can_structs.h"
 #include "dbc/dbchandler.h"
-#include "connections/canconnection.h"
 #include "framestore.h"
 #include "utility.h"
+
+class CANConnection;
 
 enum class Column {
     TimeStamp = 0, ///< The timestamp when the frame was transmitted or received
@@ -39,6 +40,14 @@ public:
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
+    enum CustomRoles {
+        FrameIdRole = Qt::UserRole + 1,
+        FrameDataRole,
+        DlcRole,
+        TimeStampRole
+    };
+
+    QHash<int, QByteArray> roleNames() const override;
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role = Qt::DisplayRole) const;
     int columnCount(const QModelIndex &) const;
@@ -50,7 +59,7 @@ public:
     void clearFrames();
     void setInterpretMode(bool);
     bool getInterpretMode();
-    void setOverwriteMode(bool);
+    Q_INVOKABLE void setOverwriteMode(bool);
     void setHexMode(bool);
     void setUseColorsByCanId(bool);
     void setClearMode(bool mode);
