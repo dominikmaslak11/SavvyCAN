@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "futuristic_theme.h"
 #include <QApplication>
+#include <QIcon>
 #include <QTranslator>
 #include <QLocale>
 #include <QDebug>
@@ -44,6 +45,10 @@ int main(int argc, char *argv[])
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
     QSettings settings;
+
+    const QIcon appIcon(":/icons/icon.png");
+    a.setWindowIcon(appIcon);
+    a.setApplicationDisplayName("SavvyCAN");
 
     // ── Apply saved theme ────────────────────────────────────────────
     QString theme = settings.value("Main/Theme", "dark").toString();

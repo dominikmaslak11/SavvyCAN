@@ -12,6 +12,48 @@
 #include <QSettings>
 #include <connections/newconnectiondialog.h>
 
+namespace {
+
+QVector<QString> readStringVector(const QVariant &value)
+{
+    QVector<QString> result;
+    const QVariantList list = value.toList();
+    if (!list.isEmpty()) {
+        result.reserve(list.size());
+        for (const QVariant &item : list) {
+            result.append(item.toString());
+        }
+        return result;
+    }
+
+    if (value.isValid()) {
+        result.append(value.toString());
+    }
+
+    return result;
+}
+
+QVector<int> readIntVector(const QVariant &value)
+{
+    QVector<int> result;
+    const QVariantList list = value.toList();
+    if (!list.isEmpty()) {
+        result.reserve(list.size());
+        for (const QVariant &item : list) {
+            result.append(item.toInt());
+        }
+        return result;
+    }
+
+    if (value.isValid()) {
+        result.append(value.toInt());
+    }
+
+    return result;
+}
+
+} // namespace
+
 ConnectionWindow::ConnectionWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConnectionWindow)
@@ -549,14 +591,14 @@ void ConnectionWindow::loadConnections()
     QSettings settings;
 
     /* fill connection list */
-    QVector<QString> portNames = settings.value("connections/portNames").value<QVector<QString>>();
-    QVector<QString> driverNames = settings.value("connections/driverNames").value<QVector<QString>>();
-    QVector<int>    devTypes = settings.value("connections/types").value<QVector<int>>();
+    QVector<QString> portNames = readStringVector(settings.value("connections/portNames"));
+    QVector<QString> driverNames = readStringVector(settings.value("connections/driverNames"));
+    QVector<int>    devTypes = readIntVector(settings.value("connections/types"));
 
-    QVector<int> busSpeeds = settings.value("connections/busSpeeds_0").value<QVector<int>>();
-    QVector<int> DataRates = settings.value("connections/DataRates_0").value<QVector<int>>();
-    QVector<int> isCanFds = settings.value("connections/isCanFds_0").value<QVector<int>>();
-    QVector<int> serialSpeeds = settings.value("connections/serialSpeeds").value<QVector<int>>();
+    QVector<int> busSpeeds = readIntVector(settings.value("connections/busSpeeds_0"));
+    QVector<int> DataRates = readIntVector(settings.value("connections/DataRates_0"));
+    QVector<int> isCanFds = readIntVector(settings.value("connections/isCanFds_0"));
+    QVector<int> serialSpeeds = readIntVector(settings.value("connections/serialSpeeds"));
     //don't load the connections if the three setting arrays above aren't all the same size.
     if (portNames.count() != driverNames.count() || devTypes.count() != driverNames.count() ||  busSpeeds.count() != driverNames.count() || isCanFds.count() != driverNames.count() ||
 	DataRates.count() != driverNames.count() || serialSpeeds.count() != driverNames.count() ) return;

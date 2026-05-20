@@ -230,10 +230,17 @@ void RestApiServer::setupRoutes()
 
         QJsonObject body = doc.object();
         QString driver = body["driver"].toString("peakcan");
-        QString port = body["port"].toString("PCAN_USBBUS1");
+        QString port = body["port"].toString("usb0");
         int busSpeed = body["bitrate"].toInt(250000);
+        QString type = body["type"].toString().trimmed().toLower();
 
-        auto *conn = CanConFactory::create(CANCon::SERIALBUS, port, driver, 0, busSpeed, false, 0);
+        CANCon::type connType = CANCon::SERIALBUS;
+        if (type == "lin" || driver.trimmed().compare("lin", Qt::CaseInsensitive) == 0) {
+            connType = CANCon::LIN_SERIAL;
+            driver = "LIN";
+        }
+
+        auto *conn = CanConFactory::create(connType, port, driver, 0, busSpeed, false, 0);
         if (!conn) {
             QJsonObject resp;
             resp["status"] = "error";

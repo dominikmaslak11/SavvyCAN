@@ -21,10 +21,15 @@ fi
 cd "$(dirname "$0")/$BUILD_DIR"
 
 echo "Creating $ARCHIVE_NAME from $BUILD_DIR ..."
-/usr/bin/7z a -mx9 "../${ARCHIVE_NAME}" \
-  SavvyCAN.exe *.dll \
-  platforms canbus imageformats styles tls networkinformation generic qmltooling qml \
-  iconengines 2>&1
+
+packages=(*.exe *.dll translations)
+for dir in platforms canbus imageformats styles tls networkinformation generic qmltooling qml iconengines; do
+    if [ -e "$dir" ]; then
+        packages+=("$dir")
+    fi
+done
+
+/usr/bin/7z a -mx9 "../${ARCHIVE_NAME}" "${packages[@]}" 2>&1
 
 echo ""
 echo "Archive size:"

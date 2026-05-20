@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/icons">
+        <file>icons/icon.png</file>
         <file>images/NavBack.png</file>
         <file>images/NavForward.png</file>
         <file>images/PauseHS.png</file>

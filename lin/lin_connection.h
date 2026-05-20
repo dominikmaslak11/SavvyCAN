@@ -120,12 +120,16 @@ private slots:
     void onError(QSerialPort::SerialPortError err);
 
 private:
+    bool tryInitializeLuc();
+    bool sendLucCommand(const QByteArray &command, QByteArray *response = nullptr, int timeoutMs = 250);
+    void processLucBuffer();
     void processBuffer();
 
     QSerialPort* mSerial = nullptr;
     QByteArray   mRxBuffer;
     QElapsedTimer mTimer;
     int           mTimeout_ms = 100;
+    bool          mLucMode = false;
 };
 
 // ═══════════════════════════════════════════════════════════════════════════

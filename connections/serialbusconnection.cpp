@@ -112,11 +112,23 @@ void SerialBusConnection::piSetBusSettings(int pBusIdx, CANBus bus)
         sbusconfig |= EN_SILENT_MODE;
     mDev_p->setConfigurationParameter(QCanBusDevice::UserKey, sbusconfig);
 
+    CANConStatus stats;
+
     /* connect device */
     if (!mDev_p->connectDevice()) {
         disconnectDevice();
+        setStatus(CANCon::NOT_CONNECTED);
+        stats.conStatus = getStatus();
+        stats.numHardwareBuses = mNumBuses;
+        emit status(stats);
         qDebug() << "can't connect device";
+        return;
     }
+
+    setStatus(CANCon::CONNECTED);
+    stats.conStatus = getStatus();
+    stats.numHardwareBuses = mNumBuses;
+    emit status(stats);
 }
 
 

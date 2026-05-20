@@ -161,7 +161,28 @@ void PythonBridge::setupModule()
         } else {
             return std::string("warning: device created but not connected. Check hardware/drivers.");
         }
-    }, py::arg("driver") = "peakcan", py::arg("port") = "PCAN_USBBUS1", py::arg("bitrate") = 250000);
+    }, py::arg("driver") = "peakcan", py::arg("port") = "usb0", py::arg("bitrate") = 250000);
+
+    // savvycan.connect_lin(port, bitrate)
+    m.def("connect_lin", [this](const std::string &port, int bitrate) {
+        QString qPort = QString::fromStdString(port);
+
+        auto *conn = CanConFactory::create(CANCon::LIN_SERIAL, qPort, "LIN", 0, bitrate, false, 0);
+        if (!conn) {
+            return std::string("error: failed to create LIN connection");
+        }
+
+        CANConManager::getInstance()->add(conn);
+        conn->start();
+
+        QThread::msleep(100);
+
+        bool connected = (conn->getStatus() == CANCon::CONNECTED);
+        if (connected) {
+            return std::string("ok: connected LIN on " + port + " at " + std::to_string(bitrate) + " bps");
+        }
+        return std::string("warning: LIN connection created but not connected. Check hardware and drivers.");
+    }, py::arg("port"), py::arg("bitrate") = 19200);
 
     // savvycan.clear_frames()
     m.def("clear_frames", [this]() {
