@@ -18,14 +18,14 @@
     <uses-feature android:name="android.hardware.bluetooth" android:required="false"/>
 
     <application
-        android:name="org.qtproject.qt.android.bindings.QtApplication"
+        android:name="org.qtproject.qt.android.QtApplicationBase"
         android:label="SavvyCAN"
         android:icon="@mipmap/icon"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
 
         <activity
-            android:name="org.qtproject.qt.android.bindings.QtActivity"
+            android:name="org.qtproject.qt.android.QtActivityBase"
             android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
             android:label="SavvyCAN"
             android:launchMode="singleTop"

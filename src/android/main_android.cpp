@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "BluetoothManager.h"
+#include "BleManager.h"
 #include "UsbHostManager.h"
 #include "WifiManager.h"
 #include "FrameListModel.h"
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
 
     // ── Connection managers ───────────────────────────────────────────
     BluetoothManager btManager(&store);
+    BleManager        bleManager(&store);
     UsbHostManager usbManager(&store);
     WifiManager wifiManager(&store);
 
@@ -30,6 +32,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("frameStore", &store);
     engine.rootContext()->setContextProperty("frameListModel", &frameListModel);
     engine.rootContext()->setContextProperty("btManager", &btManager);
+    engine.rootContext()->setContextProperty("bleManager", &bleManager);
     engine.rootContext()->setContextProperty("usbManager", &usbManager);
     engine.rootContext()->setContextProperty("wifiManager", &wifiManager);
 

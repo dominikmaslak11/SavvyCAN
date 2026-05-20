@@ -41,6 +41,7 @@ set(SOURCES
     # Android entry point & managers
     ../src/android/main_android.cpp
     ../src/android/BluetoothManager.cpp
+    ../src/android/BleManager.cpp
     ../src/android/UsbHostManager.cpp
     ../src/android/WifiManager.cpp
     ../src/android/FrameListModel.cpp
@@ -83,6 +84,7 @@ set(SOURCES
 
 set(HEADERS
     ../src/android/BluetoothManager.h
+    ../src/android/BleManager.h
     ../src/android/UsbHostManager.h
     ../src/android/WifiManager.h
     ../src/android/FrameListModel.h
