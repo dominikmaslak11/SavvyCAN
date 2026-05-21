@@ -325,8 +325,6 @@ qt_add_executable(SavvyCAN ${SOURCES} ${HEADERS} ${FORMS} ${RESOURCES} Info.plis
 target_link_libraries(SavvyCAN PRIVATE
     Qt6::Core Qt6::Gui Qt6::Widgets Qt6::PrintSupport Qt6::Qml
     Qt6::SerialBus Qt6::SerialPort Qt6::Help Qt6::Network Qt6::OpenGL Qt6::OpenGLWidgets
-    
-    
     pybind11::embed
     Python3::Python
 )
