@@ -1,0 +1,3 @@
+#pragma once
+#include <QObject>
+class QTcpServer : public QObject { Q_OBJECT public: explicit QTcpServer(QObject *p = nullptr) : QObject(p) {} };

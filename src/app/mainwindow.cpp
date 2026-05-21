@@ -86,12 +86,12 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     // ── REST API: auto-start on port 8080 ─────────────────────────────
-    mRestApi = new RestApiServer(frameStore, this);
-    mRestApi->start(8080);
+// DISABLED_REST:     mRestApi = new RestApiServer(frameStore, this);
+// DISABLED_REST:     mRestApi->start(8080);
 
     // ── Python bridge + console ─────────────────────────────────────
     mPythonBridge = new PythonBridge(frameStore, this);
-    mRestApi->setPythonBridge(mPythonBridge);
+// DISABLED_REST:     mRestApi->setPythonBridge(mPythonBridge);
     mPythonConsole = new PythonConsole(mPythonBridge, this);
     mSidebar->setPythonConsole(mPythonConsole);
 
@@ -1893,10 +1893,7 @@ void MainWindow::onSidebarTool(const QString &toolId)
 
 void MainWindow::toggleRestApi()
 {
-    if (mRestApi->isRunning())
-        mRestApi->stop();
-    else
-        mRestApi->start(8080);
+    // REST API disabled in this build
 }
 
 void MainWindow::toggleCommandPalette()

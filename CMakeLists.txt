@@ -22,7 +22,7 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/ui")
 
 # ── Qt6 ───────────────────────────────────────────────────────────────────
 find_package(Qt6 6.2 REQUIRED COMPONENTS
-    Core Gui Widgets PrintSupport Qml SerialBus SerialPort Help Network OpenGL OpenGLWidgets HttpServer WebSockets
+    Core Gui Widgets PrintSupport Qml SerialBus SerialPort Help Network OpenGL OpenGLWidgets
 )
 
 # ── Compile definitions ───────────────────────────────────────────────────
@@ -31,6 +31,7 @@ add_compile_definitions(QCUSTOMPLOT_USE_OPENGL)
 # ── Python / pybind11 ─────────────────────────────────────────────────────
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 find_package(pybind11 REQUIRED)
+add_compile_options(-Wno-error=deprecated-declarations)
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_definitions(QT_NO_DEBUG_OUTPUT)
 endif()
@@ -74,7 +75,6 @@ set(SOURCES
 
     pythonbridge.cpp
     pythonconsole.cpp
-    restapiserver.cpp
     pluginmanager.cpp
 
     qcpaxistickerhex.cpp
@@ -189,7 +189,6 @@ set(HEADERS
 
     pythonbridge.h
     pythonconsole.h
-    restapiserver.h
     iplugin.h
     pluginmanager.h
 
@@ -326,14 +325,17 @@ qt_add_executable(SavvyCAN ${SOURCES} ${HEADERS} ${FORMS} ${RESOURCES} Info.plis
 target_link_libraries(SavvyCAN PRIVATE
     Qt6::Core Qt6::Gui Qt6::Widgets Qt6::PrintSupport Qt6::Qml
     Qt6::SerialBus Qt6::SerialPort Qt6::Help Qt6::Network Qt6::OpenGL Qt6::OpenGLWidgets
-    Qt6::HttpServer
-    Qt6::WebSockets
+    
+    
     pybind11::embed
     Python3::Python
 )
 
 # ── Include paths (ALL subdirectories for backward-compat includes) ───────
 target_include_directories(SavvyCAN PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/stubs
+    /usr/include/x86_64-linux-gnu/qt6/QtSerialBus
+    /usr/include/x86_64-linux-gnu/qt6/QtSerialPort
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/app
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core

@@ -1,0 +1,3 @@
+#pragma once
+#include <QObject>
+class QWebSocket : public QObject { Q_OBJECT public: explicit QWebSocket(QObject *p = nullptr) : QObject(p) {} };

@@ -1,0 +1,4 @@
+#pragma once
+// Mock QHttpServer — Qt6 HttpServer not installed
+#include <QObject>
+class QHttpServer : public QObject { Q_OBJECT public: explicit QHttpServer(QObject *p = nullptr) : QObject(p) {} };

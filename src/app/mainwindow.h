@@ -37,7 +37,7 @@
 #include "framestore.h"
 #include "windowregistry.h"
 #include "sidebarwidget.h"
-#include "restapiserver.h"
+// DISABLED_REST: #include "restapiserver.h"
 #include "pythonbridge.h"
 #include "pythonconsole.h"
 
@@ -170,7 +170,7 @@ private:
     FrameStore *frameStore;     // centralized frame store (modernized)
     WindowRegistry *mRegistry;  // lazy-created window manager
     SidebarWidget *mSidebar;    // futuristic sidebar navigation
-    RestApiServer *mRestApi;    // REST API server
+    // DISABLED_REST: RestApiServer *mRestApi;    // REST API server
     PythonBridge  *mPythonBridge; // embedded Python
     PythonConsole *mPythonConsole; // Python REPL widget
     DBCHandler *dbcHandler;

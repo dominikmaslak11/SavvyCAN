@@ -1,0 +1,4 @@
+#pragma once
+// Mock QWebSocketServer — Qt6 WebSockets not installed
+#include <QObject>
+class QWebSocketServer : public QObject { Q_OBJECT public: explicit QWebSocketServer(QObject *p = nullptr) : QObject(p) {} };
