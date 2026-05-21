@@ -283,8 +283,17 @@ bool mcp2515_sendFrame(const CANFrame &frame) {
         return false;
     }
 
-    mcp_write(txBase, (frame.id >> 3) & 0xFF);
-    mcp_write(txBase + 1, (frame.id & 0x07) << 5);
+    if (frame.extended) {
+        // Extended 29-bit ID: SID10:SID3 | SID2:SID0/EXIDE/EID17:EID16 | EID15:EID8 | EID7:EID0
+        mcp_write(txBase,     (frame.id >> 21) & 0xFF);
+        mcp_write(txBase + 1, ((frame.id >> 18) & 0x07) << 5 | 0x08 | ((frame.id >> 16) & 0x03));
+        mcp_write(txBase + 2, (frame.id >> 8) & 0xFF);
+        mcp_write(txBase + 3, frame.id & 0xFF);
+    } else {
+        // Standard 11-bit ID: SID10:SID3 | SID2:SID0
+        mcp_write(txBase,     (frame.id >> 3) & 0xFF);
+        mcp_write(txBase + 1, (frame.id & 0x07) << 5);
+    }
     mcp_write(txBase + 4, frame.length);
     for (int i = 0; i < frame.length; i++) {
         mcp_write(txBase + 5 + i, frame.data[i]);
