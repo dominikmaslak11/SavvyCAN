@@ -30,6 +30,8 @@ public class BleHelper {
     private Handler             handler;
     private boolean             scanning;
     private String              connectedAddress;
+    private String              lastConnectedAddress;
+    private boolean             userDisconnect = false;
 
     public static native void onDeviceFound(String name, String address, int rssi);
     public static native void onScanFinished();
@@ -86,6 +88,7 @@ public class BleHelper {
     public void connectToDevice(String address) {
         Log.i(TAG, "connectToDevice called: " + address);
         if (btAdapter == null) { onError("No adapter"); return; }
+        userDisconnect = false;
         disconnect();
         BluetoothDevice device = btAdapter.getRemoteDevice(address);
         if (device == null) { Log.e(TAG, "getRemoteDevice returned null"); onError("Device not found"); return; }
@@ -100,12 +103,14 @@ public class BleHelper {
             onError("connectGatt returned null");
         } else {
             connectedAddress = address;
+            lastConnectedAddress = address;
             Log.i(TAG, "connectGatt OK, waiting for callback...");
         }
     }
 
     public void disconnect() {
         Log.i(TAG, "disconnect called");
+        userDisconnect = true;
         if (gatt != null) { gatt.disconnect(); gatt.close(); gatt = null; }
         ledChar = null; canRxChar = null; canTxChar = null; connectedAddress = null;
     }
@@ -124,8 +129,15 @@ public class BleHelper {
                 gatt.discoverServices();
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 Log.i(TAG, "STATE_DISCONNECTED");
+                final String addr = connectedAddress;
                 ledChar = null; canRxChar = null; canTxChar = null;
+                connectedAddress = null;
                 handler.post(() -> onDisconnected());
+                // Auto-reconnect on unexpected disconnect
+                if (!userDisconnect && addr != null && !addr.isEmpty()) {
+                    Log.i(TAG, "Scheduling auto-reconnect in 3s to " + addr);
+                    handler.postDelayed(() -> connectToDevice(addr), 3000);
+                }
             }
         }
 

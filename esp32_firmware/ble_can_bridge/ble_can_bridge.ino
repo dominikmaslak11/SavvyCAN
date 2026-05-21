@@ -489,7 +489,14 @@ void loop() {
         mcp2515_sendFrame(txFrame);
     }
 
-    // ── 4. Status co 5s ────────────────────────────────────────────────
+    // ── 3b. CAN bus-off recovery ─────────────────────────────────
+    uint8_t tec = mcp_read(REG_TEC);
+    if (tec > 255) {
+        Serial.println("[CAN] BUS-OFF detected — restarting MCP2515...");
+        mcp2515_init();
+    }
+
+    // ── 5. Status co 5s ────────────────────────────────────────────────
     if (millis() - lastStatus > 5000) {
         lastStatus = millis();
         uint8_t tec = mcp_read(REG_TEC);
