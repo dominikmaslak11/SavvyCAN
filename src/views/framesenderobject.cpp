@@ -182,7 +182,7 @@ void FrameSenderObject::timerTriggered()
             if (sendData->triggers.count() == 0)
             {
                 //qDebug() << "No triggers to process";
-                break;
+                continue;
             }
             for (int j = 0; j < sendData->triggers.count(); j++)
             {

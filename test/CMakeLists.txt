@@ -75,3 +75,12 @@ add_executable(test_dbc
 target_include_directories(test_dbc PRIVATE ${CORE_INCLUDES})
 target_link_libraries(test_dbc PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::SerialBus Qt6::Test)
 add_test(NAME DBCTest COMMAND test_dbc)
+
+# ── Test 6: FrameSender regression (break vs continue bug) ────────────────────
+add_executable(test_framesender_regression
+    test_framesender_regression.cpp
+    ${CORE_SOURCES}
+)
+target_include_directories(test_framesender_regression PRIVATE ${CORE_INCLUDES})
+target_link_libraries(test_framesender_regression PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::SerialBus Qt6::Test)
+add_test(NAME FrameSenderRegression COMMAND test_framesender_regression)

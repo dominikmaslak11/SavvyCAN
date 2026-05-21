@@ -36,7 +36,7 @@ quint64 FramePlaybackObject::updatePosition(bool forward)
     //only send frame out if its ID is checked in the list. Otherwise discard it.
     CANFrame *thisFrame = &currentSeqItem->data[currentPosition];
     uint32_t originalBus = thisFrame->bus;
-    if (currentSeqItem->idFilters.find(thisFrame->frameId()).value())
+    if (currentSeqItem->idFilters.value(thisFrame->frameId(), false))
     {
         if (whichBusSend > -1)
         {
