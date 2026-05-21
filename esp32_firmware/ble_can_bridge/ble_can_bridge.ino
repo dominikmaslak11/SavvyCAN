@@ -24,6 +24,7 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
+#include <BLEDescriptor.h>
 #include <SPI.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -415,6 +416,11 @@ void setup() {
         CAN_RX_CHAR_UUID,
         BLECharacteristic::PROPERTY_NOTIFY
     );
+    // CCCD descriptor — wymagany przez Android do notyfikacji
+    BLEDescriptor *cccd = new BLEDescriptor("2902", 2);
+    uint8_t init[2] = {0, 0};
+    cccd->setValue(init, 2);
+    pCanRxChar->addDescriptor(cccd);
 
     // Charakterystyka TX (WRITE: tablet → ESP32)
     pCanTxChar = pCanService->createCharacteristic(
