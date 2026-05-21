@@ -99,7 +99,7 @@ void SerialBusConnection::piSetBusSettings(int pBusIdx, CANBus bus)
 
     /* set configuration */
     /*if (p.useConfigurationEnabled) {
-     foreach (const SettingsDialog::ConfigurationItem &item, p.configurations)
+     for (const SettingsDialog::ConfigurationItem &item : p.configurations)
          mDev->setConfigurationParameter(item.first, item.second);
     }*/
 

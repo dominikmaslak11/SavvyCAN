@@ -192,7 +192,7 @@ void NewConnectionDialog::selectRemote()
     ui->lblDataRate->setHidden(true);
 
     ui->cbPort->clear();
-    foreach(QString pName, *remoteDeviceIPGVRET)
+    for (QString pName : *remoteDeviceIPGVRET)
     {
         ui->cbPort->addItem(pName);
     }
@@ -213,7 +213,7 @@ void NewConnectionDialog::selectKayak()
     ui->lblDataRate->setHidden(true);
 
     ui->cbPort->clear();
-    foreach(QString pName, *remoteBusKayak)
+    for (QString pName : *remoteBusKayak)
     {
         ui->cbPort->addItem(pName);
     }
@@ -401,7 +401,7 @@ int NewConnectionDialog::getBusSpeed()
     else return 0;
 }
 
-CANCon::type NewConnectionDialog::getConnectionType()
+CANCon::type NewConnectionDialog::getConnectionType() const
 {
     if (ui->rbGVRET->isChecked()) return CANCon::GVRET_SERIAL;
     if (ui->rbSocketCAN->isChecked()) return CANCon::SERIALBUS;
@@ -431,7 +431,7 @@ int NewConnectionDialog::getDataRate()
     else return 0;
 }
 
-bool NewConnectionDialog::isCanFd()
+bool NewConnectionDialog::isCanFd() const
  {
      if (getConnectionType() == CANCon::LAWICEL)
      {

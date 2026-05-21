@@ -258,7 +258,7 @@ protected:
      * @brief isCapSuspended
      * @return true if the capture is suspended
      */
-    bool isCapSuspended();
+    bool isCapSuspended() const;
 
     /**
      * @brief setCapSuspended

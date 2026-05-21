@@ -51,7 +51,7 @@ void LAWICELSerial::sendToSerial(const QByteArray &bytes)
 
     QString buildDebug;
     buildDebug = "Write to serial -> ";
-    foreach (int byt, bytes) {
+    for (int byt : bytes) {
         byt = (unsigned char)byt;
         buildDebug = buildDebug % QString::number(byt, 16) % " ";
     }
@@ -181,7 +181,7 @@ bool LAWICELSerial::piSendFrame(const CANFrame& frame)
             buildStr = QString::asprintf("t%03X%llu", ID, static_cast<unsigned long long>(frame.payload().length()));
         }
     }
-    foreach (QChar chr, buildStr)
+    for (QChar chr : buildStr)
     {
         buffer[idx] = chr.toLatin1();
         idx++;
