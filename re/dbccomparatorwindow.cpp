@@ -111,7 +111,7 @@ QString DBCComparatorWindow::loadDBC(DBCFile **file)
 
         if (dialog.selectedNameFilter() == filters[0])
         {
-            if (file[0]) delete file[0];
+            delete file[0];
             file[0] = new DBCFile;
             file[0]->loadFile(filename);
             qDebug() << "Loaded the DBC file into first slot";
@@ -399,4 +399,3 @@ void DBCComparatorWindow::saveDetails()
 
     }
 }
-

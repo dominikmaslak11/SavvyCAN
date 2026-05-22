@@ -66,7 +66,7 @@ public:
     void setBytesToDraw(int num);
 
 protected:
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) override;
 
 signals:
     void gridClicked(int bitClicked);
