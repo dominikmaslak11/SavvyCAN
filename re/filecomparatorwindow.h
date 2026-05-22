@@ -44,9 +44,9 @@ private:
     DBCHandler *dbcHandler;
 
     void calculateDetails();
-    void showEvent(QShowEvent *);
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void showEvent(QShowEvent *) override;
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
 };

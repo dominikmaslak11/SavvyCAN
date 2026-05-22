@@ -16,7 +16,7 @@ class NewGraphDialog : public QDialog
 public:
     explicit NewGraphDialog(DBCHandler *handler, QWidget *parent = 0);
     ~NewGraphDialog();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
     void getParams(GraphParams &);
     void setParams(GraphParams &);
     void clearParams();
@@ -34,7 +34,7 @@ private slots:
     void copySignalToParamsUI();
 
 private:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void checkSignalAgreement();
 
     Ui::NewGraphDialog *ui;

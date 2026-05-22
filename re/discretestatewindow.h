@@ -28,7 +28,7 @@ class DiscreteStateWindow : public QDialog
 public:
     explicit DiscreteStateWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
     ~DiscreteStateWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void updatedFrames(int);
@@ -52,8 +52,8 @@ private:
     QHash<int, bool> idFilters;
 
     void refreshFilterList();
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
     void updateStateLabel();

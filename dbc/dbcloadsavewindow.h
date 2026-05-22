@@ -46,7 +46,7 @@ private:
     void swapTableRows(bool up);
     QList<QTableWidgetItem*> takeRow(int row);
     void setRow(int row, const QList<QTableWidgetItem*>& rowItems);
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void updateSettings();
     QComboBox * addMatchingCriteriaCombobox(int row);
 };

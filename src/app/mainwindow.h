@@ -210,10 +210,10 @@ private:
     void saveDecodedTextFileAsColumns(QString);
     void addFrameToDisplay(CANFrame &, bool);
     void updateFileStatus();
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
     void readSettings();
     void writeSettings();
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void manageRowExpansion();
     void disableAutoRowExpansion();
     void createSenderRow();

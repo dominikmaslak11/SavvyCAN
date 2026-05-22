@@ -21,7 +21,7 @@ class ScriptingWindow : public QDialog
 
 public:
     explicit ScriptingWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
     ~ScriptingWindow();
 
 public slots:
@@ -48,11 +48,11 @@ private slots:
     void updatedValue(int row, int col);
 
 private:
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
     void readSettings();
     void writeSettings();
     void saveLog();
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
     Ui::ScriptingWindow *ui;
     JSEdit *editor;

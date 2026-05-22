@@ -87,8 +87,8 @@ private:
     QRandomGenerator randGen;
 
     void showEvent(QShowEvent* event);
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
     void refreshTree();

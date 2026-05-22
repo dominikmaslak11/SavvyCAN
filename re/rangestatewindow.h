@@ -16,7 +16,7 @@ class RangeStateWindow : public QDialog
 public:
     explicit RangeStateWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
     ~RangeStateWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void updatedFrames(int);
@@ -31,13 +31,13 @@ private:
     QMap<int, bool> idFilters;
 
     void refreshFilterList();
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
     void readSettings();
     void writeSettings();
     void signalsFactory();
     bool processSignal(int startBit, int bitLength, int sensitivity, bool bigEndian, bool isSigned);
     void createGraph(QVector<int> values);
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 #endif // RANGESTATEWINDOW_H

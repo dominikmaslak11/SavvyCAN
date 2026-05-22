@@ -16,7 +16,7 @@ class DBCNodeRebaseEditor : public QDialog
 public:
     explicit DBCNodeRebaseEditor(QWidget *parent = nullptr);
     ~DBCNodeRebaseEditor();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
     void setNodeRef(DBC_NODE *node);
     void setFileIdx(int idx);
     bool refreshView();
@@ -31,8 +31,8 @@ private:
     DBC_NODE *dbcNode;
     DBCFile *dbcFile;
 
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
 

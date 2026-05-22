@@ -53,7 +53,7 @@ class GraphingWindow : public QDialog
 public:
     explicit GraphingWindow(const QVector<CANFrame> *, QWidget *parent = 0);
     ~GraphingWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 public slots:
     void createGraph(GraphParams &params, bool createGraphParam = true);
@@ -106,10 +106,10 @@ private:
     bool followGraphEnd;
 
     void showParamsDialog(int idx);
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
     void readSettings();
     void writeSettings();
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void changeEvent(QEvent *event);
 };
 

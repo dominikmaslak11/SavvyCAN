@@ -96,7 +96,7 @@ public slots:
     void toggleFold(int line);
 
 protected:
-    void resizeEvent(QResizeEvent *e);
+    void resizeEvent(QResizeEvent *e) override;
     void wheelEvent(QWheelEvent *e);
 
 private slots:

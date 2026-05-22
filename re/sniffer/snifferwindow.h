@@ -35,7 +35,7 @@ public:
     explicit SnifferWindow(QWidget *parent = 0);
     ~SnifferWindow();
 
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
     void closeEvent(QCloseEvent*);
 
 public slots:
@@ -48,7 +48,7 @@ public slots:
 
 private:
     void filter(bool pFilter);
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
 

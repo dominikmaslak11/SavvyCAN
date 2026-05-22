@@ -23,7 +23,7 @@ class FrameInfoWindow : public QDialog
 public:
     explicit FrameInfoWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
     ~FrameInfoWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void updateDetailsWindow(QString);
@@ -51,8 +51,8 @@ private:
     QCPGraph *graphRef[8];
 
     void refreshIDList();
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void setupByteGraph(QCustomPlot *plot, int num);
     void readSettings();
     void writeSettings();

@@ -16,7 +16,7 @@ class DBCMessageEditor : public QDialog
 public:
     explicit DBCMessageEditor(QWidget *parent = nullptr);
     ~DBCMessageEditor();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
     void setMessageRef(DBC_MESSAGE *msg);
     void setFileIdx(int idx);
     void refreshView();
@@ -32,8 +32,8 @@ private:
     DBCFile *dbcFile;
     bool suppressEditCallbacks;
 
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
     void generateSampleText();

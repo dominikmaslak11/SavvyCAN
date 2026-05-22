@@ -15,7 +15,7 @@ class CANBridgeWindow : public QDialog
 public:
     explicit CANBridgeWindow(const QVector<CANFrame> *frames, QWidget *parent = nullptr);
     ~CANBridgeWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 
 private slots:
@@ -31,7 +31,7 @@ private:
     int side2BusNum;
 
     void processIncomingFrame(CANFrame *frame);
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 };
 

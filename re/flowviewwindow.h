@@ -18,7 +18,7 @@ class FlowViewWindow : public QDialog
 public:
     explicit FlowViewWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
     ~FlowViewWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 public slots:
     void gotCenterTimeID(uint32_t ID, double timestamp);
@@ -76,10 +76,10 @@ private:
     void removeAllGraphs();
     void createGraph(int);
     void updateGraphLocation();
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
     void readSettings();
     void writeSettings();
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 #endif // FLOWVIEWWINDOW_H

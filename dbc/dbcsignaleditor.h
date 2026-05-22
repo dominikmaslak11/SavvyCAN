@@ -18,7 +18,7 @@ public:
     void setMessageRef(DBC_MESSAGE *msg);
     void setFileIdx(int idx);
     void setSignalRef(DBC_SIGNAL *sig);
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
     ~DBCSignalEditor();
     void refreshView();
 
@@ -47,8 +47,8 @@ private:
     void generateUsedBits();
     void refreshBitGrid();
 
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
     void pushToUndoBuffer();

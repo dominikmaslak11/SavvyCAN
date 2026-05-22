@@ -18,7 +18,7 @@ class ISOTP_InterpreterWindow : public QDialog
 public:
     explicit ISOTP_InterpreterWindow(const QVector<CANFrame> *frames, QWidget *parent = 0);
     ~ISOTP_InterpreterWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void newISOMessage(ISOTP_MESSAGE msg);
@@ -43,8 +43,8 @@ private:
     QVector<ISOTP_MESSAGE> messages;
     QHash<int, bool> idFilters;
 
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
 

@@ -64,13 +64,13 @@ private:
     void refreshIDList();
     void updateFrameLabel();
     void fillIDHash(SequenceItem &item);
-    void showEvent(QShowEvent *);
-    void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent *) override;
+    void closeEvent(QCloseEvent *event) override;
     void readSettings();
     void writeSettings();
     void calculateWhichBus();
     bool checkNoSeqLoaded();
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 #endif // FRAMEPLAYBACKWINDOW_H

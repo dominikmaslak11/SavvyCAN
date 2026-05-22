@@ -21,7 +21,7 @@ class TemporalGraphWindow : public QDialog
 public:
     explicit TemporalGraphWindow(const QVector<CANFrame> *, QWidget *parent = nullptr);
     ~TemporalGraphWindow();
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void updatedFrames(int);
@@ -39,8 +39,8 @@ private:
     bool followGraphEnd;
     QCPGraph *graph;
     double xminval, xmaxval, yminval, ymaxval;
-    void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
     void readSettings();
     void writeSettings();
     void generateGraph();
