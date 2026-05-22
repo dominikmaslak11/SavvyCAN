@@ -32,10 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-#if QT_VERSION < QT_VERSION_CHECK( 6, 0, 0 )
-    qRegisterMetaTypeStreamOperators<QVector<QString>>();
-    qRegisterMetaTypeStreamOperators<QVector<int>>();
-#endif
 
     useHex = true;
     useColorsByCanId = false;
@@ -535,11 +531,7 @@ void MainWindow::processSenderCellChange(int line, int col)
     case SIMP_COL::SC_COL_DATA: //Data bytes
         for (int i = 0; i < 8; i++) tempData->payload().data()[i] = 0;
 
-#if QT_VERSION >= QT_VERSION_CHECK( 5, 14, 0 )
         tokens = ui->tableSimpleSender->item(line, SIMP_COL::SC_COL_DATA)->text().split(" ", Qt::SkipEmptyParts);
-#else
-        tokens = ui->tableSimpleSender->item(line, SIMP_COL::SC_COL_DATA)->text().split(" ", QString::SkipEmptyParts);
-#endif
         arr.clear();
         arr.reserve(tokens.size());
         for (int j = 0; j < tokens.size(); j++)

@@ -10,11 +10,7 @@ WifiManager::WifiManager(FrameStore *store, QObject *parent)
     connect(mSocket, &QTcpSocket::connected, this, &WifiManager::onSocketConnected);
     connect(mSocket, &QTcpSocket::disconnected, this, &WifiManager::onSocketDisconnected);
     connect(mSocket, &QTcpSocket::readyRead, this, &WifiManager::onSocketReadyRead);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     connect(mSocket, &QTcpSocket::errorOccurred, this, &WifiManager::onSocketError);
-#else
-    connect(mSocket, QOverload<QTcpSocket::SocketError>::of(&QTcpSocket::error), this, &WifiManager::onSocketError);
-#endif
 }
 
 WifiManager::~WifiManager()
