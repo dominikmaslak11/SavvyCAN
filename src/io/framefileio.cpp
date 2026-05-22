@@ -4869,7 +4869,7 @@ bool FrameFileIO::loadCANServerFile(QString filename, QVector<CANFrame>* frames)
         uint8_t data[1];
         while (!inFile->atEnd())
         {
-            inFile->read((char*)&data, 1);
+            inFile->read(reinterpret_cast<char*>(&data), 1);
 
             if (data[0] == 'C')
             {
@@ -4903,7 +4903,7 @@ bool FrameFileIO::loadCANServerFile(QString filename, QVector<CANFrame>* frames)
 
                 //Read in the size of the mark
                 uint8_t markSize[1];
-                inFile->read((char*)&markSize, 1);
+                inFile->read(reinterpret_cast<char*>(&markSize), 1);
                 
                 //Read in the mark message
                 QByteArray markData = inFile->read(markSize[0]);
@@ -4942,7 +4942,7 @@ bool FrameFileIO::loadCANServerFile(QString filename, QVector<CANFrame>* frames)
                 }
 
                 uint8_t frameheaderdata[5];
-                inFile->read((char*)frameheaderdata, 5);
+                inFile->read(reinterpret_cast<char*>(frameheaderdata), 5);
                 
                 uint32_t frametimeoffset = 0;
                 if (logVersion == 1)

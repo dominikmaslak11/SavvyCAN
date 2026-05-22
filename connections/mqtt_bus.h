@@ -20,7 +20,7 @@ class MQTT_BUS : public CANConnection
     Q_OBJECT
 
 public:
-    MQTT_BUS(QString topicName);
+     explicit MQTT_BUS(QString topicName);
     virtual ~MQTT_BUS();
 
 protected:

@@ -116,13 +116,14 @@ void CANConManager::refreshCanList()
     {
         /* if we are not the sender, the signal is coming from a connection */
         /* refresh only the given connection */
-        if(mConns.contains((CANConnection*) sender_p))
-            refreshConnection((CANConnection*)sender_p);
+        auto *conn = qobject_cast<CANConnection*>(sender_p);
+        if (conn && mConns.contains(conn))
+            refreshConnection(conn);
     }
     else
     {
         for (CANConnection *conn_p : mConns)
-            refreshConnection((CANConnection*)conn_p);
+            refreshConnection(conn_p);
     }
 }
 
