@@ -655,7 +655,7 @@ QVariant CANFrameModel::headerData(int section, Qt::Orientation orientation,
         case Column::Data:
             return QString(tr("Data"));
         default:
-            return QString("");
+            return QString();
         }
     }
 

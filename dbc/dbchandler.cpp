@@ -524,7 +524,7 @@ DBC_MESSAGE* DBCFile::parseMessageLine(QString line)
         DBC_MESSAGE msg;
         uint32_t ID = match.captured(1).toULong(); //the ID is always stored in decimal format
         msg.ID = ID & 0x1FFFFFFFul;
-        msg.extendedID = (ID & 0x80000000ul) ? true : false;
+        msg.extendedID = (ID & 0x80000000ul) != 0;
         msg.name = match.captured(2);
         msg.len = match.captured(3).toUInt();
         msg.sender = findNodeByName(match.captured(4));

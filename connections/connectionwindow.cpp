@@ -563,7 +563,7 @@ void ConnectionWindow::loadConnections()
 
     for(int i = 0 ; i < portNames.size() ; i++)
     {
-      CANConnection* conn_p = create((CANCon::type)devTypes[i], portNames[i], driverNames[i], serialSpeeds[i], busSpeeds[i], isCanFds[i] ? true : false, DataRates[i]);
+      CANConnection* conn_p = create((CANCon::type)devTypes[i], portNames[i], driverNames[i], serialSpeeds[i], busSpeeds[i], isCanFds[i], DataRates[i]);
         /* add connection to model */
         connModel->add(conn_p);
     }

@@ -851,7 +851,7 @@ void MainWindow::setupSendToLatestGraphWindow()
             param.associatedSignal = sig;
             param.bias = sig->bias;
             param.intelFormat = sig->intelByteOrder;
-            param.isSigned = sig->valType == SIGNED_INT ? true : false;
+            param.isSigned = sig->valType == SIGNED_INT;
             param.numBits = sig->signalSize;
             param.scale = sig->factor;
             param.startBit = sig->startBit;

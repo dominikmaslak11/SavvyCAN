@@ -686,7 +686,7 @@ void FramePlaybackWindow::changeIDFiltering(QListWidgetItem *item)
 {
     qDebug() << "Changed ID filter " << item->text() << " : " << item->checkState();
     int ID = FilterUtility::getIdAsInt(item);
-    currentSeqItem->idFilters[ID] = (item->checkState() == Qt::Checked) ? true : false;
+    currentSeqItem->idFilters[ID] = item->checkState() == Qt::Checked;
 }
 
 void FramePlaybackWindow::btnSelectAllClick()
