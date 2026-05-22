@@ -35,22 +35,22 @@ static bool parseValueDescriptions(QString tokenString, QList<DBC_VAL_ENUM_ENTRY
         values.append(val);
         tokenString = match.captured(3).trimmed();
     }
-    return values.count() > 0;
+    return values.size() > 0;
 }
 
 DBC_SIGNAL* DBCSignalHandler::findSignalByIdx(int idx)
 {
-    if (sigs.count() == 0) return nullptr;
+    if (sigs.size() == 0) return nullptr;
     if (idx < 0) return nullptr;
-    if (idx >= sigs.count()) return nullptr;
+    if (idx >= sigs.size()) return nullptr;
 
     return &sigs[idx];
 }
 
 DBC_SIGNAL* DBCSignalHandler::findSignalByName(QString name)
 {
-    if (sigs.count() == 0) return nullptr;
-    for (int i = 0; i < sigs.count(); i++)
+    if (sigs.size() == 0) return nullptr;
+    for (int i = 0; i < sigs.size(); i++)
     {
         if (sigs[i].name.compare(name, Qt::CaseInsensitive) == 0)
         {
@@ -82,9 +82,9 @@ bool DBCSignalHandler::removeSignal(DBC_SIGNAL *sig)
 
 bool DBCSignalHandler::removeSignal(int idx)
 {
-    if (sigs.count() == 0) return false;
+    if (sigs.size() == 0) return false;
     if (idx < 0) return false;
-    if (idx >= sigs.count()) return false;
+    if (idx >= sigs.size()) return false;
     sigs.removeAt(idx);
     return true;
 }
@@ -92,8 +92,8 @@ bool DBCSignalHandler::removeSignal(int idx)
 bool DBCSignalHandler::removeSignal(QString name)
 {
     bool foundSome = false;
-    if (sigs.count() == 0) return false;
-    for (int i = sigs.count() - 1; i >= 0; i--)
+    if (sigs.size() == 0) return false;
+    for (int i = sigs.size() - 1; i >= 0; i--)
     {
         if (sigs[i].name.compare(name, Qt::CaseInsensitive) == 0)
         {
@@ -111,7 +111,7 @@ void DBCSignalHandler::removeAllSignals()
 
 int DBCSignalHandler::getCount()
 {
-    return sigs.count();
+    return sigs.size();
 }
 
 void DBCSignalHandler::sort()
@@ -121,10 +121,10 @@ void DBCSignalHandler::sort()
 
 DBC_MESSAGE* DBCMessageHandler::findMsgByID(uint32_t id)
 {
-    if (messages.count() == 0) return nullptr;
+    if (messages.size() == 0) return nullptr;
     DBC_MESSAGE *bestMatch = nullptr;
 
-    for (int i = 0; i < messages.count(); i++)
+    for (int i = 0; i < messages.size(); i++)
     {
         if ( messages[i].ID == id )
         {
@@ -166,16 +166,16 @@ DBC_MESSAGE* DBCMessageHandler::findMsgByID(uint32_t id)
 
 DBC_MESSAGE* DBCMessageHandler::findMsgByIdx(int idx)
 {
-    if (messages.count() == 0) return nullptr;
+    if (messages.size() == 0) return nullptr;
     if (idx < 0) return nullptr;
-    if (idx >= messages.count()) return nullptr;
+    if (idx >= messages.size()) return nullptr;
     return &messages[idx];
 }
 
 DBC_MESSAGE* DBCMessageHandler::findMsgByName(QString name)
 {
-    if (messages.count() == 0) return nullptr;
-    for (int i = 0; i < messages.count(); i++)
+    if (messages.size() == 0) return nullptr;
+    for (int i = 0; i < messages.size(); i++)
     {
         if (messages[i].name.compare(name, Qt::CaseInsensitive) == 0)
         {
@@ -188,8 +188,8 @@ DBC_MESSAGE* DBCMessageHandler::findMsgByName(QString name)
 //allow for finding a message just by part of the name
 DBC_MESSAGE* DBCMessageHandler::findMsgByPartialName(QString name)
 {
-    if (messages.count() == 0) return nullptr;
-    for (int i = 0; i < messages.count(); i++)
+    if (messages.size() == 0) return nullptr;
+    for (int i = 0; i < messages.size(); i++)
     {
         if (messages[i].name.contains(name, Qt::CaseInsensitive))
         {
@@ -203,10 +203,10 @@ QList<DBC_MESSAGE*> DBCMessageHandler::findMsgsByNode(DBC_NODE* node)
 {
     QList<DBC_MESSAGE*> messagesForNode;
 
-    if (messages.count() == 0)
+    if (messages.size() == 0)
         return messagesForNode;
 
-    for (int i = 0; i < messages.count(); i++)
+    for (int i = 0; i < messages.size(); i++)
     {
         if (messages[i].sender == node)
         {
@@ -240,9 +240,9 @@ bool DBCMessageHandler::removeMessage(DBC_MESSAGE *msg)
 
 bool DBCMessageHandler::removeMessageByIndex(int idx)
 {
-    if (messages.count() == 0) return false;
+    if (messages.size() == 0) return false;
     if (idx < 0) return false;
-    if (idx >= messages.count()) return false;
+    if (idx >= messages.size()) return false;
     messages.removeAt(idx);
     return true;
 }
@@ -250,8 +250,8 @@ bool DBCMessageHandler::removeMessageByIndex(int idx)
 bool DBCMessageHandler::removeMessage(uint32_t ID)
 {
     bool foundSome = false;
-    if (messages.count() == 0) return false;
-    for (int i = messages.count() - 1; i >= 0; i--)
+    if (messages.size() == 0) return false;
+    for (int i = messages.size() - 1; i >= 0; i--)
     {
         if (messages[i].ID == ID)
         {
@@ -265,8 +265,8 @@ bool DBCMessageHandler::removeMessage(uint32_t ID)
 bool DBCMessageHandler::removeMessage(QString name)
 {
     bool foundSome = false;
-    if (messages.count() == 0) return false;
-    for (int i = messages.count() - 1; i >= 0; i--)
+    if (messages.size() == 0) return false;
+    for (int i = messages.size() - 1; i >= 0; i--)
     {
         if (messages[i].name.compare(name, Qt::CaseInsensitive) == 0)
         {
@@ -284,13 +284,13 @@ void DBCMessageHandler::removeAllMessages()
 
 int DBCMessageHandler::getCount()
 {
-    return messages.count();
+    return messages.size();
 }
 
 void DBCMessageHandler::sort()
 {
     std::sort(messages.begin(), messages.end());
-    for (int i = 0; i < messages.count(); i++)
+    for (int i = 0; i < messages.size(); i++)
     {
         messages[i].sigHandler->sort();
     }
@@ -372,7 +372,7 @@ void DBCFile::sort()
 DBC_NODE* DBCFile::findNodeByIdx(int idx)
 {
     if (idx < 0) return nullptr;
-    if (idx >= dbc_nodes.count()) return nullptr;
+    if (idx >= dbc_nodes.size()) return nullptr;
     return &dbc_nodes[idx];
 }
 
@@ -471,7 +471,7 @@ DBC_ATTRIBUTE *DBCFile::findAttributeByName(QString name, DBC_ATTRIBUTE_TYPE typ
 DBC_ATTRIBUTE *DBCFile::findAttributeByIdx(int idx)
 {
     if (idx < 0) return nullptr;
-    if (idx >= dbc_attributes.count()) return nullptr;
+    if (idx >= dbc_attributes.size()) return nullptr;
     return &dbc_attributes[idx];
 }
 
@@ -694,7 +694,7 @@ bool DBCFile::parseSignalMultiplexValueLine(QString line)
                     for (const QString &range : ranges) {
                         //now need to add "thisSignal" to the children multiplexed signals of "parentSignal"
                         const QStringList rangeSides = range.trimmed().split(QChar('-'));
-                        if (rangeSides.count() != 2) {
+                        if (rangeSides.size() != 2) {
                             qDebug() << QString("Malformed range definition: '%2' found in the multiplexed signal: %1")
                                             .arg(match.captured(1).arg(range.trimmed()));
                             return false;
@@ -945,7 +945,7 @@ bool DBCFile::parseDefaultAttrLine(QString line)
             case ATTR_ENUM:
                 QString temp = match.captured(2);
                 found->defaultValue = 0;
-                for (int x = 0; x < found->enumVals.count(); x++)
+                for (int x = 0; x < found->enumVals.size(); x++)
                 {
                     if (!found->enumVals[x].compare(temp, Qt::CaseInsensitive))
                     {
@@ -1063,8 +1063,8 @@ bool DBCFile::loadFile(QString fileName)
                 if (match.hasMatch())
                 {
                     QStringList nodeStrings = match.captured(1).split(' ');
-                    qDebug() << "Found " << nodeStrings.count() << " node names";
-                    for (int i = 0; i < nodeStrings.count(); i++)
+                    qDebug() << "Found " << nodeStrings.size() << " node names";
+                    for (int i = 0; i < nodeStrings.size(); i++)
                     {
                         //qDebug() << nodeStrings[i];
                         if (nodeStrings[i].length() > 1)
@@ -1478,7 +1478,7 @@ bool DBCFile::saveFile(QString fileName)
 
     //Build list of nodes line
     nodesOutput.append("BU_: ");
-    for (int x = 0; x < dbc_nodes.count(); x++)
+    for (int x = 0; x < dbc_nodes.size(); x++)
     {
         DBC_NODE node = dbc_nodes[x];
         if (node.name.compare("Vector__XXX", Qt::CaseInsensitive) != 0)
@@ -1493,7 +1493,7 @@ bool DBCFile::saveFile(QString fileName)
             {
                 commentsOutput.append("CM_ BU_ " + node.name + " \"" + node.comment + "\";\n");
             }
-            if (node.attributes.count() > 0)
+            if (node.attributes.size() > 0)
             {
                 for (const DBC_ATTRIBUTE_VALUE &val : node.attributes) {
                     attrValOutput.append("BA_ \"" + val.attrName + "\" BU_ ");
@@ -1516,11 +1516,11 @@ bool DBCFile::saveFile(QString fileName)
     nodesOutput.append("\n");
     outFile->write(nodesOutput.toUtf8());
 
-    for (int x = 0; x < dbc_value_tables.count(); x++)
+    for (int x = 0; x < dbc_value_tables.size(); x++)
     {
         DBC_VAL_TABLE table = dbc_value_tables[x];
         valueTableOutput.append("VAL_TABLE_ " + table.name);
-        for (int v = 0; v < table.valList.count(); v++)
+        for (int v = 0; v < table.valList.size(); v++)
         {
             DBC_VAL_ENUM_ENTRY val = table.valList[v];
             valueTableOutput.append(" " + QString::number(val.value) + " \"" + val.descript + "\"");
@@ -1558,7 +1558,7 @@ bool DBCFile::saveFile(QString fileName)
         }
 
         //If this message has attributes then compile them into attributes list to output later on.
-        if (msg->attributes.count() > 0)
+        if (msg->attributes.size() > 0)
         {
             for (const DBC_ATTRIBUTE_VALUE &val : msg->attributes) {
                 attrValOutput.append("BA_ \"" + val.attrName + "\" BO_ " + QString::number(ID) + " ");
@@ -1635,7 +1635,7 @@ bool DBCFile::saveFile(QString fileName)
             }
 
             //if this signal has attributes then compile them in a special list of attributes
-            if (sig->attributes.count() > 0)
+            if (sig->attributes.size() > 0)
             {
                 for (const DBC_ATTRIBUTE_VALUE &val : sig->attributes) {
                     attrValOutput.append("BA_ \"" + val.attrName + "\" SG_ " + QString::number(ID) + " " + sig->name + " ");
@@ -1654,10 +1654,10 @@ bool DBCFile::saveFile(QString fileName)
                 }
             }
 
-            if (sig->valList.count() > 0)
+            if (sig->valList.size() > 0)
             {
                 valuesOutput.append("VAL_ " + QString::number(ID) + " " + sig->name);
-                for (int v = 0; v < sig->valList.count(); v++)
+                for (int v = 0; v < sig->valList.size(); v++)
                 {
                     DBC_VAL_ENUM_ENTRY val = sig->valList[v];
                     valuesOutput.append(" " + QString::number(val.value) + " \"" + val.descript +"\"");
@@ -1675,7 +1675,7 @@ bool DBCFile::saveFile(QString fileName)
     commentsOutput.clear();
 
     //Now dump out all of the stored attributes
-    for (int x = 0; x < dbc_attributes.count(); x++)
+    for (int x = 0; x < dbc_attributes.size(); x++)
     {
         msgOutput.append("BA_DEF_ ");
         switch (dbc_attributes[x].attrType)
@@ -1805,9 +1805,9 @@ void DBCHandler::saveDBCFile(int idx)
 {
     QSettings settings;
 
-    if (loadedFiles.count() == 0) return;
+    if (loadedFiles.size() == 0) return;
     if (idx < 0) return;
-    if (idx >= loadedFiles.count()) return;
+    if (idx >= loadedFiles.size()) return;
 
     QString filename;
     QFileDialog dialog;
@@ -1882,7 +1882,7 @@ int DBCHandler::createBlankFile()
     newFile.setAssocBus(-1);
 
     loadedFiles.append(newFile);
-    return loadedFiles.count();
+    return loadedFiles.size();
 }
 
 DBCFile* DBCHandler::loadDBCFile(QString filename)
@@ -1896,7 +1896,7 @@ DBCFile* DBCHandler::loadDBCFile(QString filename)
     {
         //createBlankFile();
     }
-    if (loadedFiles.count()> 0) return &loadedFiles.last();
+    if (loadedFiles.size()> 0) return &loadedFiles.last();
     else return nullptr;
 }
 
@@ -1907,7 +1907,7 @@ DBCFile* DBCHandler::loadDBCFile(QString filename)
 //adding. Otherwise, just go straight to adding.
 DBCFile* DBCHandler::loadDBCFile(int idx)
 {
-   if (idx > -1 && idx < loadedFiles.count()) removeDBCFile(idx);
+   if (idx > -1 && idx < loadedFiles.size()) removeDBCFile(idx);
 
     QString filename;
     QFileDialog dialog;
@@ -2003,7 +2003,7 @@ DBCFile* DBCHandler::loadSecretCSVFile(QString filename)
                 {
                     QList<QByteArray> scalingToks = tokens[9].simplified().split(' ');
                     sig.factor = scalingToks[4].toDouble();
-                    if (scalingToks.count() > 5)
+                    if (scalingToks.size() > 5)
                     {
                         if (scalingToks[5] == "+")
                         {
@@ -2057,7 +2057,7 @@ DBCFile* DBCHandler::loadSecretCSVFile(QString filename)
                 {
                     QList<QByteArray> scalingToks = tokens[9].simplified().split(' ');
                     sig.factor = scalingToks[4].toDouble();
-                    if (scalingToks.count() > 5)
+                    if (scalingToks.size() > 5)
                     {
                         if (scalingToks[5] == "+")
                         {
@@ -2270,9 +2270,9 @@ DBCFile* DBCHandler::loadJSONFile(QString filename)
 
 void DBCHandler::removeDBCFile(int idx)
 {
-    if (loadedFiles.count() == 0) return;
+    if (loadedFiles.size() == 0) return;
     if (idx < 0) return;
-    if (idx >= loadedFiles.count()) return;
+    if (idx >= loadedFiles.size()) return;
     loadedFiles.removeAt(idx);
 }
 
@@ -2283,11 +2283,11 @@ void DBCHandler::removeAllFiles()
 
 void DBCHandler::swapFiles(int pos1, int pos2)
 {
-    if (loadedFiles.count() < 2) return;
+    if (loadedFiles.size() < 2) return;
     if (pos1 < 0) return;
-    if (pos1 >= loadedFiles.count()) return;
+    if (pos1 >= loadedFiles.size()) return;
     if (pos2 < 0) return;
-    if (pos2 >= loadedFiles.count()) return;
+    if (pos2 >= loadedFiles.size()) return;
 
     loadedFiles.swapItemsAt(pos1, pos2);
 }
@@ -2300,7 +2300,7 @@ void DBCHandler::swapFiles(int pos1, int pos2)
 */
 DBC_MESSAGE* DBCHandler::findMessage(const CANFrame &frame)
 {
-    for(int i = 0; i < loadedFiles.count(); i++)
+    for(int i = 0; i < loadedFiles.size(); i++)
     {
         if (loadedFiles[i].getAssocBus() == -1 || frame.bus == loadedFiles[i].getAssocBus())
         {
@@ -2313,7 +2313,7 @@ DBC_MESSAGE* DBCHandler::findMessage(const CANFrame &frame)
 
 DBC_MESSAGE* DBCHandler::findMessage(uint32_t id)
 {
-    for(int i = 0; i < loadedFiles.count(); i++)
+    for(int i = 0; i < loadedFiles.size(); i++)
     {
         DBC_MESSAGE* msg = loadedFiles[i].messageHandler->findMsgByID(id);
         if (msg != nullptr)
@@ -2330,7 +2330,7 @@ DBC_MESSAGE* DBCHandler::findMessage(uint32_t id)
 // Used for quickly populating the Frame Filtering section with interpreted values
 DBC_MESSAGE* DBCHandler::findMessageForFilter(uint32_t id, MatchingCriteria_t * matchingCriteria)
 {
-    for(int i = 0; i < loadedFiles.count(); i++)
+    for(int i = 0; i < loadedFiles.size(); i++)
     {
         if (loadedFiles[i].messageHandler->filterLabeling())
         {
@@ -2354,7 +2354,7 @@ DBC_MESSAGE* DBCHandler::findMessageForFilter(uint32_t id, MatchingCriteria_t * 
 DBC_MESSAGE* DBCHandler::findMessage(const QString msgName)
 {
     DBC_MESSAGE *msg = nullptr;
-    for(int i = 0; i < loadedFiles.count(); i++)
+    for(int i = 0; i < loadedFiles.size(); i++)
     {
         DBCFile * file = getFileByIdx(i);
         msg = file->messageHandler->findMsgByName(msgName);
@@ -2366,7 +2366,7 @@ DBC_MESSAGE* DBCHandler::findMessage(const QString msgName)
 DBC_MESSAGE* DBCHandler::findMessage(const QString msgName, const QString nodeName, const QString fileNameNoExt)
 {
     DBC_MESSAGE *msg = nullptr;
-    for(int i = 0; i < loadedFiles.count(); i++)
+    for(int i = 0; i < loadedFiles.size(); i++)
     {
         DBCFile * file = getFileByIdx(i);
         if(file->getFilenameNoExt() == fileNameNoExt)
@@ -2386,7 +2386,7 @@ DBC_MESSAGE* DBCHandler::findMessage(const QString msgName, const QString nodeNa
 DBC_MESSAGE* DBCHandler::findMessage(const QString msgName, const QString fullyQualifiedNodeName)
 {
     QStringList nodeNameParts = fullyQualifiedNodeName.split(Utility::fullyQualifiedNameSeperator);
-    if(nodeNameParts.count() != 2)
+    if(nodeNameParts.size() != 2)
     {
         qDebug() << "Error parsing fully qualified node name for message search";
         return nullptr;
@@ -2402,21 +2402,21 @@ DBC_MESSAGE* DBCHandler::findMessage(const QString msgName, const QString fullyQ
 
 int DBCHandler::getFileCount()
 {
-    return loadedFiles.count();
+    return loadedFiles.size();
 }
 
 DBCFile* DBCHandler::getFileByIdx(int idx)
 {
-    if (loadedFiles.count() == 0) return nullptr;
+    if (loadedFiles.size() == 0) return nullptr;
     if (idx < 0) return nullptr;
-    if (idx >= loadedFiles.count()) return nullptr;
+    if (idx >= loadedFiles.size()) return nullptr;
     return &loadedFiles[idx];
 }
 
 DBCFile* DBCHandler::getFileByName(QString name)
 {
-    if (loadedFiles.count() == 0) return nullptr;
-    for (int i = 0; i < loadedFiles.count(); i++)
+    if (loadedFiles.size() == 0) return nullptr;
+    for (int i = 0; i < loadedFiles.size(); i++)
     {
         if (loadedFiles[i].getFilename().compare(name, Qt::CaseInsensitive) == 0)
         {

@@ -21,8 +21,8 @@ class DBCSignalHandler: public QObject
 {
     Q_OBJECT
 public:
-    DBC_SIGNAL *findSignalByName(QString name);
-    DBC_SIGNAL *findSignalByIdx(int idx);
+    [[nodiscard]] DBC_SIGNAL *findSignalByName(QString name);
+    [[nodiscard]] DBC_SIGNAL *findSignalByIdx(int idx);
     bool addSignal(DBC_SIGNAL &sig);
     bool removeSignal(DBC_SIGNAL *sig);
     bool removeSignal(int idx);
@@ -39,10 +39,10 @@ class DBCMessageHandler: public QObject
 {
     Q_OBJECT
 public:
-    DBC_MESSAGE *findMsgByID(uint32_t id);
-    DBC_MESSAGE *findMsgByIdx(int idx);
-    DBC_MESSAGE *findMsgByName(QString name);
-    DBC_MESSAGE *findMsgByPartialName(QString name);
+    [[nodiscard]] DBC_MESSAGE *findMsgByID(uint32_t id);
+    [[nodiscard]] DBC_MESSAGE *findMsgByIdx(int idx);
+    [[nodiscard]] DBC_MESSAGE *findMsgByName(QString name);
+    [[nodiscard]] DBC_MESSAGE *findMsgByPartialName(QString name);
     QList<DBC_MESSAGE*> findMsgsByNode(DBC_NODE *node);
     bool addMessage(DBC_MESSAGE &msg);
     bool removeMessage(DBC_MESSAGE *msg);
@@ -124,12 +124,12 @@ public:
     void removeDBCFile(int);
     void removeAllFiles();
     void swapFiles(int pos1, int pos2);
-    DBC_MESSAGE* findMessage(const CANFrame &frame);
-    DBC_MESSAGE* findMessage(const QString msgName);
-    DBC_MESSAGE* findMessage(const QString msgName, const QString fullyQualifiedNodeName);
-    DBC_MESSAGE* findMessage(const QString msgName, const QString nodeName, const QString fileNameNoExt);
-    DBC_MESSAGE* findMessage(uint32_t id);
-    DBC_MESSAGE* findMessageForFilter(uint32_t id, MatchingCriteria_t * matchingCriteria);
+    [[nodiscard]] DBC_MESSAGE* findMessage(const CANFrame &frame);
+    [[nodiscard]] DBC_MESSAGE* findMessage(const QString msgName);
+    [[nodiscard]] DBC_MESSAGE* findMessage(const QString msgName, const QString fullyQualifiedNodeName);
+    [[nodiscard]] DBC_MESSAGE* findMessage(const QString msgName, const QString nodeName, const QString fileNameNoExt);
+    [[nodiscard]] DBC_MESSAGE* findMessage(uint32_t id);
+    [[nodiscard]] DBC_MESSAGE* findMessageForFilter(uint32_t id, MatchingCriteria_t * matchingCriteria);
     int getFileCount();
     DBCFile* getFileByIdx(int idx);
     DBCFile* getFileByName(QString name);
