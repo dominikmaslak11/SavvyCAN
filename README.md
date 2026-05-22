@@ -1,8 +1,8 @@
 # SavvyCAN
 Qt based cross platform canbus tool
-(C) 2015-2024 Collin Kidder
+(C) 2015-2026 Collin Kidder
 
-A Qt5 based cross platform tool which can be used to load, save, and capture canbus frames.
+A Qt6 based cross platform tool which can be used to load, save, and capture canbus frames.
 This tool is designed to help with visualization, reverse engineering, debugging, and
 capturing of canbus frames.
 
@@ -46,15 +46,11 @@ http://www.qcustomplot.com/
 However, this source code is integrated into the source for SavvyCAN and one isn't required
 to download it separately.
 
-This project requires 5.14.0 or higher because of a dependency on QtSerialBus and other new additions to Qt.
+This project requires Qt 6.2 or higher.
 
-NOTE: There is a work-in-progress branch QT6WIP that can compile with QT6 (Tested with Qt 6.9 on 2026-03-11). Support for QT6 is approximately "beta" quality. Most all functions should work, please send issues if found.
+## Instructions for compiling (CMake + Qt6):
 
-It appears that the current binary build for MacOS requires at least MacOS 10.15
-
-## Instructions for compiling:
-
-[Download the newest stable version of Qt directly from qt.io](https://www.qt.io/download/) (You need 5.14.x or newer)
+[Download the newest stable version of Qt directly from qt.io](https://www.qt.io/download/) (You need Qt 6.2 or newer)
 
 ```sh
 cd ~
@@ -63,9 +59,9 @@ git clone https://github.com/collin80/SavvyCAN.git
 
 cd SavvyCAN
 
-~/Qt/5.14/gcc_64/bin/qmake
+cmake -B build -DCMAKE_PREFIX_PATH=/path/to/Qt/6.x/gcc_64 -DCMAKE_BUILD_TYPE=Release -GNinja
 
-make
+cmake --build build -j$(nproc)
 ```
 
 Now run SavvyCAN
@@ -74,34 +70,24 @@ Now run SavvyCAN
 ./SavvyCAN
 ```
 
-On linux systems you can run `./install.sh` to create a desktop shortcut.
-
-### Compiling in debug mode for additional information
-
-```sh
-qmake CONFIG+=debug
-
-make
-```
-
 ## What to do if your compile failed?
 
 The very first thing to do is try:
 
-```
-qmake
+```sh
+rm -rf build
 
-make clean
+cmake -B build -DCMAKE_PREFIX_PATH=/path/to/Qt/6.x/gcc_64 -GNinja
 
-make
+cmake --build build
 ```
 
 Did that fix it? Great! If not, ensure that you selected SerialBUS support
 when you installed Qt.
 
-### What to do if `qmake` fails with error `Project ERROR: Unknown module(s) in QT: qml serialbus help` on Ubuntu? :
+### What to do if CMake fails with missing Qt modules on Ubuntu/Debian?
 
-`sudo apt install libqt5serialbus5-dev libqt5serialport5-dev qtdeclarative5-dev qttools5-dev`
+`sudo apt install qt6-serialbus-dev qt6-serialport-dev qt6-declarative-dev qttools6-dev`
 
 ### Used Items Requiring Attribution
 
