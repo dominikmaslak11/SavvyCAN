@@ -11,27 +11,21 @@
 struct CANFrame : public QCanBusFrame
 {
 public:
-    int bus;
-    bool isReceived; //did we receive this or send it?
-    uint64_t timedelta;
-    uint32_t frameCount; //used in overwrite mode
+    int bus            = 0;
+    bool isReceived     = true;   //did we receive this or send it?
+    uint64_t timedelta  = 0;
+    uint32_t frameCount = 1;     //used in overwrite mode
 
-    friend bool operator<(const CANFrame& l, const CANFrame& r)
+    friend bool operator<(const CANFrame &l, const CANFrame &r)
     {
         qint64 lStamp = l.timeStamp().seconds() * 1000000 + l.timeStamp().microSeconds();
         qint64 rStamp = r.timeStamp().seconds() * 1000000 + r.timeStamp().microSeconds();
         return lStamp < rStamp;
     }
 
-    CANFrame()
+    CANFrame() : QCanBusFrame(QCanBusFrame::DataFrame)
     {
         setFrameId(0);
-        bus = 0;
-        setExtendedFrameFormat(false);
-        setFrameType(QCanBusFrame::DataFrame);
-        isReceived = true;
-        timedelta = 0;
-        frameCount = 1;
     }
 };
 
@@ -42,13 +36,10 @@ public:
     quint32 mask;
     QObject * observer; //used to target the specific object that setup this filter
 
-    bool operator ==(const CANFltObserver &b) const
+    bool operator==(const CANFltObserver &b) const
     {
-        if ( (id == b.id) && (mask == b.mask) && (observer == b.observer) ) return true;
-
-        return false;
+        return id == b.id && mask == b.mask && observer == b.observer;
     }
 };
 
 #endif // CAN_STRUCTS_H
-
