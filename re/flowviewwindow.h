@@ -20,6 +20,9 @@ public:
     ~FlowViewWindow();
     void showEvent(QShowEvent*);
 
+public slots:
+    void gotCenterTimeID(uint32_t ID, double timestamp);
+
 private slots:
     void btnBackOneClick();
     void btnPauseClick();
@@ -37,7 +40,6 @@ private slots:
     void saveFileFlow();
     void saveFileGraph();
     void plottableDoubleClick(QCPAbstractPlottable* plottable, QMouseEvent* event);
-    void gotCenterTimeID(uint32_t ID, double timestamp);
     void updateTriggerValues();
     void gotCellClick(int bitPosition);
     void graphRangeChanged(int range);

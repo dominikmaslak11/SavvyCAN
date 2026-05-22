@@ -57,6 +57,7 @@ public:
 
 public slots:
     void createGraph(GraphParams &params, bool createGraphParam = true);
+    void gotCenterTimeID(uint32_t ID, double timestamp);
 
 private slots:
     void titleDoubleClick(QMouseEvent *event, QCPTextElement *title);
@@ -83,7 +84,6 @@ private slots:
     void appendToGraph(GraphParams &params, CANFrame &frame, QVector<double> &x, QVector<double> &y);
     void editSelectedGraph();
     void updatedFrames(int);
-    void gotCenterTimeID(uint32_t ID, double timestamp);
     void resetView();
     void zoomIn();
     void zoomOut();

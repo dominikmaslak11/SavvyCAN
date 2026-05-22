@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Instantiate settings dialog early so defaults are written on first run
     mRegistry->show<MainSettingsDialog>("settings", [this] {
         auto *dlg = new MainSettingsDialog();
-        connect(dlg, SIGNAL(updatedSettings()), this, SLOT(readUpdateableSettings()));
+        connect(dlg, &MainSettingsDialog::updatedSettings, this, &MainWindow::readUpdateableSettings);
         return dlg;
     })->updateSettings();
 
@@ -109,7 +109,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QHeaderView *HorzHdr = ui->canFramesView->horizontalHeader();
     HorzHdr->setFont(QFont());
     HorzHdr->setStretchLastSection(true); //causes the data column to automatically fill the tableview
-    connect(HorzHdr, SIGNAL(sectionClicked(int)), this, SLOT(headerClicked(int)));
+    connect(HorzHdr, &QHeaderView::sectionClicked, this, &MainWindow::headerClicked);
 
     // → window pointers initialized by WindowRegistry on first show()
     dbcHandler = DBCHandler::getReference();
@@ -121,7 +121,7 @@ MainWindow::MainWindow(QWidget *parent) :
     continuousLogFlushCounter = 0;
 
     //handlers for all menu entries
-    connect(ui->actionSetup, SIGNAL(triggered(bool)), SLOT(showConnectionSettingsWindow()));
+    connect(ui->actionSetup, &QAction::triggered, this, &MainWindow::showConnectionSettingsWindow);
     connect(ui->actionOpen_Log_File, &QAction::triggered, this, &MainWindow::handleLoadFile);
     connect(ui->actionGraph_Dta, &QAction::triggered, this, &MainWindow::showGraphingWindow);
     connect(ui->actionFrame_Data_Analysis, &QAction::triggered, this, &MainWindow::showFrameDataAnalysis);
@@ -187,7 +187,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->btnExpandAll, &QAbstractButton::clicked, this, &MainWindow::expandAllRows);
     connect(ui->btnCollapseAll, &QAbstractButton::clicked, this, &MainWindow::collapseAllRows);
 
-    connect(ui->tableSimpleSender, SIGNAL(cellChanged(int,int)), this, SLOT(onSenderCellChanged(int,int)));
+    connect(ui->tableSimpleSender, &QTableWidget::cellChanged, this, &MainWindow::onSenderCellChanged);
 
     lbStatusConnected.setText(tr("Connected to 0 buses"));
     lbHelp.setText(tr("Press F1 on any screen for help"));
@@ -240,13 +240,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->canFramesView->verticalHeader()->setDefaultSectionSize(normalRowHeight);    // Set the default height for all rows to the height that was calculated
 
     //connect(CANConManager::getInstance(), CANConManager::connectionStatusUpdated, this, MainWindow::connectionStatusUpdated);
-    connect(CANConManager::getInstance(), SIGNAL(connectionStatusUpdated(int)), this, SLOT(connectionStatusUpdated(int)));
+    connect(CANConManager::getInstance(), &CANConManager::connectionStatusUpdated, this, &MainWindow::connectionStatusUpdated);
 
     //Automatically create the connection window so it can be updated even if we never opened it.
     auto *connectionWindow = mRegistry->show<ConnectionWindow>("connection", [this] {
         return new ConnectionWindow();
     });
-    connect(this, SIGNAL(suspendCapturing(bool)), connectionWindow, SLOT(setSuspendAll(bool)));
+    connect(this, &MainWindow::suspendCapturing, connectionWindow, &ConnectionWindow::setSuspendAll);
 
     //these either are unfinished/not working or are not for general use. But,they exist
     //so if you want to enable them and play with them then go for it.
@@ -1631,7 +1631,7 @@ void MainWindow::showSettingsDialog()
 {
     mRegistry->show<MainSettingsDialog>("settings", [this] {
         auto *dlg = new MainSettingsDialog();
-        connect(dlg, SIGNAL(updatedSettings()), this, SLOT(readUpdateableSettings()));
+        connect(dlg, &MainSettingsDialog::updatedSettings, this, &MainWindow::readUpdateableSettings);
         return dlg;
     });
 }
@@ -1646,12 +1646,12 @@ void MainWindow::showGraphingWindow()
 
     auto *lastGraphingWindow = win; // for signal wiring below
 
-    connect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), this, SLOT(gotCenterTimeID(uint32_t,double)));
-    connect(this, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(uint32_t,double)));
+    connect(lastGraphingWindow, &GraphingWindow::sendCenterTimeID, this, &MainWindow::gotCenterTimeID);
+    connect(this, &MainWindow::sendCenterTimeID, lastGraphingWindow, &GraphingWindow::gotCenterTimeID);
 
     if (auto *fw = mRegistry->window<FlowViewWindow>("flowview")) {
-        connect(lastGraphingWindow, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(uint32_t,double)));
-        connect(fw, SIGNAL(sendCenterTimeID(uint32_t,double)), lastGraphingWindow, SLOT(gotCenterTimeID(uint32_t,double)));
+        connect(lastGraphingWindow, &GraphingWindow::sendCenterTimeID, fw, &FlowViewWindow::gotCenterTimeID);
+        connect(fw, &FlowViewWindow::sendCenterTimeID, lastGraphingWindow, &GraphingWindow::gotCenterTimeID);
     }
 
     lastGraphingWindow->show();
@@ -1804,8 +1804,8 @@ void MainWindow::showFlowViewWindow()
         auto *fw = new FlowViewWindow(useFiltered
             ? model->getFilteredListReference()
             : model->getListReference());
-        connect(fw, SIGNAL(sendCenterTimeID(uint32_t,double)), this, SLOT(gotCenterTimeID(int32_t,double)));
-        connect(this, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(int32_t,double)));
+        connect(fw, &FlowViewWindow::sendCenterTimeID, this, &MainWindow::gotCenterTimeID);
+        connect(this, &MainWindow::sendCenterTimeID, fw, &FlowViewWindow::gotCenterTimeID);
         return fw;
     });
 
@@ -1813,8 +1813,8 @@ void MainWindow::showFlowViewWindow()
     if (auto *fw = mRegistry->window<FlowViewWindow>("flowview")) {
         for (auto *gw : mRegistry->graphWindows()) {
             if (auto *graph = qobject_cast<GraphingWindow*>(gw)) {
-                connect(graph, SIGNAL(sendCenterTimeID(uint32_t,double)), fw, SLOT(gotCenterTimeID(uint32_t,double)));
-                connect(fw, SIGNAL(sendCenterTimeID(uint32_t,double)), graph, SLOT(gotCenterTimeID(int32_t,double)));
+                connect(graph, &GraphingWindow::sendCenterTimeID, fw, &FlowViewWindow::gotCenterTimeID);
+                connect(fw, &FlowViewWindow::sendCenterTimeID, graph, &GraphingWindow::gotCenterTimeID);
             }
         }
     }
